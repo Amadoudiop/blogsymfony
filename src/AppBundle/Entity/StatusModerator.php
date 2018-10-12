@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * status_moderator
  *
  * @ORM\Table(name="status_moderator")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\status_moderatorRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\StatusModeratorRepository")
  */
 class StatusModerator
 {

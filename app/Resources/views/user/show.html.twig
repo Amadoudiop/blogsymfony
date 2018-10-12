@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>User</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ user.id }}</td>
+            </tr>
+            <tr>
+                <th>Promotion</th>
+                <td>{{ user.promotion }}</td>
+            </tr>
+            <tr>
+                <th>Firstname</th>
+                <td>{{ user.firstName }}</td>
+            </tr>
+            <tr>
+                <th>Lastname</th>
+                <td>{{ user.lastName }}</td>
+            </tr>
+            <tr>
+                <th>Alias</th>
+                <td>{{ user.alias }}</td>
+            </tr>
+            <tr>
+                <th>Password</th>
+                <td>{{ user.password }}</td>
+            </tr>
+            <tr>
+                <th>Mail</th>
+                <td>{{ user.mail }}</td>
+            </tr>
+            <tr>
+                <th>Datecreate</th>
+                <td>{% if user.dateCreate %}{{ user.dateCreate|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{% if user.status %}Yes{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Token</th>
+                <td>{{ user.token }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('user_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('user_edit', { 'id': user.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}
