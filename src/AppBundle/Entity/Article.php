@@ -22,21 +22,21 @@ class Article
     private $id;
 
     /**
-     * @var datetime,
+     * @var \DateTime,
      *
      * @ORM\Column(name="date_create", type="datetime")
      */
     private $date_create;
 
     /**
-     * @var datetime,
+     * @var \DateTime,
      *
      * @ORM\Column(name="date_update", type="datetime")
      */
     private $date_update;
 
     /**
-     * @var datetime,
+     * @var \DateTime,
      *
      * @ORM\Column(name="date_event", type="datetime")
      */
@@ -75,8 +75,13 @@ class Article
      *
      * @ORM\Column(name="status", type="boolean")
      */
-    private $status;
+    private $status = false;
 
+    public function __construct()
+    {
+        $this->date_create = new \DateTime('now');
+        $this->date_update = new \DateTime('now');
+    }
 
     /**
      * Get id
@@ -95,7 +100,7 @@ class Article
      *
      * @return Article
      */
-    public function setDateCreate(datetime $dateCreate)
+    public function setDateCreate($dateCreate)
     {
         $this->date_create = $dateCreate;
 
