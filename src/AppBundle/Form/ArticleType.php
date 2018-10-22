@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\RadioType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class ArticleType extends AbstractType
 {
@@ -20,14 +21,25 @@ class ArticleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('date_create',DateType::class)
-            ->add('date_update',DateType::class)
-            ->add('date_event',DateType::class)
-            ->add('title',TextType::class)
-            ->add('catch_sentence',TextType::class)
+//            ->add('date_create', DateType::class)
+//            ->add('date_update', DateType::class)
+            ->add('date_event', DateType::class)
+            ->add('title', TextType::class)
+            ->add('catch_sentence', TextType::class)
             ->add('picture', FileType::class, array('label' => 'picture (PDF file)'))
-            ->add('content',TextareaType::class);
-    }/**
+            ->add('content', TextareaType::class)
+            ->add('category', EntityType::class,
+                [
+                    'class' => 'AppBundle:Category',
+                    'choice_label' => 'name',
+                    'attr' => [
+                        'class' => 'form-control'
+                    ]
+                ]
+            );
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)

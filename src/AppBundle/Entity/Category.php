@@ -35,6 +35,12 @@ class Category
      */
     private $color;
 
+    /**
+     * One Category has Many Article
+     *
+     * @ORM\OneToMany(targetEntity="Article", mappedBy="category")
+     */
+    private $articles;
 
     /**
      * Get id
