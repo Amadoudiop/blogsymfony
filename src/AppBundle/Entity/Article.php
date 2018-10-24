@@ -36,6 +36,13 @@ class Article
     private $date_update;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="event", type="boolean")
+     */
+    private $event = false;
+
+    /**
      * @var \DateTime,
      *
      * @ORM\Column(name="date_event", type="datetime")
@@ -318,5 +325,29 @@ class Article
     public function getCategory()
     {
         return $this->category;
+    }
+
+    /**
+     * Set event
+     *
+     * @param boolean $event
+     *
+     * @return Article
+     */
+    public function setEvent($event)
+    {
+        $this->event = $event;
+
+        return $this;
+    }
+
+    /**
+     * Get event
+     *
+     * @return boolean
+     */
+    public function getEvent()
+    {
+        return $this->event;
     }
 }

@@ -5,6 +5,9 @@ namespace AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 class UserType extends AbstractType
 {
@@ -13,7 +16,14 @@ class UserType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('promotion')->add('firstName')->add('lastName')->add('alias')->add('password')->add('mail')->add('dateCreate')->add('status')->add('token');
+        $builder
+            ->add('promotion')
+            ->add('firstName',TextType::class)
+            ->add('lastName',TextType::class)
+            ->add('alias',TextType::class)
+            ->add('password')
+            ->add('mail', EmailType::class)
+            ->add('dateCreate', DateTimeType::class);
     }/**
      * {@inheritdoc}
      */

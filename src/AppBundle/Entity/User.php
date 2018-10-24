@@ -2,7 +2,9 @@
 
 namespace AppBundle\Entity;
 
+use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * user
@@ -10,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
  */
-class User
+class User extends BaseUser
 {
     /**
      * @var int
@@ -19,7 +21,7 @@ class User
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var int
@@ -39,29 +41,17 @@ class User
      * @var string
      *
      * @ORM\Column(name="last_name", type="string", length=100)
+     *
+     * @Assert\NotBlank(message="entrer un nom.", groups={"Registration", "Profile"})
+     * @Assert\Length(
+     *     min=1,
+     *     max=255,
+     *     minMessage="Le nom est trop court.",
+     *     maxMessage="Le nom est trop long.",
+     *     groups={"Registration", "Profile"}
+     * )
      */
     private $lastName;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="alias", type="string", length=100)
-     */
-    private $alias;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="password", type="string", length=150)
-     */
-    private $password;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="mail", type="string", length=255, unique=true)
-     */
-    private $mail;
 
     /**
      * @var \DateTime
@@ -75,7 +65,7 @@ class User
      *
      * @ORM\Column(name="status", type="boolean")
      */
-    private $status;
+    private $status = false;
 
     /**
      * @var string
@@ -84,6 +74,12 @@ class User
      */
     private $token;
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->dateCreate = new \DateTime('now');
+
+    }
 
     /**
      * Get id
@@ -165,78 +161,6 @@ class User
     public function getLastName()
     {
         return $this->lastName;
-    }
-
-    /**
-     * Set alias
-     *
-     * @param string $alias
-     *
-     * @return user
-     */
-    public function setAlias($alias)
-    {
-        $this->alias = $alias;
-
-        return $this;
-    }
-
-    /**
-     * Get alias
-     *
-     * @return string
-     */
-    public function getAlias()
-    {
-        return $this->alias;
-    }
-
-    /**
-     * Set password
-     *
-     * @param string $password
-     *
-     * @return user
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    /**
-     * Get password
-     *
-     * @return string
-     */
-    public function getPassword()
-    {
-        return $this->password;
-    }
-
-    /**
-     * Set mail
-     *
-     * @param string $mail
-     *
-     * @return user
-     */
-    public function setMail($mail)
-    {
-        $this->mail = $mail;
-
-        return $this;
-    }
-
-    /**
-     * Get mail
-     *
-     * @return string
-     */
-    public function getMail()
-    {
-        return $this->mail;
     }
 
     /**

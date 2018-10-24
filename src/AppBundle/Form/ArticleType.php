@@ -23,7 +23,8 @@ class ArticleType extends AbstractType
         $builder
 //            ->add('date_create', DateType::class)
 //            ->add('date_update', DateType::class)
-            ->add('date_event', DateType::class)
+            ->add('event', CheckboxType::class)
+            ->add('date_event', DateType::class, ['data' =>  new \DateTime('now')])
             ->add('title', TextType::class)
             ->add('catch_sentence', TextType::class)
             ->add('picture', FileType::class, array('label' => 'picture (PDF file)'))

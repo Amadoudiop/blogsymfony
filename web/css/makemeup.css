@@ -1,0 +1,123 @@
+@font-face{
+    font-family: 'bubbleboddy';
+    src: url('../font/Bubbleboddy-ExtraLightTrial.ttf');
+}
+.sidebar{
+    background-color: #EF3E34;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    box-shadow: 2px 0px 10px;
+}
+.navbar-li{
+    color: black;
+    font-size: 2vw;
+    list-style: none;
+    text-align: center;
+    font-family: 'bubbleboddy';
+    margin-top : 20vh;
+}
+.lien-navbar{
+    color:#231F20;
+    font-weight: bold;
+    transition: 0.3s;
+}
+.lien-navbar:visited{
+    color:#231F20;
+    font-weight: bold;
+}
+.lien-navbar:hover{
+    color:#FFFFFF;
+    font-weight: bold;
+}
+.li-lien-nav-bar{
+    margin-top : 3vh;
+}
+.logo-sidebar-sticky{
+    position: fixed;
+    text-align: center;
+    width:2vw;
+}
+.logo-center{
+    position: fixed;
+    top: 0;
+    right: 0;
+    text-align: center;
+}
+.content{
+    margin-right: 0;
+    margin-left: auto;
+    margin-top: 40vh;
+    text-align: center;
+}
+ul{
+    padding-left: 0;
+}
+.logo-sticky{
+    position: fixed;
+    top: 0;
+    left: 1vw;
+    text-align: center;
+    width: 14vw;
+}
+.block-article-event{ 
+    box-shadow: 2px 0px 10px;
+    width : 100%;
+    height: 40vh;
+    margin-top: 3vh;
+    font-family: 'bubbleboddy';
+    font-size: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    background-color: #FFFFFF;
+}
+.image-article-event{  
+    height: 100%;
+    float:left;    
+}
+.image-article-event-date{ 
+    font-family: 'ariale';
+    background-color: #EF3E34;
+    height: 100%;
+    width: 15%;
+    float:right; 
+    font-size: 7vh;
+    display: table-cell; /* comportement visuel de cellule */
+    vertical-align: middle;
+}
+.logo {
+    position: static;
+    top: 0;
+    left: 0;
+    width: 50%;
+}
+.position-icon-right{
+    position: fixed;
+    right: 2vw;
+    top: 2vh;   
+}
+.icon-right{
+    margin-top: 2vh;
+    width: 4vw;
+}
+.imgCarousel{
+    width: 7vh;
+    
+}
+.arrow-slider{
+    font-size: 48px;
+    color: black;
+}
+.size-slider{
+    width:100%;
+    margin:auto;
+}
+.shadow-box{
+    box-shadow: 2px 0px 10px;
+}
+.classic-form{
+    margin-top: 20vh;
+    text-align: center;
+}
+
