@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Service\FileHandler;
 //use DateTime;
 
 /**
@@ -46,6 +47,13 @@ class ArticleController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            dump($article->getPicture());
+            $file = $article->getPicture();
+//            dump($_FILES);
+            $fileHandler = $this->get(FileHandler::class);
+            $fileName = $fileHandler->upload($file, $this->getParameter('upload_directory'));
+            dump($fileName);
+            die;
             $em = $this->getDoctrine()->getManager();
             $em->persist($article);
             $em->flush();

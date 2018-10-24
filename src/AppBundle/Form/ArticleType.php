@@ -23,7 +23,10 @@ class ArticleType extends AbstractType
         $builder
 //            ->add('date_create', DateType::class)
 //            ->add('date_update', DateType::class)
-            ->add('event', CheckboxType::class)
+            ->add('event', RadioType::class,array(
+                'label'    => 'event',
+                'required' => false
+            ))
             ->add('date_event', DateType::class, ['data' =>  new \DateTime('now')])
             ->add('title', TextType::class)
             ->add('catch_sentence', TextType::class)
