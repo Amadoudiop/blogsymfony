@@ -1,0 +1,9 @@
+//entity
+php bin/console doctrine:generate:entity \ --entity="AppBundle:Slide" \ --fields="active:boolean pfalse title:string(50) content:string(125) url:string(255)"
+
+// CRUD
+php bin/console generate:doctrine:crud AppBundle:Slide -n --format=annotation --with-write
+
+// MAJ SQL
+php bin/console d:s:u --dump-sql
+php bin/console d:s:u -f

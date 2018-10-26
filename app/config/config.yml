@@ -41,6 +41,8 @@ twig:
     strict_variables: '%kernel.debug%'
     globals:
         upload_directory: '%upload_directory%'
+        upload_directory_slide: '%upload_directory_slide%'
+
 # Doctrine Configuration
 doctrine:
     dbal:

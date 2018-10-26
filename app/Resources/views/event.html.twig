@@ -1,11 +1,13 @@
-<div class="block-article-event ">
-    <img class="image-article-event" src="{{ asset('image/1X1.png') }}" alt="photo de l'article ou de l'événement" id="image_article_event">
-    <div class="image-article-event-date">
-        23 OCT 2018
+<a href="{{ path('article_show', { 'id': article.id }) }}">
+    <div class="block-article-event ">
+        <img class="image-article-event"  src="{{ asset(upload_directory ~ article.picture) }}" alt="photo de l'article ou de l'événement" id="image_article_event">
+        {% if article.event == 1 %}
+            <div class="image-article-event-date">
+                {{ article.dateevent|date('d M Y ')|upper }}
+            </div>
+        {% endif %}
+        <div>
+            {{ article.catchsentence }}
+        </div>
     </div>
-    <div>
-        Les fusées russes Soyouz qui sont les transporteurs exclusifs de tous les astronautes de la planète vers l’ISS depuis sont clouées au sol jusqu’à la conclusion de l’enquête diligentée par l’agence spatiale russe. Les premiers résultats sont attendus pour le octobre.
-        Le prochain vol vers l’ISS, où se trouvent actuellement trois cosmonautes, l’Allemand Alexander Gerst, l’Américaine Serena Aunon-Chancellor et le Russe Sergueï Prokopiev, était prévu pour décembre. L’Agence spatiale européenne a souligné que ce tir avorté aura "un impact" sur le planning de l’ISS et sur la mission d’Alexander Gerst, dont le retour devait avoir lieu le 13 décembre.
-        Selon l’expert Stefan Beransky, auteur d’un livre sur la fusée Soyouz, un cargo spatial russe Progress devait être expédié prochainement par Soyouz pour ravitailler l’ISS. "Le gros problème, c’est qu’il y a deux personnes en moins dans la station", explique-t-il. En général, l’ISS a cinq ou six spationautes à bord, pour des missions d’environ six mois. Ils se relaient et l’ISS a ainsi été continuellement habitée depuis novembre 2000.
-    </div>
-</div>
+</a>

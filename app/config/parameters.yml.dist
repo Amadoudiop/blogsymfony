@@ -18,3 +18,4 @@ parameters:
     # A secret key that's used to generate certain security-related tokens
     secret: ThisTokenIsNotSoSecretChangeIt
     upload_directory: uploads/
+    upload_directory_slide: uploads/slide/

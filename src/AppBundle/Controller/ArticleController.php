@@ -47,13 +47,11 @@ class ArticleController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            dump($article->getPicture());
             $file = $article->getPicture();
-//            dump($_FILES);
             $fileHandler = $this->get(FileHandler::class);
             $fileName = $fileHandler->upload($file, $this->getParameter('upload_directory'));
-            dump($fileName);
-            die;
+            $article->setPicture($fileName["name"]);
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($article);
             $em->flush();

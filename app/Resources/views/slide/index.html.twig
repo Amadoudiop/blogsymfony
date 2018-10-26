@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Slides list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Active</th>
+                <th>Picture</th>
+                <th>Title</th>
+                <th>Content</th>
+                <th>Url</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for slide in slides %}
+            <tr>
+                <td><a href="{{ path('slide_show', { 'id': slide.id }) }}">{{ slide.id }}</a></td>
+                <td>{% if slide.active %}Yes{% else %}No{% endif %}</td>
+                <td>{{ slide.picture }}</td>
+                <td>{{ slide.title }}</td>
+                <td>{{ slide.content }}</td>
+                <td>{{ slide.url }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('slide_show', { 'id': slide.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('slide_edit', { 'id': slide.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('slide_new') }}">Create a new slide</a>
+        </li>
+    </ul>
+{% endblock %}

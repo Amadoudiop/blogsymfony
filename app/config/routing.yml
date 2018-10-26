@@ -1,3 +1,7 @@
+app_slide:
+    resource: "@AppBundle/Controller/SlideController.php"
+    type:     annotation
+
 blog:
     resource: "@BlogBundle/Controller/"
     type:     annotation
