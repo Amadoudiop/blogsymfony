@@ -13,22 +13,33 @@
     </head>
 
     <body>
+
         <div class="col-md-2 sidebar">
             <div class="logo-sidebar-sticky"><img class="logo-sticky" src="{{ asset('image/make-me-up-logo-bw.png') }}" alt="logo-right de MakeMeUp" id="logo_sidebar_sticky"></div>
             <nav>
                 <ul class="navbar-li">
-                    <li class="li-lien-navbar"><a class="lien-navbar" href="{{ path('homepage') }}">HOME</a></li>
-                    <li class="li-lien-navbar"><a class="lien-navbar" href="">CONTACT</a></li>
+                    <li class="li-lien-navbar"><a class="lien-navbar" href="{{ path('homepage_cool') }}">HOME</a></li>
+                    <li class="li-lien-navbar"><a class="lien-navbar" href="{{ path('contact_cool') }}">CONTACT</a></li>
                     <li class="li-lien-navbar"><a class="lien-navbar" href="">INSCRIPTION / CONNEXION</a></li>
                     <li class="li-lien-navbar"><a class="lien-navbar" href="">CREER UN ARTICLE</a></li>
                     <li class="li-lien-navbar"><a class="lien-navbar" href="">SOUMISSION</a></li>
                 </ul>
             </nav>
         </div>
+
         <div class="col-md-10 logo-center">
             <div><img src="{{ asset('image/make-me-up-logo-colored.png') }}" alt="logo-center de MakeMeUp" id="logo_center_top"></div>
         </div>
-        <div class="col-md-10 content" id="page_info">
+
+        <div class="col-md-10 content " id="page_info">
+            {% for label, flashes in app.session.flashbag.all %}
+                {% for flash in flashes %}
+                    <div class="alert alert-{{ label }}">
+                        {{ flash }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
             {#{% block nav %}{% endblock %} #}
             {% block body %}{% endblock %}
         </div>

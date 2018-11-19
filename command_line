@@ -7,3 +7,5 @@ php bin/console generate:doctrine:crud AppBundle:Slide -n --format=annotation --
 // MAJ SQL
 php bin/console d:s:u --dump-sql
 php bin/console d:s:u -f
+
+//
