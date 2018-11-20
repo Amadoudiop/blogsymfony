@@ -10,13 +10,11 @@
                         {{ form_end(form) }}
             {% elseif envoie == 1 %}
                     <div class="col-md-4 offset-md-4">
-                         <h1 class="">Message envoyé ! </h1>
                          <div>
                              <a href="{{ path('homepage_cool') }}"><button type="button" class="btn btn-danger"> HOME </button></a>
                          </div>
             {% else %}
                     <div class="col-md-4 offset-md-4">
-                        <h1 class="">erreur lors de l'envoi! Réessayer plus tard ! </h1>
                         <div>
                             <a href="{{ path('homepage_cool') }}"><button type="button" class="btn btn-danger"> HOME </button></a>
                         </div>

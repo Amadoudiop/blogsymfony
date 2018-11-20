@@ -8,9 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("homepage")
- */
+
 class DefaultController extends Controller
 {
     /**

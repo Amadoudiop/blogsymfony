@@ -31,6 +31,16 @@ class UserController extends Controller
             'users' => $users,
         ));
     }
+    /**
+     * Lists all user entities.
+     *
+     * @Route("/login-register", name="user_login_register")
+     * @Method("GET")
+     */
+    public function loginRegisterAction()
+    {
+        return $this->render('login_and_registration_page.html.twig');
+    }
 
     /**
      * Creates a new user entity.

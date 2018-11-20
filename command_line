@@ -8,4 +8,10 @@ php bin/console generate:doctrine:crud AppBundle:Slide -n --format=annotation --
 php bin/console d:s:u --dump-sql
 php bin/console d:s:u -f
 
-//
+//GIT
+git status
+git add .
+git status
+git commit -m ""commantère""
+git push origin "branche"
+git status
