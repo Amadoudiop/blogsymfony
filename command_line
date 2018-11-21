@@ -1,8 +1,22 @@
+// comande à faire quand on recharge le projet
+composer install
+php bin/console d:s:u --dump-sql
+php bin/console d:s:u -f
+
 //entity
 php bin/console doctrine:generate:entity \ --entity="AppBundle:Slide" \ --fields="active:boolean pfalse title:string(50) content:string(125) url:string(255)"
 
-// CRUD
+// CRUD (créer des views un controller et un form a partir d'une entity )
 php bin/console generate:doctrine:crud AppBundle:Slide -n --format=annotation --with-write
+
+// controller
+php bin/console generate:controller
+
+
+//form type (relié à une entité)
+php bin/console generate:doctrine:form AcmeBlogBundle:Post
+
+
 
 // MAJ SQL
 php bin/console d:s:u --dump-sql
@@ -15,3 +29,11 @@ git status
 git commit -m ""commantère""
 git push origin "branche"
 git status
+
+// récupe un projet
+git pull origin "branche"
+
+// Change de branche
+git checkout dev
+
+
