@@ -18,15 +18,17 @@
             <div class="logo-sidebar-sticky"><img class="logo-sticky" src="{{ asset('image/make-me-up-logo-bw.png') }}" alt="logo-right de MakeMeUp" id="logo_sidebar_sticky"></div>
             <nav>
                 <ul class="navbar-li">
-                    <li class="li-lien-navbar"><a class="lien-navbar" href="{{ path('homepage_cool') }}">HOME</a></li>
-                    <li class="li-lien-navbar"><a class="lien-navbar" href="{{ path('contact_cool') }}">CONTACT</a></li>
+                    <li class="li-lien-navbar"><a class="lien-navbar" href="{{ path('homepage_cool') }}">ACCUEIL</a></li>
                     {% if is_granted('ROLE_USER') == true %}
                         <li class="li-lien-navbar"><a class="lien-navbar" href="{{ path('fos_user_security_logout') }}">DECONNEXION</a></li>
+                        <li class="li-lien-navbar"><a class="lien-navbar" href="{{ path('article_new') }}">CREER UN ARTICLE</a></li>
                     {% else %}
                         <li class="li-lien-navbar"><a class="lien-navbar" href="{{ path('user_login_register') }}">INSCRIPTION / CONNEXION</a></li>
                     {% endif %}
-                    <li class="li-lien-navbar"><a class="lien-navbar" href="">CREER UN ARTICLE</a></li>
-                    <li class="li-lien-navbar"><a class="lien-navbar" href="">SOUMISSION</a></li>
+                    {% if is_granted('ROLE_ADMIN') == true %}
+                        <li class="li-lien-navbar"><a class="lien-navbar" href="{{ path('article_index') }}">VALIDATION</a></li>
+                    {% endif %}
+                    <li class="li-lien-navbar"><a class="lien-navbar" href="{{ path('contact_cool') }}">CONTACT</a></li>
                 </ul>
             </nav>
         </div>

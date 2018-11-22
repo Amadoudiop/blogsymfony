@@ -36,4 +36,5 @@ git pull origin "branche"
 // Change de branche
 git checkout dev
 
-
+// Promouvoir un utilisateur
+$ php bin/console fos:user:promote "utilisateur" ROLE_"Status"
