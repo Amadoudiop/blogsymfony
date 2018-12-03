@@ -38,3 +38,7 @@ git checkout dev
 
 // Promouvoir un utilisateur
 $ php bin/console fos:user:promote "utilisateur" ROLE_"Status"
+
+
+// DoctrineFixturesBundle
+loading fixtures : $ php bin/console doctrine:fixtures:load
