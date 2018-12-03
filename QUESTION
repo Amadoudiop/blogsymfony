@@ -1,0 +1,6 @@
+ Pourquoi la commande ne marche pas : bin/console fos:user:promote rdroro683@gmail.com ROLE_ADMIN
+
+ dans le fichier index.html.twig localiser dans : "Resources/views/article/index.html.twig"
+ les variable twig pour "username"  ici nommé "alias"
+                        "email"     ici nommé "mail"
+ ne son pas bien noté.

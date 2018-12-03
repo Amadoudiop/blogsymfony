@@ -26,14 +26,14 @@ class Article
      *
      * @ORM\Column(name="date_create", type="datetime")
      */
-    private $date_create;
+    private $dateCreate;
 
     /**
      * @var \DateTime,
      *
      * @ORM\Column(name="date_update", type="datetime")
      */
-    private $date_update;
+    private $dateUpdate;
 
     /**
      * @var boolean
@@ -47,7 +47,7 @@ class Article
      *
      * @ORM\Column(name="date_event", type="datetime")
      */
-    private $date_event;
+    private $dateEvent;
 
     /**
      * @var string
@@ -97,8 +97,8 @@ class Article
 
     public function __construct()
     {
-        $this->date_create = new \DateTime('now');
-        $this->date_update = new \DateTime('now');
+        $this->dateCreate = new \DateTime('now');
+        $this->dateUpdate = new \DateTime('now');
     }
 
     /**
@@ -120,7 +120,7 @@ class Article
      */
     public function setDateCreate($dateCreate)
     {
-        $this->date_create = $dateCreate;
+        $this->dateCreate = $dateCreate;
 
         return $this;
     }
@@ -132,7 +132,7 @@ class Article
      */
     public function getDateCreate()
     {
-        return $this->date_create;
+        return $this->dateCreate;
     }
 
     /**
@@ -144,7 +144,7 @@ class Article
      */
     public function setDateUpdate($dateUpdate)
     {
-        $this->date_update = $dateUpdate;
+        $this->dateUpdate = $dateUpdate;
 
         return $this;
     }
@@ -156,7 +156,7 @@ class Article
      */
     public function getDateUpdate()
     {
-        return $this->date_update;
+        return $this->dateUpdate;
     }
 
     /**
@@ -168,7 +168,7 @@ class Article
      */
     public function setDateEvent($dateEvent)
     {
-        $this->date_event = $dateEvent;
+        $this->dateEvent = $dateEvent;
 
         return $this;
     }
@@ -180,7 +180,7 @@ class Article
      */
     public function getDateEvent()
     {
-        return $this->date_event;
+        return $this->dateEvent;
     }
 
     /**

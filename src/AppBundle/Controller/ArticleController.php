@@ -28,11 +28,50 @@ class ArticleController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $articles = $em->getRepository('AppBundle:Article')->findByStatus(0);
+        $users = $em->getRepository('AppBundle:User')->findByStatus(0);
 
+        $tables = array_merge($articles,$users);
         return $this->render('article/index.html.twig', array(
-            'articles' => $articles,
+            'tables' => $tables,
         ));
     }
+
+
+
+    /**
+     * Lists all user entities.
+     *
+     * @Route("/", name="article_accept")
+     * @Method("GET")
+     */
+    public function acceptAction(Article $article)
+    {
+        $em = $this->getDoctrine()->getManager($article);
+
+        $users = $em->getRepository('AppBundle:User')->findAll();
+
+        return $this->render('user/index.html.twig', array(
+            'users' => $users,
+        ));
+    }
+    /**
+     * Lists all user entities.
+     *
+     * @Route("/", name="article_refuse")
+     * @Method("GET")
+     */
+    public function refuseAction(Article $article)
+    {
+        $em = $this->getDoctrine()->getManager($article);
+
+        $users = $em->getRepository('AppBundle:User')->findAll();
+
+        return $this->render('user/index.html.twig', array(
+            'users' => $users,
+        ));
+    }
+
+
 
     /**
      * Creates a new article entity.

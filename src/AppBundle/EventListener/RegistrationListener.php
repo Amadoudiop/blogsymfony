@@ -26,9 +26,6 @@ class RegistrationListener implements EventSubscriberInterface
 
     public function onRegistrationFailure(FormEvent $event)
     {
-        dump($event);
-        die;
-
         $url = $this->router->generate('user_login_register');
         $event->setResponse(new RedirectResponse($url));
     }
