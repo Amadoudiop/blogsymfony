@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use \datetime;
 
 /**
  * Article
@@ -71,7 +72,7 @@ class Article
     private $picture;
 
     /**
-     * @var text,
+     * @var string
      *
      * @ORM\Column(name="content", type="text")
      */
@@ -97,8 +98,8 @@ class Article
 
     public function __construct()
     {
-        $this->dateCreate = new \DateTime('now');
-        $this->dateUpdate = new \DateTime('now');
+        $this->dateCreate = new datetime('now');
+        $this->dateUpdate = new datetime('now');
     }
 
     /**

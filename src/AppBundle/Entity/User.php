@@ -74,6 +74,7 @@ class User extends BaseUser
      */
     private $token;
 
+
     public function __construct()
     {
         parent::__construct();

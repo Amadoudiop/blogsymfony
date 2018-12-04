@@ -68,14 +68,14 @@
                     <td>{{ element.username }}</td>
                     <td>{{ element.email }}</td>
                     <td>{% if element.status %}Yes{% else %}No{% endif %}</td>
-                    <td>
-                        <td>
-                            <a href="{{ path("article_accept",{ 'id': element.id })}}" > OK</a>
-                        </td>
-                        <td>
-                            <a href="{{ path("article_accept",{ 'id': element.id })}}" > NOPE</a>
-                        </td>
-                    </td>
+                    {#<td>#}
+                        {#<td>#}
+                            {#<a href="{{ path("article_accept",{ 'id': element.id })}}" > OK</a>#}
+                        {#</td>#}
+                        {#<td>#}
+                            {#<a href="{{ path("article_accept",{ 'id': element.id })}}" > NOPE</a>#}
+                        {#</td>#}
+                    {#</td>#}
                 </tr>
                 </tbody>
             </table>

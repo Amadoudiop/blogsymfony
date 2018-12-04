@@ -12,15 +12,13 @@ use AppBundle\Service\FileHandler;
 
 /**
  * Article controller.
- *
- * @Route("article")
  */
 class ArticleController extends Controller
 {
     /**
      * Lists all article entities.
      *
-     * @Route("/", name="article_index")
+     * @Route("validation", name="article_index")
      * @Method("GET")
      */
     public function indexAction()
@@ -35,48 +33,44 @@ class ArticleController extends Controller
             'tables' => $tables,
         ));
     }
-
-
-
-    /**
-     * Lists all user entities.
-     *
-     * @Route("/", name="article_accept")
-     * @Method("GET")
-     */
-    public function acceptAction(Article $article)
-    {
-        $em = $this->getDoctrine()->getManager($article);
-
-        $users = $em->getRepository('AppBundle:User')->findAll();
-
-        return $this->render('user/index.html.twig', array(
-            'users' => $users,
-        ));
-    }
-    /**
-     * Lists all user entities.
-     *
-     * @Route("/", name="article_refuse")
-     * @Method("GET")
-     */
-    public function refuseAction(Article $article)
-    {
-        $em = $this->getDoctrine()->getManager($article);
-
-        $users = $em->getRepository('AppBundle:User')->findAll();
-
-        return $this->render('user/index.html.twig', array(
-            'users' => $users,
-        ));
-    }
-
-
+//
+//    /**
+//     * Lists all user entities.
+//     *
+//     * @Route("/", name="article_accept")
+//     * @Method("GET")
+//     */
+//    public function acceptAction(Article $article)
+//    {
+//        $em = $this->getDoctrine()->getManager($article);
+//
+//        $users = $em->getRepository('AppBundle:User')->findAll();
+//
+//        return $this->render('user/index.html.twig', array(
+//            'users' => $users,
+//        ));
+//    }
+//    /**
+//     * Lists all user entities.
+//     *
+//     * @Route("/", name="article_refuse")
+//     * @Method("GET")
+//     */
+//    public function refuseAction(Article $article)
+//    {
+//        $em = $this->getDoctrine()->getManager($article);
+//
+//        $users = $em->getRepository('AppBundle:User')->findAll();
+//
+//        return $this->render('user/index.html.twig', array(
+//            'users' => $users,
+//        ));
+//    }
 
     /**
      * Creates a new article entity.
      *
-     * @Route("/new", name="article_new")
+     * @Route("article/new", name="article_new")
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
@@ -107,7 +101,7 @@ class ArticleController extends Controller
     /**
      * Finds and displays a article entity.
      *
-     * @Route("/{id}", name="article_show")
+     * @Route("article/{id}", name="article_show")
      * @Method("GET")
      */
     public function showAction(Article $article)
@@ -123,7 +117,7 @@ class ArticleController extends Controller
     /**
      * Displays a form to edit an existing article entity.
      *
-     * @Route("/{id}/edit", name="article_edit")
+     * @Route("article/{id}/edit", name="article_edit")
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, Article $article)
@@ -148,7 +142,7 @@ class ArticleController extends Controller
     /**
      * Deletes a article entity.
      *
-     * @Route("/{id}", name="article_delete")
+     * @Route("article/{id}", name="article_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, Article $article)
