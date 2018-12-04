@@ -45,7 +45,7 @@ class Article
     /**
      * @var \DateTime,
      *
-     * @ORM\Column(name="date_event", type="datetime")
+     * @ORM\Column(name="date_event", type="datetime", nullable=true)
      */
     private $dateEvent;
 

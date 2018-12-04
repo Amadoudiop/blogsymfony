@@ -41,4 +41,11 @@ $ php bin/console fos:user:promote "utilisateur" ROLE_"Status"
 
 
 // DoctrineFixturesBundle
+lien bundle : https://symfony.com/doc/current/bundles/DoctrineFixturesBundle/index.html
 loading fixtures : $ php bin/console doctrine:fixtures:load
+
+// QUESTION //
+
+Pourquoi le projet ne marche pas ce matin ? peux être GIT mauvaise utilisation
+
+Pour limiter l'accées aux pages : modifier les url pour quel finise par un admin si on veux qu'ils n'y aient que les admines pour accéder a cette page
