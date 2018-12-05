@@ -81,9 +81,9 @@ class Article
     /**
      * @var bool
      *
-     * @ORM\Column(name="status", type="boolean")
+     * @ORM\Column(name="enabled", type="boolean")
      */
-    private $status = false;
+    private $enabled = false;
 
     /**
      * Many Article has One Category
@@ -281,27 +281,27 @@ class Article
     }
 
     /**
-     * Set status
+     * Set enabled
      *
-     * @param boolean $status
+     * @param boolean $enabled
      *
      * @return Article
      */
-    public function setStatus($status)
+    public function setEnabled($enabled)
     {
-        $this->status = $status;
+        $this->enabled = $enabled;
 
         return $this;
     }
 
     /**
-     * Get status
+     * Get enabled
      *
      * @return bool
      */
-    public function getStatus()
+    public function getEnabled()
     {
-        return $this->status;
+        return $this->enabled;
     }
 
     /**

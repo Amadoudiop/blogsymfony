@@ -15,11 +15,11 @@
         {% for statusModerator in statusModerators %}
             <tr>
                 <td><a href="{{ path('statusmoderator_show', { 'id': statusModerator.id }) }}">{{ statusModerator.id }}</a></td>
-                <td>{{ statusModerator.name }}</td>
+                <td>{{ validation_indexModerator.name }}</td>
                 <td>
                     <ul>
                         <li>
-                            <a href="{{ path('statusmoderator_show', { 'id': statusModerator.id }) }}">show</a>
+                            <a href="{{ path('validation_indexmoderator_show', { 'id': validation_indexModerator.id }) }}">show</a>
                         </li>
                         <li>
                             <a href="{{ path('statusmoderator_edit', { 'id': statusModerator.id }) }}">edit</a>

@@ -18,54 +18,52 @@ class ArticleController extends Controller
     /**
      * Lists all article entities.
      *
-     * @Route("validation", name="article_index")
+     * @Route("validation", name="validation_index")
      * @Method("GET")
      */
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
 
-        $articles = $em->getRepository('AppBundle:Article')->findByStatus(0);
-        $users = $em->getRepository('AppBundle:User')->findByStatus(0);
+        $articles = $em->getRepository('AppBundle:Article')->findByEnabled(0);
+        $users = $em->getRepository('AppBundle:User')->findByEnabled(0);
 
         $tables = array_merge($articles,$users);
-        return $this->render('article/index.html.twig', array(
+        return $this->render('article\index.html.twig', array(
             'tables' => $tables,
         ));
     }
-//
-//    /**
-//     * Lists all user entities.
-//     *
-//     * @Route("/", name="article_accept")
-//     * @Method("GET")
-//     */
-//    public function acceptAction(Article $article)
-//    {
-//        $em = $this->getDoctrine()->getManager($article);
-//
-//        $users = $em->getRepository('AppBundle:User')->findAll();
-//
-//        return $this->render('user/index.html.twig', array(
-//            'users' => $users,
-//        ));
-//    }
-//    /**
-//     * Lists all user entities.
-//     *
-//     * @Route("/", name="article_refuse")
-//     * @Method("GET")
-//     */
-//    public function refuseAction(Article $article)
-//    {
-//        $em = $this->getDoctrine()->getManager($article);
-//
-//        $users = $em->getRepository('AppBundle:User')->findAll();
-//
-//        return $this->render('user/index.html.twig', array(
-//            'users' => $users,
-//        ));
-//    }
+
+    /**
+     * Displays a form to edit an existing user entity.
+     *
+     * @Route("/{id}/accept", name="article_accept")
+     * @Method({"GET", "POST"})
+     */
+    public function acceptAction(Article $article)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $article = $em->getRepository('AppBundle:Article')->find($article);
+        $article->setEnabled(1);
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->redirectToRoute('validation_index');
+    }
+
+    /**
+     * Lists all user entities.
+     *
+     * @Route("/{id}/refuse", name="article_refuse")
+     * @Method({"GET", "POST"})
+     */
+    public function refuseAction(Article $article)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($article);
+        $em->flush();
+
+        return $this->redirectToRoute('validation_index');
+    }
 
     /**
      * Creates a new article entity.
@@ -156,7 +154,7 @@ class ArticleController extends Controller
             $em->flush();
         }
 
-        return $this->redirectToRoute('article_index');
+        return $this->redirectToRoute('validation_index');
     }
 
     /**

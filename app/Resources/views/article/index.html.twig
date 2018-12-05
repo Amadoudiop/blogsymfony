@@ -28,13 +28,13 @@
                     <td>{{ element.catchsentence }}</td>
                     <td>{{ element.picture }}</td>
                     <td>{{ element.content }}</td>
-                    <td>{% if element.status %}Yes{% else %}No{% endif %}</td>
+                    <td>{% if element.enabled %}Yes{% else %}No{% endif %}</td>
                     <td>
                         <td>
-                            <a href="{{ path("article_accept")}}" > OK</a>
+                            <a href="{{ path('article_accept',{ 'id': element.id })}}" > OK</a>
                         </td>
                         <td>
-                            <a href="{{ path("article_refuse")}}"> NOPE</a>
+                            <a href="{{ path('article_refuse',{ 'id': element.id })}}"> NOPE</a>
                         </td>
                     </td>
                 </tr>
@@ -67,15 +67,15 @@
                     <td>{{ element.lastName }}</td>
                     <td>{{ element.username }}</td>
                     <td>{{ element.email }}</td>
-                    <td>{% if element.status %}Yes{% else %}No{% endif %}</td>
-                    {#<td>#}
-                        {#<td>#}
-                            {#<a href="{{ path("article_accept",{ 'id': element.id })}}" > OK</a>#}
-                        {#</td>#}
-                        {#<td>#}
-                            {#<a href="{{ path("article_accept",{ 'id': element.id })}}" > NOPE</a>#}
-                        {#</td>#}
-                    {#</td>#}
+                    <td>{% if element.enabled %}Yes{% else %}No{% endif %}</td>
+                    <td>
+                        <td>
+                            <a href="{{ path('user_accept',{ 'id': element.id })}}" > OK</a>
+                        </td>
+                        <td>
+                            <a href="{{ path('user_refuse',{ 'id': element.id })}}" > NOPE</a>
+                        </td>
+                    </td>
                 </tr>
                 </tbody>
             </table>

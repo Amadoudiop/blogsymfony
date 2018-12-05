@@ -24,13 +24,42 @@ class UserController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-
         $users = $em->getRepository('AppBundle:User')->findAll();
 
         return $this->render('user/index.html.twig', array(
             'users' => $users,
         ));
     }
+    /**
+     * Displays a form to edit an existing user entity.
+     *
+     * @Route("/{id}/accept", name="user_accept")
+     * @Method({"GET", "POST"})
+     */
+    public function acceptAction(User $user)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('AppBundle:User')->find($user);
+        $user->setEnabled(1);
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->redirectToRoute('validation_index');
+    }
+    /**
+     * Lists all user entities.
+     *
+     * @Route("/{id}/refuse", name="user_refuse")
+     * @Method({"GET", "POST"})
+     */
+    public function refuseAction(User $user)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($user);
+        $em->flush();
+
+        return $this->redirectToRoute('validation_index');
+    }
+
     /**
      * Lists all user entities.
      *

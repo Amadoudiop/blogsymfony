@@ -45,7 +45,14 @@ lien bundle : https://symfony.com/doc/current/bundles/DoctrineFixturesBundle/ind
 loading fixtures : $ php bin/console doctrine:fixtures:load
 
 // QUESTION //
+Comment suprimer un compte en BDD :
 
-Pourquoi le projet ne marche pas ce matin ? peux être GIT mauvaise utilisation
+delet action Article controller.php
 
-Pour limiter l'accées aux pages : modifier les url pour quel finise par un admin si on veux qu'ils n'y aient que les admines pour accéder a cette page
+Comment changer un unique champ en base de donnée
+
+edit action ArticleController.php
+
+ne pas pouvoir ce connecter si le compte n'est pas validée
+
+if status = 0

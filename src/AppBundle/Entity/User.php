@@ -60,12 +60,6 @@ class User extends BaseUser
      */
     private $dateCreate;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="status", type="boolean")
-     */
-    private $status = false;
 
     /**
      * @var string
@@ -186,30 +180,6 @@ class User extends BaseUser
     public function getDateCreate()
     {
         return $this->dateCreate;
-    }
-
-    /**
-     * Set status
-     *
-     * @param boolean $status
-     *
-     * @return user
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get status
-     *
-     * @return bool
-     */
-    public function getStatus()
-    {
-        return $this->status;
     }
 
     /**

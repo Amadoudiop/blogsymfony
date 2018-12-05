@@ -1,8 +1,10 @@
 <div class="row">
     <div class="col-md-6">
         {{ render(controller('fos_user.security.controller:loginAction')) }}
+
     </div>
     <div class="col-md-6">
         {{ render(controller('fos_user.registration.controller:registerAction')) }}
+        <a href="{{ path('fos_user_resetting_request') }}">Mot de passe oublié</a>
     </div>
 </div>

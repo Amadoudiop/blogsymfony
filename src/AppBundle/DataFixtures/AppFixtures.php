@@ -33,12 +33,13 @@ class AppFixtures extends Fixture
             $product->setCatchSentence("catch sentence de l'article" . $i);
             $product->setPicture("test.jpg");
             $product->setContent("contenue test de l'article" . $i);
-            $product->setStatus(1);
             $product->setCategory($category);
             if ($i < 5) {
+                $product->setStatus(0);
                 $product->setEvent(1);
             } else {
                 $product->setEvent(0);
+                $product->setStatus(1);
             }
             $manager->persist($product);
         }
@@ -52,16 +53,23 @@ class AppFixtures extends Fixture
             $user->setStatus(1);
             $user->setUsername("cig" . $i);
             $user->setEmail($i . "@gmail.com");
-            $user->setEnabled(1);
-            $user->setPassword("aaa");
+            if ($i > 5) {
+                $user->setStatus(1);
+                $user->setEnabled(1);
+            } else {
+                $user->setStatus(0);
+                $user->setEnabled(0);
+            }
+
+            $user->setPlainPassword("aaa");
 
             if ($i < 1){
                 $user->addRole( "ROLE_ADMIN" );
 
             }
-            $user->addRole( "ROLE_USER" );
+            $user->addRole("ROLE_USER");
 //            else{
-//                $user->setRoles( array("ROLE_USER") );
+//                $user->setRoles( array("") );
 //                dump($user->getRoles());
 //                dump($user);
 //                die;
