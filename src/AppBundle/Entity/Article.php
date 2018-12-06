@@ -23,6 +23,13 @@ class Article
     private $id;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="id_user", type="integer")
+     */
+    private $idUser;
+
+    /**
      * @var \DateTime,
      *
      * @ORM\Column(name="date_create", type="datetime")
@@ -110,6 +117,26 @@ class Article
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get id user
+     *
+     * @return int
+     */
+    public function setIdUser($idUser)
+    {
+       $this->idUser = $idUser;
+    }
+
+    /**
+     * Get id user
+     *
+     * @return int
+     */
+    public function getIdUser()
+    {
+        return $this->idUser;
     }
 
     /**

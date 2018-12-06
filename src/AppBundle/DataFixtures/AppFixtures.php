@@ -23,7 +23,7 @@ class AppFixtures extends Fixture
         for ($i = 0; $i < 20; $i++) {
             $product = new Article();
 
-            if ($i < 5) {
+            if ($i < 20) {
                 $product->setDateEvent( new datetime('now'));
             } else {
                 $product->setDateEvent(null);
@@ -34,12 +34,12 @@ class AppFixtures extends Fixture
             $product->setPicture("test.jpg");
             $product->setContent("contenue test de l'article" . $i);
             $product->setCategory($category);
-            if ($i < 5) {
-                $product->setStatus(0);
+            if ($i < 20) {
+                $product->setEnabled(0);
                 $product->setEvent(1);
             } else {
                 $product->setEvent(0);
-                $product->setStatus(1);
+                $product->setEnabled(1);
             }
             $manager->persist($product);
         }
@@ -50,14 +50,12 @@ class AppFixtures extends Fixture
             $user->setPromotion(1999);
             $user->setFirstName("cigarillos" . $i);
             $user->setLastName("cigar" . $i);
-            $user->setStatus(1);
+            $user->setEnabled(1);
             $user->setUsername("cig" . $i);
             $user->setEmail($i . "@gmail.com");
-            if ($i > 5) {
-                $user->setStatus(1);
+            if ($i < 0) {
                 $user->setEnabled(1);
             } else {
-                $user->setStatus(0);
                 $user->setEnabled(0);
             }
 
@@ -68,12 +66,6 @@ class AppFixtures extends Fixture
 
             }
             $user->addRole("ROLE_USER");
-//            else{
-//                $user->setRoles( array("") );
-//                dump($user->getRoles());
-//                dump($user);
-//                die;
-//            }
             $manager->persist($user);
         }
 

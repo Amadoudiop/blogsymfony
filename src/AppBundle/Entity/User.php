@@ -23,6 +23,8 @@ class User extends BaseUser
      */
     protected $id;
 
+
+
     /**
      * @var int
      *
@@ -85,6 +87,7 @@ class User extends BaseUser
     {
         return $this->id;
     }
+
 
     /**
      * Set promotion

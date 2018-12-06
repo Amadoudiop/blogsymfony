@@ -36,7 +36,9 @@
     </div>
     {% include 'icon.html.twig' %}
     {% for article in articles %}
-        {% include 'event.html.twig' %}
+        {% if article.enabled == 1 %}
+            {% include 'event.html.twig' %}
+        {% endif %}
     {% endfor %}
 
 {% endblock %}

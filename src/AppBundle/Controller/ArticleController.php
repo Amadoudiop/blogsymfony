@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Service\FileHandler;
+use Doctrine\Common\Collections\ArrayCollection;
 //use DateTime;
 
 /**
@@ -28,11 +29,24 @@ class ArticleController extends Controller
         $articles = $em->getRepository('AppBundle:Article')->findByEnabled(0);
         $users = $em->getRepository('AppBundle:User')->findByEnabled(0);
 
-        $tables = array_merge($articles,$users);
+        $table = array_merge($articles,$users);
+
+        $objectCollection = new ArrayCollection();
+
+        foreach ($table as $object) {
+            $objectCollection->add($object);
+        }
+
+        $iterator = $objectCollection->getIterator();
+        $iterator->uasort(function ($a, $b){
+            return ($a->getDateCreate() < $b->getDateCreate()) ? -1 : 1;
+        });
+
         return $this->render('article\index.html.twig', array(
-            'tables' => $tables,
+            'tables' => $iterator,
         ));
     }
+
 
     /**
      * Displays a form to edit an existing user entity.
@@ -44,8 +58,19 @@ class ArticleController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $article = $em->getRepository('AppBundle:Article')->find($article);
+        $user = $em->getRepository('AppBundle:User')->find($article->getIdUser());
         $article->setEnabled(1);
         $this->getDoctrine()->getManager()->flush();
+
+        $messagemail = $this->renderView('mails/mailArticleAccept.twig');
+
+        $message = \Swift_Message::newInstance()
+            ->setContentType('text/html')
+            ->setSubject('- MakeMeUp article accepte -')
+            ->setFrom('rdroro683@gmail.com')
+            ->setTo($user->getEmail())
+            ->setBody($messagemail);
+        $this->get('mailer')->send($message);
 
         return $this->redirectToRoute('validation_index');
     }
@@ -59,8 +84,20 @@ class ArticleController extends Controller
     public function refuseAction(Article $article)
     {
         $em = $this->getDoctrine()->getManager();
+        $mailArticle = $em->getRepository('AppBundle:Article')->find($article);
+        $user = $em->getRepository('AppBundle:User')->find($mailArticle->getIdUser());
         $em->remove($article);
         $em->flush();
+
+        $messagemail = $this->renderView('mails/mailArticleRefus.twig');
+
+        $message = \Swift_Message::newInstance()
+            ->setContentType('text/html')
+            ->setSubject('- MakeMeUp article refusé -')
+            ->setFrom('rdroro683@gmail.com')
+            ->setTo($user->getEmail())
+            ->setBody($messagemail);
+        $this->get('mailer')->send($message);
 
         return $this->redirectToRoute('validation_index');
     }
@@ -82,6 +119,8 @@ class ArticleController extends Controller
             $fileHandler = $this->get(FileHandler::class);
             $fileName = $fileHandler->upload($file, $this->getParameter('upload_directory'));
             $article->setPicture($fileName["name"]);
+            $id_user = $this->getUser()->getId();
+            $article->setIdUser($id_user);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($article);
