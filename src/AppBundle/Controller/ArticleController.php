@@ -59,6 +59,14 @@ class ArticleController extends Controller
         $em = $this->getDoctrine()->getManager();
         $article = $em->getRepository('AppBundle:Article')->find($article);
         $user = $em->getRepository('AppBundle:User')->find($article->getIdUser());
+
+        if ($user == null ){
+            $user = "contact@gmail.com";
+        }else{
+            $user = $em->getRepository('AppBundle:User')->find($article->getIdUser());
+            $user = $user->getEmail();
+        }
+
         $article->setEnabled(1);
         $this->getDoctrine()->getManager()->flush();
 
@@ -68,7 +76,7 @@ class ArticleController extends Controller
             ->setContentType('text/html')
             ->setSubject('- MakeMeUp article accepte -')
             ->setFrom('rdroro683@gmail.com')
-            ->setTo($user->getEmail())
+            ->setTo($user)
             ->setBody($messagemail);
         $this->get('mailer')->send($message);
 
@@ -86,6 +94,14 @@ class ArticleController extends Controller
         $em = $this->getDoctrine()->getManager();
         $mailArticle = $em->getRepository('AppBundle:Article')->find($article);
         $user = $em->getRepository('AppBundle:User')->find($mailArticle->getIdUser());
+
+        if ($user == null ){
+            $user = "contact@gmail.com";
+        }else{
+            $user = $em->getRepository('AppBundle:User')->find($article->getIdUser());
+            $user = $user->getEmail();
+        }
+
         $em->remove($article);
         $em->flush();
 
@@ -95,7 +111,7 @@ class ArticleController extends Controller
             ->setContentType('text/html')
             ->setSubject('- MakeMeUp article refusé -')
             ->setFrom('rdroro683@gmail.com')
-            ->setTo($user->getEmail())
+            ->setTo($user)
             ->setBody($messagemail);
         $this->get('mailer')->send($message);
 

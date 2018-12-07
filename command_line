@@ -45,6 +45,3 @@ lien bundle : https://symfony.com/doc/current/bundles/DoctrineFixturesBundle/ind
 loading fixtures : $ php bin/console doctrine:fixtures:load
 
 // QUESTION //
- rajout des mails envoyer lorsque le comte est accépté
-
-emplacement des front mails
