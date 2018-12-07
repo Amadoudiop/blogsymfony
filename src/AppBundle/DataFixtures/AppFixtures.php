@@ -19,41 +19,16 @@ class AppFixtures extends Fixture
         $category->setColor("#0000FF");
         $manager->persist($category);
 
-// create 20 Articles
-        for ($i = 0; $i < 20; $i++) {
-            $product = new Article();
-
-            if ($i < 20) {
-                $product->setDateEvent( new datetime('now'));
-            } else {
-                $product->setDateEvent(null);
-            }
-
-            $product->setTitle("titre test de l'article" . $i);
-            $product->setCatchSentence("catch sentence de l'article" . $i);
-            $product->setPicture("test.jpg");
-            $product->setContent("contenue test de l'article" . $i);
-            $product->setCategory($category);
-            if ($i < 20) {
-                $product->setEnabled(0);
-                $product->setEvent(1);
-            } else {
-                $product->setEvent(0);
-                $product->setEnabled(1);
-            }
-            $manager->persist($product);
-        }
-
 // create 20 User
+        $users = [];
         for ($i = 0; $i < 20; $i++) {
             $user = new User();
             $user->setPromotion(1999);
             $user->setFirstName("cigarillos" . $i);
             $user->setLastName("cigar" . $i);
-            $user->setEnabled(1);
             $user->setUsername("cig" . $i);
             $user->setEmail($i . "@gmail.com");
-            if ($i < 0) {
+            if ($i < 3) {
                 $user->setEnabled(1);
             } else {
                 $user->setEnabled(0);
@@ -61,12 +36,40 @@ class AppFixtures extends Fixture
 
             $user->setPlainPassword("aaa");
 
-            if ($i < 1){
-                $user->addRole( "ROLE_ADMIN" );
+            if ($i < 3) {
+                $user->addRole("ROLE_ADMIN");
 
             }
             $user->addRole("ROLE_USER");
             $manager->persist($user);
+            $users[] = $user;
+        }
+
+
+        // create 20 Articles
+        for ($i = 0; $i < 20; $i++) {
+            $article = new Article();
+
+            if ($i < 20) {
+                $article->setDateEvent(new datetime('now'));
+            } else {
+                $article->setDateEvent(null);
+            }
+
+            $article->setTitle("titre test de l'article" . $i);
+            $article->setCatchSentence("catch sentence de l'article" . $i);
+            $article->setPicture("test.jpg");
+            $article->setContent("contenue test de l'article" . $i);
+            $article->setCategory($category);
+            $article->setUser($users[array_rand($users)]);
+            if ($i < 20) {
+                $article->setEnabled(0);
+                $article->setEvent(1);
+            } else {
+                $article->setEvent(0);
+                $article->setEnabled(1);
+            }
+            $manager->persist($article);
         }
 
         $manager->flush();

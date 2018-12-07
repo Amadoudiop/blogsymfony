@@ -41,7 +41,7 @@
                 </tbody>
             </table>
 
-        {% elseif (element|class) == 'User' %}
+        {% elseif ((element|class) == "User") or ((element|class) == "Proxies\\__CG__\\User") %}
             Users list
             <table>
                 <thead>

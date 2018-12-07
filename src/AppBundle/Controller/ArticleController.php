@@ -29,7 +29,8 @@ class ArticleController extends Controller
         $articles = $em->getRepository('AppBundle:Article')->findByEnabled(0);
         $users = $em->getRepository('AppBundle:User')->findByEnabled(0);
 
-        $table = array_merge($articles,$users);
+        $table = array_merge($users,$articles);
+
 
         $objectCollection = new ArrayCollection();
 

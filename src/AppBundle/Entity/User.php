@@ -62,13 +62,20 @@ class User extends BaseUser
      */
     private $dateCreate;
 
-
     /**
      * @var string
      *
      * @ORM\Column(name="token", type="string", length=255, nullable=true)
      */
     private $token;
+//     * @ORM\OneToMany(targetEntity="Article", mappedBy="user", cascade={"detach"}git, fetch="LAZY")
+    /**
+     * One User has Many Article
+     *
+
+     * @ORM\OneToMany(targetEntity="Article", mappedBy="user", cascade="all")
+     */
+    private $articles;
 
 
     public function __construct()
@@ -208,5 +215,38 @@ class User extends BaseUser
     {
         return $this->token;
     }
-}
 
+    /**
+     * Add article
+     *
+     * @param \AppBundle\Entity\Article $article
+     *
+     * @return User
+     */
+    public function addArticle(\AppBundle\Entity\Article $article)
+    {
+        $this->articles[] = $article;
+
+        return $this;
+    }
+
+    /**
+     * Remove article
+     *
+     * @param \AppBundle\Entity\Article $article
+     */
+    public function removeArticle(\AppBundle\Entity\Article $article)
+    {
+        $this->articles->removeElement($article);
+    }
+
+    /**
+     * Get articles
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getArticles()
+    {
+        return $this->articles;
+    }
+}

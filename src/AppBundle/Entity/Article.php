@@ -23,13 +23,6 @@ class Article
     private $id;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id_user", type="integer")
-     */
-    private $idUser;
-
-    /**
      * @var \DateTime,
      *
      * @ORM\Column(name="date_create", type="datetime")
@@ -94,11 +87,19 @@ class Article
 
     /**
      * Many Article has One Category
-     **
+     *
      * @ORM\ManyToOne(targetEntity="Category", inversedBy="articles")
      * @ORM\JoinColumn(name="id_category", referencedColumnName="id")
      */
     private $category;
+
+    /**
+     * Many Article has One User
+     *
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="articles")
+     * @ORM\JoinColumn(name="id_user", referencedColumnName="id", nullable=true)
+     */
+    private $user;
 
 
 
@@ -117,26 +118,6 @@ class Article
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Get id user
-     *
-     * @return int
-     */
-    public function setIdUser($idUser)
-    {
-       $this->idUser = $idUser;
-    }
-
-    /**
-     * Get id user
-     *
-     * @return int
-     */
-    public function getIdUser()
-    {
-        return $this->idUser;
     }
 
     /**
@@ -377,5 +358,29 @@ class Article
     public function getEvent()
     {
         return $this->event;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \AppBundle\Entity\User $user
+     *
+     * @return Article
+     */
+    public function setUser(\AppBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \AppBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }

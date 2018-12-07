@@ -3,6 +3,12 @@ composer install
 php bin/console d:s:u --dump-sql
 php bin/console d:s:u -f
 
+// commande de générer get et set entité
+
+php bin/console d:g:entities "AppBundle:User"
+
+(--no-backup pour ne pas générer de bckd:f:c )
+
 //entity
 php bin/console doctrine:generate:entity \ --entity="AppBundle:Slide" \ --fields="active:boolean pfalse title:string(50) content:string(125) url:string(255)"
 
