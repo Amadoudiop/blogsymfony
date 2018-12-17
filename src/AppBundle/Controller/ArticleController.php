@@ -93,28 +93,19 @@ class ArticleController extends Controller
     public function refuseAction(Article $article)
     {
         $em = $this->getDoctrine()->getManager();
-        $mailArticle = $em->getRepository('AppBundle:Article')->find($article);
-        $user = $em->getRepository('AppBundle:User')->find($mailArticle->getId());
-
-        if ($user == null ){
-            $user = "contact@gmail.com";
-        }else{
-            $user = $em->getRepository('AppBundle:User')->find($article->getId());
-            $user = $user->getEmail();
-        }
-
         $em->remove($article);
         $em->flush();
 
-        $messagemail = $this->renderView('mails/mailArticleRefus.twig');
-
-        $message = \Swift_Message::newInstance()
-            ->setContentType('text/html')
-            ->setSubject('- MakeMeUp article refusé -')
-            ->setFrom('rdroro683@gmail.com')
-            ->setTo($user)
-            ->setBody($messagemail);
-        $this->get('mailer')->send($message);
+        if ($article->getUser() != null ) {
+            $body = $this->renderView('mails/mailArticleRefus.twig');
+            $message = \Swift_Message::newInstance()
+                ->setContentType('text/html')
+                ->setSubject('- MakeMeUp article refusé -')
+                ->setFrom('rdroro683@gmail.com')
+                ->setTo($article->getUser()->getEmail())
+                ->setBody($body);
+            $this->get('mailer')->send($message);
+        }
 
         return $this->redirectToRoute('validation_index');
     }

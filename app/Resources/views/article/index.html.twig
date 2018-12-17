@@ -14,8 +14,8 @@
                     <th>Catch_sentence</th>
                     <th>Picture</th>
                     <th>Content</th>
-                    <th>Status</th>
-                    <th>validation</th>
+                    {#<th>Status</th>#}
+                    <th>Validation</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -28,13 +28,13 @@
                     <td>{{ element.catchsentence }}</td>
                     <td>{{ element.picture }}</td>
                     <td>{{ element.content }}</td>
-                    <td>{% if element.enabled %}Yes{% else %}No{% endif %}</td>
+                    {#<td>{% if element.enabled %}Yes{% else %}No{% endif %}</td>#}
                     <td>
                         <td>
-                            <a href="{{ path('article_accept',{ 'id': element.id })}}" > OK</a>
+                            <a href="{{ path('article_accept',{ 'id': element.id })}}" > Accepter</a>
                         </td>
                         <td>
-                            <a href="{{ path('article_refuse',{ 'id': element.id })}}"> NOPE</a>
+                            <a href="{{ path('article_refuse',{ 'id': element.id })}}"> Refuser</a>
                         </td>
                     </td>
                 </tr>
@@ -54,8 +54,8 @@
                     <th>Alias</th>
                     <th>Mail</th>
                     <th>Status</th>
-                    <th>Actions</th>
-                    <th>validation</th>
+                    {#<th>Actions</th>#}
+                    <th>Validation</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -67,7 +67,7 @@
                     <td>{{ element.lastName }}</td>
                     <td>{{ element.username }}</td>
                     <td>{{ element.email }}</td>
-                    <td>{% if element.enabled %}Yes{% else %}No{% endif %}</td>
+                    {#<td>{% if element.enabled %}Yes{% else %}No{% endif %}</td>#}
                     <td>
                         <td>
                             <a href="{{ path('user_accept',{ 'id': element.id })}}" > OK</a>

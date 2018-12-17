@@ -96,7 +96,7 @@ class Article
     /**
      * Many Article has One User
      *
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="articles")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="articles", fetch="LAZY")
      * @ORM\JoinColumn(name="id_user", referencedColumnName="id", nullable=true)
      */
     private $user;

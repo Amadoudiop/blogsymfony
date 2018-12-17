@@ -50,4 +50,7 @@ $ php bin/console fos:user:promote "utilisateur" ROLE_"Status"
 lien bundle : https://symfony.com/doc/current/bundles/DoctrineFixturesBundle/index.html
 loading fixtures : $ php bin/console doctrine:fixtures:load
 
-// QUESTION //
+// FOSJsRoutingBundle
+lien bundle : https://symfony.com/doc/master/bundles/FOSJsRoutingBundle/installation.html
+composer require friendsofsymfony/jsrouting-bundle
+php bin/console assets:install --symlink web
