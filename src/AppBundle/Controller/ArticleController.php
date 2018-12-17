@@ -59,12 +59,12 @@ class ArticleController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $article = $em->getRepository('AppBundle:Article')->find($article);
-        $user = $em->getRepository('AppBundle:User')->find($article->getIdUser());
+        $user = $em->getRepository('AppBundle:User')->find($article->getId());
 
         if ($user == null ){
             $user = "contact@gmail.com";
         }else{
-            $user = $em->getRepository('AppBundle:User')->find($article->getIdUser());
+            $user = $em->getRepository('AppBundle:User')->find($article->getId());
             $user = $user->getEmail();
         }
 
@@ -94,12 +94,12 @@ class ArticleController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $mailArticle = $em->getRepository('AppBundle:Article')->find($article);
-        $user = $em->getRepository('AppBundle:User')->find($mailArticle->getIdUser());
+        $user = $em->getRepository('AppBundle:User')->find($mailArticle->getId());
 
         if ($user == null ){
             $user = "contact@gmail.com";
         }else{
-            $user = $em->getRepository('AppBundle:User')->find($article->getIdUser());
+            $user = $em->getRepository('AppBundle:User')->find($article->getId());
             $user = $user->getEmail();
         }
 
