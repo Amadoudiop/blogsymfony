@@ -41,6 +41,14 @@ services:
         autowire: false
         arguments:
 
+    AppBundle\Service\CreateMail:
+        public: true
+        autowire: false
+        arguments:
+            $mailer: "@mailer"
+            $mailerSender: "%mailer_sender%"
+            $twig: "@twig"
+
     AppBundle\EventListener\RegistrationListener:
         arguments: ['@router']
         tags: {name: kernel.event_subscriber }

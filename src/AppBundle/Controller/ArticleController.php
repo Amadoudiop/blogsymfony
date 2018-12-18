@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Service\FileHandler;
+use AppBundle\Service\CreateMail;
 use Doctrine\Common\Collections\ArrayCollection;
 //use DateTime;
 
@@ -86,7 +87,6 @@ class ArticleController extends Controller
 
     /**
      * Lists all user entities.
-     *
      * @Route("/{id}/refuse", name="article_refuse")
      * @Method({"GET", "POST"})
      */
@@ -97,14 +97,10 @@ class ArticleController extends Controller
         $em->flush();
 
         if ($article->getUser() != null ) {
-            $body = $this->renderView('mails/mailArticleRefus.twig');
-            $message = \Swift_Message::newInstance()
-                ->setContentType('text/html')
-                ->setSubject('- MakeMeUp article refusé -')
-                ->setFrom('rdroro683@gmail.com')
-                ->setTo($article->getUser()->getEmail())
-                ->setBody($body);
-            $this->get('mailer')->send($message);
+            $creatMail = $this->get(CreateMail::class);
+            $creatMail->createMail('- MakeMeUp article refusé -',
+                $article->getUser()->getEmail(),
+                'mailArticleRefus' );
         }
 
         return $this->redirectToRoute('validation_index');
