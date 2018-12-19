@@ -20,7 +20,7 @@ class ArticleController extends Controller
     /**
      * Lists all article entities not valide.
      *
-     * @Route("ArticleNotValide", name="ArticleNotValide_index")
+     * @Route("ArticleNotValide", name="ArticleNotValideIndex")
      * @Method("GET")
      */
     public function articleNotValideAction()
@@ -39,7 +39,7 @@ class ArticleController extends Controller
             return ($a->getDateCreate() < $b->getDateCreate()) ? -1 : 1;
         });
 
-        return $this->render('article\index.html.twig', array(
+        return $this->render('article\validation.html.twig', array(
             'tables' => $iterator,
         ));
     }
@@ -47,7 +47,7 @@ class ArticleController extends Controller
     /**
      * Lists all article entities valide.
      *
-     * @Route("ArticleValide", name="ArticleValide_index")
+     * @Route("ArticleValide", name="ArticleValideIndex")
      * @Method("GET")
      */
     public function articleValideAction()
@@ -66,7 +66,7 @@ class ArticleController extends Controller
             return ($a->getDateCreate() < $b->getDateCreate()) ? -1 : 1;
         });
 
-        return $this->render('article\index.html.twig', array(
+        return $this->render('article\validation.html.twig', array(
             'tables' => $iterator,
         ));
     }
@@ -74,7 +74,7 @@ class ArticleController extends Controller
     /**
      * Lists all user entities not valide.
      *
-     * @Route("UserNotValide", name="UserNotValide_index")
+     * @Route("UserNotValide", name="UserNotValideIndex")
      * @Method("GET")
      */
     public function userNotValideAction()
@@ -93,7 +93,7 @@ class ArticleController extends Controller
             return ($a->getDateCreate() < $b->getDateCreate()) ? -1 : 1;
         });
 
-        return $this->render('article\index.html.twig', array(
+        return $this->render('article\validation.html.twig', array(
             'tables' => $iterator,
         ));
     }
@@ -101,11 +101,13 @@ class ArticleController extends Controller
     /**
      * Lists all user entities valide.
      *
-     * @Route("UserValide", name="UserValide_index")
+     * @Route("UserValide", name="UserValideIndex", options={"expose"=true})
      * @Method("GET")
      */
     public function userValideAction()
     {
+        dump("yo");
+        die;
         $em = $this->getDoctrine()->getManager();
         $users = $em->getRepository('AppBundle:User')->findByEnabled(1);
         $table = array_merge($users);
@@ -120,7 +122,7 @@ class ArticleController extends Controller
             return ($a->getDateCreate() < $b->getDateCreate()) ? -1 : 1;
         });
 
-        return $this->render('article\index.html.twig', array(
+        return $this->render('article\validation.html.twig', array(
             'tables' => $iterator,
         ));
     }
@@ -148,7 +150,7 @@ class ArticleController extends Controller
             return ($a->getDateCreate() < $b->getDateCreate()) ? -1 : 1;
         });
 
-        return $this->render('article\index.html.twig', array(
+        return $this->render('article\validation.html.twig', array(
             'tables' => $iterator,
         ));
     }

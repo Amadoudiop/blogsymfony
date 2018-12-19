@@ -1,17 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div style="margin-right: opx ;">
-        <label for="choixAffichage">recherche par :</label>
-
-        <select id="choixAffichage">
-            <option value="tout">tout</option>
-            <option value="compteNonValide">compte Non Validée</option>
-            <option value="articleEvenementNonValide">article évènement non validé</option>
-            <option value="ArticleEvenementValide">article évènement validé</option>
-            <option value="compteValide">compte validé</option>
+    <div>
+        <label for="listingChoice">recherche par :</label>
+        <select id="listingChoice">
+            <option value="validation_index">tout</option>
+            <option value="UserNotValideIndex">compte Non Validée</option>
+            <option value="ArticleNotValideIndex">article évènement non validé</option>
+            <option value="ArticleValideIndex">article évènement validé</option>
+            <option value="UserValideIndex">compte validé</option>
         </select>
-
     </div>
     {% for element in tables %}
         {% if (element|class) == 'Article' %}
