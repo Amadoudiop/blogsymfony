@@ -31,7 +31,8 @@ class ArticleType extends AbstractType
             ->add('title', TextType::class)
             ->add('catch_sentence', TextType::class)
             ->add('picture', FileType::class, array('label' => 'picture (PDF file)'))
-            ->add('content', TextareaType::class)
+            ->add('content', TextareaType::class, array('empty_data' => '',
+                                                                    'required' => false,))
             ->add('category', EntityType::class,
                 [
                     'class' => 'AppBundle:Category',

@@ -1,11 +1,16 @@
 {% extends 'base.html.twig' %}
 
+{% block javascriptsHead %}
+    <script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
+    <script>tinymce.init({ selector:'textarea' });</script>
+{% endblock %}
+
 {% block body %}
     <h1>Article creation</h1>
 
     {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input type="submit" value="Create" />
+    {{ form_widget(form) }}
+    <input type="submit" value="Create"/>
     {{ form_end(form) }}
 
     <ul>
@@ -13,4 +18,5 @@
             <a href="{{ path('validation_index') }}">Back to the list</a>
         </li>
     </ul>
+
 {% endblock %}

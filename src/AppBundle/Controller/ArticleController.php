@@ -215,8 +215,7 @@ class ArticleController extends Controller
             $fileHandler = $this->get(FileHandler::class);
             $fileName = $fileHandler->upload($file, $this->getParameter('upload_directory'));
             $article->setPicture($fileName["name"]);
-            $id_user = $this->getUser()->getId();
-            $article->setIdUser($id_user);
+            $article->setUser($this->getUser());
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($article);

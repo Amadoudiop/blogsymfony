@@ -8,14 +8,18 @@ class FileHandler
     {
         $fileName = md5(uniqid()).'.'.$file->guessExtension();
 
-        $file->move(
-            $directory,
-            $fileName
-        );
+        if (filesize($file) > 20000){
 
-        return
-            [
-            "name" => $fileName
-            ];
+        }else{
+            $file->move(
+                $directory,
+                $fileName
+            );
+
+            return
+                [
+                    "name" => $fileName
+                ];
+        }
     }
 }
