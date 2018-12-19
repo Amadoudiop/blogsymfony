@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Service\FileHandler;
-use AppBundle\Service\CreateMail;
+use AppBundle\Service\SendMail;
 use Doctrine\Common\Collections\ArrayCollection;
 //use DateTime;
 
@@ -18,29 +18,24 @@ use Doctrine\Common\Collections\ArrayCollection;
 class ArticleController extends Controller
 {
     /**
-     * Lists all article entities.
+     * Lists all article entities not valide.
      *
-     * @Route("validation", name="validation_index")
+     * @Route("ArticleNotValide", name="ArticleNotValide_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function articleNotValideAction()
     {
         $em = $this->getDoctrine()->getManager();
-
         $articles = $em->getRepository('AppBundle:Article')->findByEnabled(0);
-        $users = $em->getRepository('AppBundle:User')->findByEnabled(0);
-
-        $table = array_merge($users,$articles);
-
-
+        $table = array_merge($articles);
         $objectCollection = new ArrayCollection();
 
         foreach ($table as $object) {
             $objectCollection->add($object);
         }
-
         $iterator = $objectCollection->getIterator();
         $iterator->uasort(function ($a, $b){
+
             return ($a->getDateCreate() < $b->getDateCreate()) ? -1 : 1;
         });
 
@@ -49,44 +44,139 @@ class ArticleController extends Controller
         ));
     }
 
+    /**
+     * Lists all article entities valide.
+     *
+     * @Route("ArticleValide", name="ArticleValide_index")
+     * @Method("GET")
+     */
+    public function articleValideAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $articles = $em->getRepository('AppBundle:Article')->findByEnabled(1);
+        $table = array_merge($articles);
+        $objectCollection = new ArrayCollection();
+
+        foreach ($table as $object) {
+            $objectCollection->add($object);
+        }
+        $iterator = $objectCollection->getIterator();
+        $iterator->uasort(function ($a, $b){
+
+            return ($a->getDateCreate() < $b->getDateCreate()) ? -1 : 1;
+        });
+
+        return $this->render('article\index.html.twig', array(
+            'tables' => $iterator,
+        ));
+    }
 
     /**
-     * Displays a form to edit an existing user entity.
+     * Lists all user entities not valide.
+     *
+     * @Route("UserNotValide", name="UserNotValide_index")
+     * @Method("GET")
+     */
+    public function userNotValideAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $users = $em->getRepository('AppBundle:User')->findByEnabled(0);
+        $table = array_merge($users);
+        $objectCollection = new ArrayCollection();
+
+        foreach ($table as $object) {
+            $objectCollection->add($object);
+        }
+        $iterator = $objectCollection->getIterator();
+        $iterator->uasort(function ($a, $b){
+
+            return ($a->getDateCreate() < $b->getDateCreate()) ? -1 : 1;
+        });
+
+        return $this->render('article\index.html.twig', array(
+            'tables' => $iterator,
+        ));
+    }
+
+    /**
+     * Lists all user entities valide.
+     *
+     * @Route("UserValide", name="UserValide_index")
+     * @Method("GET")
+     */
+    public function userValideAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $users = $em->getRepository('AppBundle:User')->findByEnabled(1);
+        $table = array_merge($users);
+        $objectCollection = new ArrayCollection();
+
+        foreach ($table as $object) {
+            $objectCollection->add($object);
+        }
+        $iterator = $objectCollection->getIterator();
+        $iterator->uasort(function ($a, $b){
+
+            return ($a->getDateCreate() < $b->getDateCreate()) ? -1 : 1;
+        });
+
+        return $this->render('article\index.html.twig', array(
+            'tables' => $iterator,
+        ));
+    }
+
+    /**
+     * Lists all article and user entities not valide.
+     *
+     * @Route("validation", name="validation_index")
+     * @Method("GET")
+     */
+    public function indexAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $articles = $em->getRepository('AppBundle:Article')->findByEnabled(0);
+        $users = $em->getRepository('AppBundle:User')->findByEnabled(0);
+        $table = array_merge($users,$articles);
+        $objectCollection = new ArrayCollection();
+
+        foreach ($table as $object) {
+            $objectCollection->add($object);
+        }
+        $iterator = $objectCollection->getIterator();
+        $iterator->uasort(function ($a, $b){
+
+            return ($a->getDateCreate() < $b->getDateCreate()) ? -1 : 1;
+        });
+
+        return $this->render('article\index.html.twig', array(
+            'tables' => $iterator,
+        ));
+    }
+
+    /**
+     * accept one article
      *
      * @Route("/{id}/accept", name="article_accept")
      * @Method({"GET", "POST"})
      */
     public function acceptAction(Article $article)
     {
-        $em = $this->getDoctrine()->getManager();
-        $article = $em->getRepository('AppBundle:Article')->find($article);
-        $user = $em->getRepository('AppBundle:User')->find($article->getId());
-
-        if ($user == null ){
-            $user = "contact@gmail.com";
-        }else{
-            $user = $em->getRepository('AppBundle:User')->find($article->getId());
-            $user = $user->getEmail();
-        }
-
         $article->setEnabled(1);
         $this->getDoctrine()->getManager()->flush();
 
-        $messagemail = $this->renderView('mails/mailArticleAccept.twig');
-
-        $message = \Swift_Message::newInstance()
-            ->setContentType('text/html')
-            ->setSubject('- MakeMeUp article accepte -')
-            ->setFrom('rdroro683@gmail.com')
-            ->setTo($user)
-            ->setBody($messagemail);
-        $this->get('mailer')->send($message);
+        if ($article->getUser() != null ) {
+            $SendMail = $this->get(SendMail::class);
+            $SendMail->SendMail('- MakeMeUp article refusé -',
+                                $article->getUser()->getEmail(),
+                                'ArticleAccept' );
+        }
 
         return $this->redirectToRoute('validation_index');
     }
 
     /**
-     * Lists all user entities.
+     * denied one article
+     *
      * @Route("/{id}/refuse", name="article_refuse")
      * @Method({"GET", "POST"})
      */
@@ -97,10 +187,10 @@ class ArticleController extends Controller
         $em->flush();
 
         if ($article->getUser() != null ) {
-            $creatMail = $this->get(CreateMail::class);
-            $creatMail->createMail('- MakeMeUp article refusé -',
-                $article->getUser()->getEmail(),
-                'mailArticleRefus' );
+            $SendMail = $this->get(SendMail::class);
+            $SendMail->SendMail('- MakeMeUp article refusé -',
+                                $article->getUser()->getEmail(),
+                                'ArticleRefus' );
         }
 
         return $this->redirectToRoute('validation_index');

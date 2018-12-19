@@ -2,7 +2,7 @@
 
 namespace AppBundle\Service;
 
-class CreateMail
+class SendMail
 {
     protected $mailer;
     protected $mailerSender;
@@ -13,7 +13,7 @@ class CreateMail
         $this->mailerSender = $mailerSender;
         $this->twig = $twig;
     }
-    public function createMail($subject, $To, $type)
+    public function sendMail($subject, $To, $type)
     {
 
         $mail = \Swift_Message::newInstance()

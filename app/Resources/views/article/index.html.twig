@@ -1,6 +1,18 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <div style="margin-right: opx ;">
+        <label for="choixAffichage">recherche par :</label>
+
+        <select id="choixAffichage">
+            <option value="tout">tout</option>
+            <option value="compteNonValide">compte Non Validée</option>
+            <option value="articleEvenementNonValide">article évènement non validé</option>
+            <option value="ArticleEvenementValide">article évènement validé</option>
+            <option value="compteValide">compte validé</option>
+        </select>
+
+    </div>
     {% for element in tables %}
         {% if (element|class) == 'Article' %}
             Articles list
@@ -14,7 +26,6 @@
                     <th>Catch_sentence</th>
                     <th>Picture</th>
                     <th>Content</th>
-                    {#<th>Status</th>#}
                     <th>Validation</th>
                 </tr>
                 </thead>
@@ -28,7 +39,7 @@
                     <td>{{ element.catchsentence }}</td>
                     <td>{{ element.picture }}</td>
                     <td>{{ element.content }}</td>
-                    {#<td>{% if element.enabled %}Yes{% else %}No{% endif %}</td>#}
+                    {% if element.enabled == 0 %}
                     <td>
                         <td>
                             <a href="{{ path('article_accept',{ 'id': element.id })}}" > Accepter</a>
@@ -37,6 +48,11 @@
                             <a href="{{ path('article_refuse',{ 'id': element.id })}}"> Refuser</a>
                         </td>
                     </td>
+                    {% else %}
+                        <td>
+                            <a href="{{ path('article_refuse',{ 'id': element.id })}}" >Suprimer</a>
+                        </td>
+                    {% endif %}
                 </tr>
                 </tbody>
             </table>
@@ -54,7 +70,6 @@
                     <th>Alias</th>
                     <th>Mail</th>
                     <th>Status</th>
-                    {#<th>Actions</th>#}
                     <th>Validation</th>
                 </tr>
                 </thead>
@@ -67,15 +82,21 @@
                     <td>{{ element.lastName }}</td>
                     <td>{{ element.username }}</td>
                     <td>{{ element.email }}</td>
-                    {#<td>{% if element.enabled %}Yes{% else %}No{% endif %}</td>#}
+
+                    {% if element.enabled == 0 %}
                     <td>
                         <td>
-                            <a href="{{ path('user_accept',{ 'id': element.id })}}" > OK</a>
+                            <a href="{{ path('user_accept',{ 'id': element.id })}}" > accepter</a>
                         </td>
                         <td>
-                            <a href="{{ path('user_refuse',{ 'id': element.id })}}" > NOPE</a>
+                            <a href="{{ path('user_refuse',{ 'id': element.id })}}" > refusée</a>
                         </td>
                     </td>
+                    {% else %}
+                        <td>
+                            <a href="{{ path('user_refuse',{ 'id': element.id })}}" >Suprimer</a>
+                        </td>
+                    {% endif %}
                 </tr>
                 </tbody>
             </table>
@@ -83,172 +104,3 @@
         {% endif %}
     {% endfor %}
 {%  endblock  %}
-        {#
-        {% if tabl.Article is defined %}
-        Articles list
-        <table>
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Date_create</th>
-                    <th>Date_event</th>
-                    <th>Title</th>
-                    <th>Catch_sentence</th>
-                    <th>Picture</th>
-                    <th>Content</th>
-                    <th>Status</th>
-                    <th>validation</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><a href="{{ path('article_show', { 'id': article.id }) }}">{{ article.id }}</a></td>
-                    <td>{% if article.datecreate %}{{ article.datecreate|date('Y-m-d H:i:s') }}{% endif %}</td>
-                    <td>{% if article.dateupdate %}{{ article.dateupdate|date('Y-m-d H:i:s') }}{% endif %}</td>
-                    <td>{% if article.dateevent %}{{ article.dateevent|date('Y-m-d H:i:s') }}{% endif %}</td>
-                    <td>{{ article.title }}</td>
-                    <td>{{ article.catchsentence }}</td>
-                    <td>{{ article.picture }}</td>
-                    <td>{{ article.content }}</td>
-                    <td>{% if article.status %}Yes{% else %}No{% endif %}</td>
-                    <td>validation</td>
-                </tr>
-            </tbody>
-        </table>
-        {% elseif tabl.User is defined %}
-        Users list
-            <table>
-                <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Datecreate</th>
-                    <th>Promotion</th>
-                    <th>Firstname</th>
-                    <th>Lastname</th>
-                    <th>Alias</th>
-                    <th>Mail</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                    <th>validation</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td><a href="{{ path('user_show', { 'id': user.id }) }}">{{ user.id }}</a></td>
-                    <td>{% if user.dateCreate %}{{ user.dateCreate|date('Y-m-d H:i:s') }}{% endif %}</td>
-                    <td>{{ user.promotion }}</td>
-                    <td>{{ user.firstName }}</td>
-                    <td>{{ user.lastName }}</td>
-                    <td>{{ user.username }}</td>
-                    <td>{{ user.email }}</td>
-                    <td>{% if user.status %}Yes{% else %}No{% endif %}</td>
-                    <td>validation</td>
-                </tr>
-                </tbody>
-            </table>
-        {% endif %}
-    {% endfor %}
-{% endblock %}
-
-#}
-
-    {#
-
-    <h1>Articles list</h1>
-
-    <table>
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Date_create</th>
-            <th>Date_update</th>
-            <th>Date_event</th>
-            <th>Title</th>
-            <th>Catch_sentence</th>
-            <th>Picture</th>
-            <th>Content</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for article in articles %}
-            <tr>
-                <td><a href="{{ path('article_show', { 'id': article.id }) }}">{{ article.id }}</a></td>
-                <td>{% if article.datecreate %}{{ article.datecreate|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if article.dateupdate %}{{ article.dateupdate|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if article.dateevent %}{{ article.dateevent|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{{ article.title }}</td>
-                <td>{{ article.catchsentence }}</td>
-                <td>{{ article.picture }}</td>
-                <td>{{ article.content }}</td>
-                <td>{% if article.status %}Yes{% else %}No{% endif %}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('article_show', { 'id': article.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('article_edit', { 'id': article.id }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('article_new') }}">Create a new article</a>
-        </li>
-    </ul>
-
-    <h1>Users list</h1>
-
-    <table>
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Promotion</th>
-            <th>Firstname</th>
-            <th>Lastname</th>
-            <th>Alias</th>
-            <th>Password</th>
-            <th>Mail</th>
-            <th>Datecreate</th>
-            <th>Status</th>
-            <th>Token</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for user in users %}
-            <tr>
-                <td><a href="{{ path('user_show', { 'id': user.id }) }}">{{ user.id }}</a></td>
-                <td>{{ user.promotion }}</td>
-                <td>{{ user.firstName }}</td>
-                <td>{{ user.lastName }}</td>
-                <td>{{ user.username }}</td>
-                <td>{{ user.password }}</td>
-                <td>{{ user.email }}</td>
-                <td>{% if user.dateCreate %}{{ user.dateCreate|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if user.status %}Yes{% else %}No{% endif %}</td>
-                <td>{{ user.token }}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('user_show', { 'id': user.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('user_edit', { 'id': user.id }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>#}
-
-
-

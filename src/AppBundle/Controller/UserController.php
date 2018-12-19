@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Service\SendMail;
 
 /**
  * User controller.
@@ -31,32 +32,25 @@ class UserController extends Controller
         ));
     }
     /**
-     * Displays a form to edit an existing user entity.
+     * Accept one user
      *
      * @Route("/{id}/accept", name="user_accept")
      * @Method({"GET", "POST"})
      */
     public function acceptAction(User $user)
     {
-        $em = $this->getDoctrine()->getManager();
-        $user = $em->getRepository('AppBundle:User')->find($user);
         $user->setEnabled(1);
         $this->getDoctrine()->getManager()->flush();
 
-        $messagemail = $this->renderView('mails/mailDeCompteAccepte.twig');
-
-        $message = \Swift_Message::newInstance()
-            ->setContentType('text/html')
-            ->setSubject('- MakeMeUp Contact compte accepte -')
-            ->setFrom('rdroro683@gmail.com')
-            ->setTo($user->getEmail())
-            ->setBody($messagemail);
-        $this->get('mailer')->send($message);
+        $SendMail = $this->get(SendMail::class);
+        $SendMail->SendMail('- MakeMeUp Contact compte accepte -',
+            $user->getEmail(),
+            'CompteAccepte' );
 
         return $this->redirectToRoute('validation_index');
     }
     /**
-     * Lists all user entities.
+     * refuse one user
      *
      * @Route("/{id}/refuse", name="user_refuse")
      * @Method({"GET", "POST"})
@@ -64,20 +58,13 @@ class UserController extends Controller
     public function refuseAction(User $user)
     {
         $em = $this->getDoctrine()->getManager();
-        $user = $em->getRepository('AppBundle:User')->find($user);
         $em->remove($user);
         $em->flush();
 
-        $messagemail = $this->renderView('mails/mailDeCompteRefuse.twig');
-
-
-        $message = \Swift_Message::newInstance()
-            ->setContentType('text/html')
-            ->setSubject('- MakeMeUp Contact compte refusée -')
-            ->setFrom('rdroro683@gmail.com')
-            ->setTo($user->getEmail())
-            ->setBody($messagemail);
-        $this->get('mailer')->send($message);
+        $SendMail = $this->get(SendMail::class);
+        $SendMail->SendMail('- MakeMeUp Contact compte refusé -',
+            $user->getEmail(),
+            'CompteRefuse' );
 
         return $this->redirectToRoute('validation_index');
     }

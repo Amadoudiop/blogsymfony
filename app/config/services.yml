@@ -41,7 +41,7 @@ services:
         autowire: false
         arguments:
 
-    AppBundle\Service\CreateMail:
+    AppBundle\Service\SendMail:
         public: true
         autowire: false
         arguments:
