@@ -39,7 +39,7 @@ class UserController extends Controller
      */
     public function acceptAction(User $user)
     {
-        $user->setEnabled(1);
+        $user->setValidation(1);
         $this->getDoctrine()->getManager()->flush();
 
         $SendMail = $this->get(SendMail::class);

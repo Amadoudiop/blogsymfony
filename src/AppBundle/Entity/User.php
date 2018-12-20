@@ -77,12 +77,43 @@ class User extends BaseUser
      */
     private $articles;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="validation", type="boolean")
+     */
+    private $validation = false;
+
 
     public function __construct()
     {
         parent::__construct();
         $this->dateCreate = new \DateTime('now');
 
+    }
+
+    /**
+     * Set validation
+     *
+     * @param boolean $enabled
+     *
+     * @return Article
+     */
+    public function setValidation($validation)
+    {
+        $this->validation = $validation;
+
+        return $this;
+    }
+
+    /**
+     * Get Validation
+     *
+     * @return bool
+     */
+    public function getValidation()
+    {
+        return $this->validation;
     }
 
     /**

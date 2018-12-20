@@ -81,7 +81,7 @@
                     <td>{{ element.username }}</td>
                     <td>{{ element.email }}</td>
 
-                    {% if element.enabled == 0 %}
+                    {% if element.validation == 0 %}
                     <td>
                         <td>
                             <a href="{{ path('user_accept',{ 'id': element.id })}}" > accepter</a>

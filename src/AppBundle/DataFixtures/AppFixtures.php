@@ -30,10 +30,11 @@ class AppFixtures extends Fixture
             $user->setEmail($i . "@gmail.com");
             if ($i < 3) {
                 $user->setEnabled(1);
+                $user->setValidation(1);
             } else {
-                $user->setEnabled(0);
+                $user->setEnabled(1);
+                $user->setValidation(0);
             }
-
             $user->setPlainPassword("aaa");
 
             if ($i < 3) {

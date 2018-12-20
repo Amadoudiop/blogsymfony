@@ -81,7 +81,8 @@ class ArticleController extends Controller
     public function userNotValideAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $users = $em->getRepository('AppBundle:User')->findByEnabled(0);
+        $users = $em->getRepository('AppBundle:User')->findBy( array('validation' => 0,
+                                                                                'enabled' => 1));
         $table = array_merge($users);
         $objectCollection = new ArrayCollection();
 
@@ -108,7 +109,8 @@ class ArticleController extends Controller
     public function userValideAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $users = $em->getRepository('AppBundle:User')->findByEnabled(1);
+        $users = $em->getRepository('AppBundle:User')->findBy( array('validation' => 1,
+                                                                                'enabled' => 1));
         $table = array_merge($users);
         $objectCollection = new ArrayCollection();
 
@@ -141,7 +143,8 @@ class ArticleController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $articles = $em->getRepository('AppBundle:Article')->findByEnabled(0);
-        $users = $em->getRepository('AppBundle:User')->findByEnabled(0);
+        $users = $em->getRepository('AppBundle:User')->findBy( array('validation' => 0,
+                                                                                'enabled' => 1));
         $table = array_merge($users,$articles);
         $objectCollection = new ArrayCollection();
 
