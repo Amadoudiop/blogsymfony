@@ -221,6 +221,13 @@ class ArticleController extends Controller
             $file = $article->getPicture();
             $fileHandler = $this->get(FileHandler::class);
             $fileName = $fileHandler->upload($file, $this->getParameter('upload_directory'));
+            if($fileName == false){
+
+                return $this->render('article/new.html.twig', array(
+                    'article' => $article,
+                    'form' => $form->createView(),
+                ));
+            }
             $article->setPicture($fileName["name"]);
             $article->setUser($this->getUser());
 

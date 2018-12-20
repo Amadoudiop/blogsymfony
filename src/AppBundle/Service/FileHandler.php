@@ -8,7 +8,9 @@ class FileHandler
     {
         $fileName = md5(uniqid()).'.'.$file->guessExtension();
 
-        if (filesize($file) > 20000){
+        if (filesize($file) > 625){
+
+            return false;
 
         }else{
             $file->move(

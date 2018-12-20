@@ -54,3 +54,13 @@ loading fixtures : $ php bin/console doctrine:fixtures:load
 lien bundle : https://symfony.com/doc/master/bundles/FOSJsRoutingBundle/installation.html
 composer require friendsofsymfony/jsrouting-bundle
 php bin/console assets:install --symlink web
+
+//QUESTION//
+es que l'on peux faire un login avec une vérification d'une deuxième valeur
+
+vérif des mail avec restriction sur le nom de domaine de l'email
+
+EFREI.NET
+EFREI.FR
+ESIGETEL.NET
+EFREITECH.NET
