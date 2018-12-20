@@ -226,6 +226,7 @@ class ArticleController extends Controller
                 return $this->render('article/new.html.twig', array(
                     'article' => $article,
                     'form' => $form->createView(),
+                    'error' => 'la photo est trop grosse',
                 ));
             }
             $article->setPicture($fileName["name"]);
