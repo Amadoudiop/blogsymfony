@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Service\FileHandler;
 use AppBundle\Service\SendMail;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\HttpFoundation\JsonResponse;
 //use DateTime;
 
 /**
@@ -106,8 +107,6 @@ class ArticleController extends Controller
      */
     public function userValideAction()
     {
-        dump("yo");
-        die;
         $em = $this->getDoctrine()->getManager();
         $users = $em->getRepository('AppBundle:User')->findByEnabled(1);
         $table = array_merge($users);
@@ -121,10 +120,15 @@ class ArticleController extends Controller
 
             return ($a->getDateCreate() < $b->getDateCreate()) ? -1 : 1;
         });
-
-        return $this->render('article\validation.html.twig', array(
+        //html = array
+        //foreach($iterator) html .= template(articleEvent.html.twig)
+        //if user ( html .= template(articleEvent.html.twig)
+        $data[] = [
             'tables' => $iterator,
-        ));
+            'user' => $users,
+        ];
+
+        return new JsonResponse($data);
     }
 
     /**

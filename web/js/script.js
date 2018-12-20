@@ -6,11 +6,13 @@ $(function () {
             url: Routing.generate($(this).val()),
             type: "POST",
             data: "",
-            success: function (state) {
-                console.log(state)
+            success: function (data) {
+                console.log(data)
+                console.log(data[0].user)
+
             },
-            error: function (state) {
-                console.log(state)
+            error: function (data) {
+                console.log(data)
             }
         })
     })
