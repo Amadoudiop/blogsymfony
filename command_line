@@ -32,7 +32,7 @@ php bin/console d:s:u -f
 git status
 git add .
 git status
-git commit -m ""commantère""
+git commit -m "commentaire"
 git push origin "branche"
 git status
 
