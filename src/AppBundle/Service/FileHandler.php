@@ -8,7 +8,7 @@ class FileHandler
     {
         $fileName = md5(uniqid()).'.'.$file->guessExtension();
 
-        if (filesize($file) > 625){
+        if (filesize($file) > 375000){
 
             return false;
 

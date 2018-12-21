@@ -55,7 +55,7 @@ lien bundle : https://symfony.com/doc/master/bundles/FOSJsRoutingBundle/installa
 composer require friendsofsymfony/jsrouting-bundle
 php bin/console assets:install --symlink web
 
-//QUESTION//
+//TACHE QUESTION//
 es que l'on peux faire un login avec une vérification d'une deuxième valeur
 
 vérif des mail avec restriction sur le nom de domaine de l'email
@@ -66,3 +66,9 @@ ESIGETEL.NET
 EFREITECH.NET
 
 vérife taille fichier : message d'erreur
+
+boutton edit d'un article ne s'affiche que si on est modérateur ou créateur de l'article
+
+avoire une page récapitulative des articles que l'on à créer
+
+créer un boutton pour le super modérateur pour promouvoire et suprimer les drois d'un conte en administrateur

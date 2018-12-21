@@ -134,6 +134,33 @@ class ArticleController extends Controller
     }
 
     /**
+     * Lists all user entities admin.
+     *
+     * @Route("userAdmin", name="userAdminIndex")
+     * @Method("GET")
+     */
+    public function userAdminAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $users = $em->getRepository('AppBundle:User')->findByRoles("ROLE_ADMIN");
+        $table = array_merge($users);
+        $objectCollection = new ArrayCollection();
+
+        foreach ($table as $object) {
+            $objectCollection->add($object);
+        }
+        $iterator = $objectCollection->getIterator();
+        $iterator->uasort(function ($a, $b){
+
+            return ($a->getDateCreate() < $b->getDateCreate()) ? -1 : 1;
+        });
+
+        return $this->render('article\validation.html.twig', array(
+            'tables' => $iterator,
+        ));
+    }
+
+    /**
      * Lists all article and user entities not valide.
      *
      * @Route("validation", name="validation_index")
@@ -226,7 +253,7 @@ class ArticleController extends Controller
                 return $this->render('article/new.html.twig', array(
                     'article' => $article,
                     'form' => $form->createView(),
-                    'error' => 'la photo est trop grosse',
+                    'error' => 'la photo est trop grosse taille max 3MB',
                 ));
             }
             $article->setPicture($fileName["name"]);
