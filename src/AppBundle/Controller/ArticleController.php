@@ -142,12 +142,11 @@ class ArticleController extends Controller
     public function userAdminAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $users = $em->getRepository('AppBundle:User')->findByRoles("ROLE_ADMIN");
-        $table = array_merge($users);
+        $users = $em->getRepository('AppBundle:User')->findByRole("ROLE_ADMIN");
         $objectCollection = new ArrayCollection();
 
-        foreach ($table as $object) {
-            $objectCollection->add($object);
+        foreach ($users as $user) {
+            $objectCollection->add($user);
         }
         $iterator = $objectCollection->getIterator();
         $iterator->uasort(function ($a, $b){
@@ -248,22 +247,24 @@ class ArticleController extends Controller
             $file = $article->getPicture();
             $fileHandler = $this->get(FileHandler::class);
             $fileName = $fileHandler->upload($file, $this->getParameter('upload_directory'));
-            if($fileName == false){
+            if(!$fileName){
+                $this->addFlash(
+                    'danger',
+                    'la photo est trop grosse taille max 3MB'
+                );
+            }else{
+                $article->setPicture($fileName["name"]);
+                $article->setUser($this->getUser());
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($article);
+                $em->flush();
+                $this->addFlash(
+                    'success',
+                    'votre article à été envoyer à la modération'
+                );
 
-                return $this->render('article/new.html.twig', array(
-                    'article' => $article,
-                    'form' => $form->createView(),
-                    'error' => 'la photo est trop grosse taille max 3MB',
-                ));
+                return $this->redirectToRoute('article_show', array('id' => $article->getId()));
             }
-            $article->setPicture($fileName["name"]);
-            $article->setUser($this->getUser());
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($article);
-            $em->flush();
-
-            return $this->redirectToRoute('article_show', array('id' => $article->getId()));
         }
 
         return $this->render('article/new.html.twig', array(
