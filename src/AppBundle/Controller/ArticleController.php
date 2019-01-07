@@ -22,56 +22,68 @@ class ArticleController extends Controller
     /**
      * Lists all article entities not valide.
      *
-     * @Route("ArticleNotValide", name="ArticleNotValideIndex")
+     * @Route("ArticleNotValide", name="ArticleNotValideIndex", options={"expose"=true})
      * @Method("GET")
      */
 
-    public function articleNotValideAction()
+    public function articleNotValideAction(request $request)
     {
+        $lastElementDate = $request->request->get("lastElementDate");
         $em = $this->getDoctrine()->getManager();
-        $articles = $em->getRepository('AppBundle:Article')->findByEnabled(0);
-        $table = array_merge($articles);
-        $objectCollection = new ArrayCollection();
-
-        foreach ($table as $object) {
-            $objectCollection->add($object);
+        $qb = $em->createQueryBuilder();
+        $q = $qb->select('a')
+            ->from('AppBundle:article', 'a')
+            ->where('a.enabled = 0')
+            ->andWhere(
+                $qb->expr()->lt('a.dateCreate', ':dateCreate')
+            )
+            ->setParameter('dateCreate', $lastElementDate)
+            ->orderBy('a.dateCreate', 'DESC')
+            ->setMaxResults(10)
+            ->getQuery();
+        $users = $q->getResult();
+        $data = "";
+        if ($users) {
+            foreach ($users as $table) {
+                $data .= $this->render('article\article.html.twig', array(
+                    'table' => $table,
+                ));
+            }
         }
-        $iterator = $objectCollection->getIterator();
-        $iterator->uasort(function ($a, $b) {
-
-            return ($a->getDateCreate() < $b->getDateCreate()) ? -1 : 1;
-        });
-
-        return $this->render('article\validation.html.twig', array(
-            'tables' => $iterator,
-        ));
+        return new JsonResponse($data);
     }
 
     /**
      * Lists all article entities valide.
      *
-     * @Route("ArticleValide", name="ArticleValideIndex")
+     * @Route("ArticleValide", name="ArticleValideIndex", options={"expose"=true})
      * @Method("GET")
      */
-    public function articleValideAction()
+    public function articleValideAction(request $request)
     {
+        $lastElementDate = $request->request->get("lastElementDate");
         $em = $this->getDoctrine()->getManager();
-        $articles = $em->getRepository('AppBundle:Article')->findByEnabled(1);
-        $table = array_merge($articles);
-        $objectCollection = new ArrayCollection();
-
-        foreach ($table as $object) {
-            $objectCollection->add($object);
+        $qb = $em->createQueryBuilder();
+        $q = $qb->select('a')
+            ->from('AppBundle:article', 'a')
+            ->where('a.enabled = 1')
+            ->andWhere(
+                $qb->expr()->lt('a.dateCreate', ':dateCreate')
+            )
+            ->setParameter('dateCreate', $lastElementDate)
+            ->orderBy('a.dateCreate', 'DESC')
+            ->setMaxResults(10)
+            ->getQuery();
+        $users = $q->getResult();
+        $data = "";
+        if ($users) {
+            foreach ($users as $table) {
+                $data .= $this->render('article\article.html.twig', array(
+                    'table' => $table,
+                ));
+            }
         }
-        $iterator = $objectCollection->getIterator();
-        $iterator->uasort(function ($a, $b) {
-
-            return ($a->getDateCreate() < $b->getDateCreate()) ? -1 : 1;
-        });
-
-        return $this->render('article\validation.html.twig', array(
-            'tables' => $iterator,
-        ));
+        return new JsonResponse($data);
     }
 
     /**
@@ -109,24 +121,6 @@ class ArticleController extends Controller
      */
     public function userNotValideAction(request $request)
     {
-//        $em = $this->getDoctrine()->getManager();
-//        $users = $em->getRepository('AppBundle:User')->findBy(array('validation' => 0,
-//            'enabled' => 1));
-//        $table = array_merge($users);
-//        $objectCollection = new ArrayCollection();
-//
-//        foreach ($table as $object) {
-//            $objectCollection->add($object);
-//        }
-//        $iterator = $objectCollection->getIterator();
-//        $iterator->uasort(function ($a, $b) {
-//
-//            return ($a->getDateCreate() < $b->getDateCreate()) ? -1 : 1;
-//        });
-//
-//        return $this->render('article\validation.html.twig', array(
-//            'tables' => $iterator,
-//        ));
         $lastElementDate = $request->request->get("lastElementDate");
         $em = $this->getDoctrine()->getManager();
         $qb = $em->createQueryBuilder();

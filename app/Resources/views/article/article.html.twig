@@ -16,7 +16,6 @@ Articles list
     <tr>
         <td><a href="{{ path('article_show', { 'id': table.id }) }}">{{ table.id }}</a></td>
         <td>{% if table.datecreate %}{{ table.datecreate|date('Y-m-d H:i:s') }}{% endif %}</td>
-        <td>{% if table.dateupdate %}{{ table.dateupdate|date('Y-m-d H:i:s') }}{% endif %}</td>
         <td>{% if table.dateevent %}{{ table.dateevent|date('Y-m-d H:i:s') }}{% endif %}</td>
         <td>{{ table.title }}</td>
         <td>{{ table.catchsentence }}</td>
