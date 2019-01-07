@@ -59,16 +59,18 @@ php bin/console assets:install --symlink web
 es que l'on peux faire un login avec une vérification d'une deuxième valeur
 
 vérif des mail avec restriction sur le nom de domaine de l'email
-
 EFREI.NET
 EFREI.FR
 ESIGETEL.NET
-EFREITECH.NET
-
-vérife taille fichier : message d'erreur
+EFREITECH.NET   (assert dans user.php lastname)
 
 boutton edit d'un article ne s'affiche que si on est modérateur ou créateur de l'article
 
-avoire une page récapitulative des articles que l'on à créer
-
 créer un boutton pour le super modérateur pour promouvoire et suprimer les drois d'un conte en administrateur
+accée en temp que super_Admin
+
+faire une 404
+
+recherche RENDER pour JS retirer le message de succés
+
+vérification que la requète soit de l'ajax

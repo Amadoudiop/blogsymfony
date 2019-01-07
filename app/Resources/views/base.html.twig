@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <title>{% block title %}coucou!{% endblock %}</title>
-        <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet">
         <link href="{{ asset('css/makemeup.css') }}" rel="stylesheet">
 
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
@@ -23,6 +23,7 @@
                     {% if is_granted('ROLE_USER') == true %}
                         <li class="li-lien-navbar"><a class="lien-navbar" href="{{ path('fos_user_security_logout') }}">DECONNEXION</a></li>
                         <li class="li-lien-navbar"><a class="lien-navbar" href="{{ path('article_new') }}">CREER UN ARTICLE</a></li>
+                        <li class="li-lien-navbar"><a class="lien-navbar" href="{{ path('ArticleUser') }}">ARTICLE</a></li>
                     {% else %}
                         <li class="li-lien-navbar"><a class="lien-navbar" href="{{ path('user_login_register') }}">INSCRIPTION / CONNEXION</a></li>
                     {% endif %}
@@ -57,10 +58,8 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
                 integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
                 crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-                integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-                crossorigin="anonymous"></script>
-        <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+        {#<script src="{{ asset('js/bootstrap.min.js') }}"></script>#}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.2.1/js/bootstrap.min.js"></script>
         <script src="{{ asset('js/makemeupLogoSticky.js') }}"></script>
         <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
         <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>

@@ -70,6 +70,44 @@ class UserController extends Controller
     }
 
     /**
+     * make one user admin
+     *
+     * @Route("/{id}/setAdmin", name="set_admin")
+     * @Method({"GET", "POST"})
+     */
+    public function setAdminAction(User $user)
+    {
+        $user->addRole("ROLE_ADMIN");
+        $this->getDoctrine()->getManager()->flush();
+
+        $SendMail = $this->get(SendMail::class);
+        $SendMail->SendMail('- MakeMeUp Contact compte accepte -',
+            $user->getEmail(),
+            'CompteAccepte' );
+
+        return $this->redirectToRoute('validation_index');
+    }
+
+    /**
+     * unset one user admin
+     *
+     * @Route("/{id}/unsetAdmin", name="unset_admin")
+     * @Method({"GET", "POST"})
+     */
+    public function unsetAdminAction(User $user)
+    {
+        $user->removeRole("ROLE_ADMIN");
+        $this->getDoctrine()->getManager()->flush();
+
+        $SendMail = $this->get(SendMail::class);
+        $SendMail->SendMail('- MakeMeUp Contact compte accepte -',
+            $user->getEmail(),
+            'CompteAccepte' );
+
+        return $this->redirectToRoute('validation_index');
+    }
+
+    /**
      * Lists all user entities.
      *
      * @Route("/login-register", name="user_login_register")

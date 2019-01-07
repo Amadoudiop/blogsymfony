@@ -18,8 +18,6 @@ class DefaultController extends Controller
 
     public function indexAction(Request $request)
     {
-//        dump('test');die;
-        // replace this example code with whatever you need
         $em = $this->getDoctrine()->getManager();
         $articles = $em->getRepository('AppBundle:Article')->findAll();
         $slides = $em->getRepository('AppBundle:Slide')->findAll();
@@ -32,6 +30,15 @@ class DefaultController extends Controller
                 'slides' => $slides,
 
             ]);
+    }
+
+    /**
+     * @Route("/AccessDeniedAction", name="AccessDeniedAction")
+     * @Method("GET")
+     */
+    public function AccessDeniedAction()
+    {
+        return $this->render('403.html.twig');
     }
 
 }

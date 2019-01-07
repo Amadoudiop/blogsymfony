@@ -2,6 +2,7 @@
 security:
     encoders:
         FOS\UserBundle\Model\UserInterface: bcrypt
+    access_denied_url: AccessDeniedAction
 
     role_hierarchy:
         ROLE_USER:       ROLE_USER
@@ -31,8 +32,11 @@ security:
     - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/validation, role: ROLE_ADMIN }
-    - { path: ^/UserValide, role: ROLE_ADMIN }
     - { path: ^/UserNotValide, role: ROLE_ADMIN }
     - { path: ^/ArticleValide, role: ROLE_ADMIN }
     - { path: ^/ArticleNotValide, role: ROLE_ADMIN }
     - { path: ^/article/new, role: ROLE_USER }
+    - { path: ^/UserValide, role: ROLE_ADMIN }
+    - { path: ^/userAdmin, role: ROLE_SUPER_ADMIN }
+    - { path: ^/setAdmin, role: ROLE_SUPER_ADMIN }
+    - { path: ^/unsetAdmin, role: ROLE_SUPER_ADMIN }

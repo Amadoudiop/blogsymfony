@@ -1,0 +1,41 @@
+Articles list
+<table data-date="{{ table.datecreate|date('Y-m-d H:i:s') }}"  data-type="article" data-id="{{ table.id }}">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Date_create</th>
+        <th>Date_event</th>
+        <th>Title</th>
+        <th>Catch_sentence</th>
+        <th>Picture</th>
+        <th>Content</th>
+        <th>Validation</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td><a href="{{ path('article_show', { 'id': table.id }) }}">{{ table.id }}</a></td>
+        <td>{% if table.datecreate %}{{ table.datecreate|date('Y-m-d H:i:s') }}{% endif %}</td>
+        <td>{% if table.dateupdate %}{{ table.dateupdate|date('Y-m-d H:i:s') }}{% endif %}</td>
+        <td>{% if table.dateevent %}{{ table.dateevent|date('Y-m-d H:i:s') }}{% endif %}</td>
+        <td>{{ table.title }}</td>
+        <td>{{ table.catchsentence }}</td>
+        <td>{{ table.picture }}</td>
+        <td>{{ table.content }}</td>
+        {% if table.enabled == 0 %}
+            <td>
+            <td>
+                <a href="{{ path('article_accept',{ 'id': table.id }) }}"> Accepter</a>
+            </td>
+            <td>
+                <a href="{{ path('article_refuse',{ 'id': table.id }) }}"> Refuser</a>
+            </td>
+            </td>
+        {% else %}
+            <td>
+                <a href="{{ path('article_refuse',{ 'id': table.id }) }}">Suprimer</a>
+            </td>
+        {% endif %}
+    </tr>
+    </tbody>
+</table>

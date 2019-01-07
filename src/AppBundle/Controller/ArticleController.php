@@ -11,6 +11,7 @@ use AppBundle\Service\FileHandler;
 use AppBundle\Service\SendMail;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\JsonResponse;
+
 //use DateTime;
 
 /**
@@ -35,7 +36,7 @@ class ArticleController extends Controller
             $objectCollection->add($object);
         }
         $iterator = $objectCollection->getIterator();
-        $iterator->uasort(function ($a, $b){
+        $iterator->uasort(function ($a, $b) {
 
             return ($a->getDateCreate() < $b->getDateCreate()) ? -1 : 1;
         });
@@ -62,12 +63,39 @@ class ArticleController extends Controller
             $objectCollection->add($object);
         }
         $iterator = $objectCollection->getIterator();
-        $iterator->uasort(function ($a, $b){
+        $iterator->uasort(function ($a, $b) {
 
             return ($a->getDateCreate() < $b->getDateCreate()) ? -1 : 1;
         });
 
         return $this->render('article\validation.html.twig', array(
+            'tables' => $iterator,
+        ));
+    }
+
+    /**
+     * Lists all article create by one user.
+     *
+     * @Route("ArticleUser", name="ArticleUser")
+     * @Method("GET")
+     */
+    public function articleUserAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $articles = $em->getRepository('AppBundle:Article')->findByUser($this->getUser()->getId());
+        $table = array_merge($articles);
+        $objectCollection = new ArrayCollection();
+
+        foreach ($table as $object) {
+            $objectCollection->add($object);
+        }
+        $iterator = $objectCollection->getIterator();
+        $iterator->uasort(function ($a, $b) {
+
+            return ($a->getDateCreate() < $b->getDateCreate()) ? -1 : 1;
+        });
+
+        return $this->render('article\articlePersoUser.html.twig', array(
             'tables' => $iterator,
         ));
     }
@@ -81,8 +109,8 @@ class ArticleController extends Controller
     public function userNotValideAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $users = $em->getRepository('AppBundle:User')->findBy( array('validation' => 0,
-                                                                                'enabled' => 1));
+        $users = $em->getRepository('AppBundle:User')->findBy(array('validation' => 0,
+            'enabled' => 1));
         $table = array_merge($users);
         $objectCollection = new ArrayCollection();
 
@@ -90,7 +118,7 @@ class ArticleController extends Controller
             $objectCollection->add($object);
         }
         $iterator = $objectCollection->getIterator();
-        $iterator->uasort(function ($a, $b){
+        $iterator->uasort(function ($a, $b) {
 
             return ($a->getDateCreate() < $b->getDateCreate()) ? -1 : 1;
         });
@@ -104,31 +132,36 @@ class ArticleController extends Controller
      * Lists all user entities valide.
      *
      * @Route("UserValide", name="UserValideIndex", options={"expose"=true})
-     * @Method("GET")
+     * @Method({"GET" ,"POST"})
      */
-    public function userValideAction()
+    public function userValideAction(request $request)
     {
+        $lastElementDate = $request->request->get("lastElementDate");
         $em = $this->getDoctrine()->getManager();
-        $users = $em->getRepository('AppBundle:User')->findBy( array('validation' => 1,
-                                                                                'enabled' => 1));
-        $table = array_merge($users);
-        $objectCollection = new ArrayCollection();
+        $qb = $em->createQueryBuilder();
+        $q = $qb->select('u')
+            ->from('AppBundle:user', 'u')
+            ->where('u.validation = 1')
+            ->andWhere('u.enabled = 1')
+            ->andWhere(
+                $qb->expr()->lt('u.dateCreate', ':dateCreate')
+            )
+            ->setParameter('dateCreate', $lastElementDate)
+            ->orderBy('u.dateCreate', 'DESC')
+            ->setMaxResults(10)
+            ->getQuery();
 
-        foreach ($table as $object) {
-            $objectCollection->add($object);
+        $users = $q->getResult();
+
+
+        $data = "";
+        if ($users) {
+            foreach ($users as $table) {
+                $data .= $this->render('article\user.html.twig', array(
+                    'table' => $table,
+                ));
+            }
         }
-        $iterator = $objectCollection->getIterator();
-        $iterator->uasort(function ($a, $b){
-
-            return ($a->getDateCreate() < $b->getDateCreate()) ? -1 : 1;
-        });
-        //html = array
-        //foreach($iterator) html .= template(articleEvent.html.twig)
-        //if user ( html .= template(articleEvent.html.twig)
-        $data[] = [
-            'tables' => $iterator,
-            'user' => $users,
-        ];
 
         return new JsonResponse($data);
     }
@@ -149,7 +182,7 @@ class ArticleController extends Controller
             $objectCollection->add($user);
         }
         $iterator = $objectCollection->getIterator();
-        $iterator->uasort(function ($a, $b){
+        $iterator->uasort(function ($a, $b) {
 
             return ($a->getDateCreate() < $b->getDateCreate()) ? -1 : 1;
         });
@@ -169,16 +202,16 @@ class ArticleController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $articles = $em->getRepository('AppBundle:Article')->findByEnabled(0);
-        $users = $em->getRepository('AppBundle:User')->findBy( array('validation' => 0,
-                                                                                'enabled' => 1));
-        $table = array_merge($users,$articles);
+        $users = $em->getRepository('AppBundle:User')->findBy(array('validation' => 0,
+            'enabled' => 1));
+        $table = array_merge($users, $articles);
         $objectCollection = new ArrayCollection();
 
         foreach ($table as $object) {
             $objectCollection->add($object);
         }
         $iterator = $objectCollection->getIterator();
-        $iterator->uasort(function ($a, $b){
+        $iterator->uasort(function ($a, $b) {
 
             return ($a->getDateCreate() < $b->getDateCreate()) ? -1 : 1;
         });
@@ -199,11 +232,11 @@ class ArticleController extends Controller
         $article->setEnabled(1);
         $this->getDoctrine()->getManager()->flush();
 
-        if ($article->getUser() != null ) {
+        if ($article->getUser() != null) {
             $SendMail = $this->get(SendMail::class);
             $SendMail->SendMail('- MakeMeUp article refusé -',
-                                $article->getUser()->getEmail(),
-                                'ArticleAccept' );
+                $article->getUser()->getEmail(),
+                'ArticleAccept');
         }
 
         return $this->redirectToRoute('validation_index');
@@ -221,11 +254,11 @@ class ArticleController extends Controller
         $em->remove($article);
         $em->flush();
 
-        if ($article->getUser() != null ) {
+        if ($article->getUser() != null) {
             $SendMail = $this->get(SendMail::class);
             $SendMail->SendMail('- MakeMeUp article refusé -',
-                                $article->getUser()->getEmail(),
-                                'ArticleRefus' );
+                $article->getUser()->getEmail(),
+                'ArticleRefus');
         }
 
         return $this->redirectToRoute('validation_index');
@@ -247,12 +280,12 @@ class ArticleController extends Controller
             $file = $article->getPicture();
             $fileHandler = $this->get(FileHandler::class);
             $fileName = $fileHandler->upload($file, $this->getParameter('upload_directory'));
-            if(!$fileName){
+            if (!$fileName) {
                 $this->addFlash(
                     'danger',
                     'la photo est trop grosse taille max 3MB'
                 );
-            }else{
+            } else {
                 $article->setPicture($fileName["name"]);
                 $article->setUser($this->getUser());
                 $em = $this->getDoctrine()->getManager();
@@ -346,7 +379,6 @@ class ArticleController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('article_delete', array('id' => $article->getId())))
             ->setMethod('DELETE')
-            ->getForm()
-        ;
+            ->getForm();
     }
 }

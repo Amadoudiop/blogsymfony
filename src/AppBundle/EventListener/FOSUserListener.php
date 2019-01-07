@@ -4,11 +4,12 @@ namespace AppBundle\EventListener;
 
 use FOS\UserBundle\FOSUserEvents;
 use FOS\UserBundle\Event\FormEvent;
+use FOS\UserBundle\Event\UserEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class RegistrationListener implements EventSubscriberInterface
+class FOSUserListener implements EventSubscriberInterface
 {
     private $router;
 
@@ -20,7 +21,8 @@ class RegistrationListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            FOSUserEvents::REGISTRATION_FAILURE => 'onRegistrationFailure'
+            FOSUserEvents::REGISTRATION_FAILURE => 'onRegistrationFailure',
+            FOSUserEvents::SECURITY_IMPLICIT_LOGIN => 'onRegistrationInitialize'
         ];
     }
 
@@ -28,6 +30,12 @@ class RegistrationListener implements EventSubscriberInterface
     {
         $url = $this->router->generate('user_login_register');
         $event->setResponse(new RedirectResponse($url));
+    }
+
+    public function onRegistrationInitialize(UserEvent $event)
+    {
+        dump($event);
+        die;
     }
 
 

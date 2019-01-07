@@ -1,0 +1,50 @@
+<table data-date="{{ table.datecreate|date('Y-m-d H:i:s') }}" data-type="user" data-id="{{ table.id }}">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Datecreate</th>
+        <th>Promotion</th>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Alias</th>
+        <th>Mail</th>
+        <th>Status</th>
+        <th>Validation</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td><a href="{{ path('user_show', { 'id': table.id }) }}">{{ table.id }}</a></td>
+        <td>{% if table.dateCreate %}{{ table.dateCreate|date('Y-m-d H:i:s') }}{% endif %}</td>
+        <td>{{ table.promotion }}</td>
+        <td>{{ table.firstName }}</td>
+        <td>{{ table.lastName }}</td>
+        <td>{{ table.username }}</td>
+        <td>{{ table.email }}</td>
+        {% if table.validation == 0 %}
+            <td>
+            <td>
+                <a href="{{ path('user_accept',{ 'id': table.id }) }}"> accepter</a>
+            </td>
+            <td>
+                <a href="{{ path('user_refuse',{ 'id': table.id }) }}"> refusée</a>
+            </td>
+            </td>
+
+        {% else %}
+            <td>
+                <a href="{{ path('user_refuse',{ 'id': table.id }) }}">Suprimer</a>
+            </td>
+            {% if table.roles.0 == "ROLE_USER" %}
+                <td>
+                    <a href="{{ path('set_admin',{ 'id': table.id }) }}">ADMIN</a>
+                </td>
+            {% elseif table.roles.0 == "ROLE_ADMIN" %}
+                <td>
+                    <a href="{{ path('unset_admin',{ 'id': table.id }) }}">UNSET ADMIN</a>
+                </td>
+            {% endif %}
+        {% endif %}
+    </tr>
+    </tbody>
+</table>

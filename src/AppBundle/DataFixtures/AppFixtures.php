@@ -21,7 +21,7 @@ class AppFixtures extends Fixture
 
 // create 20 User
         $users = [];
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 40; $i++) {
             $user = new User();
             $user->setPromotion(1999);
             $user->setFirstName("cigarillos" . $i);
@@ -33,7 +33,7 @@ class AppFixtures extends Fixture
                 $user->setValidation(1);
             } else {
                 $user->setEnabled(1);
-                $user->setValidation(0);
+                $user->setValidation(1 );
             }
             $user->setPlainPassword("aaa");
 
@@ -44,6 +44,7 @@ class AppFixtures extends Fixture
             $user->addRole("ROLE_USER");
             $manager->persist($user);
             $users[] = $user;
+            sleep(1);
         }
 
 
@@ -71,6 +72,7 @@ class AppFixtures extends Fixture
                 $article->setEnabled(1);
             }
             $manager->persist($article);
+            sleep(1);
         }
 
         $manager->flush();

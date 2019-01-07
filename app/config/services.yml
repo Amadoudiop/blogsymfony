@@ -49,7 +49,7 @@ services:
             $mailerSender: "%mailer_sender%"
             $twig: "@twig"
 
-    AppBundle\EventListener\RegistrationListener:
+    AppBundle\EventListener\FOSUserListener:
         arguments: ['@router']
         tags: {name: kernel.event_subscriber }
 
