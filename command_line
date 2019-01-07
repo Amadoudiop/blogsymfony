@@ -63,6 +63,7 @@ EFREI.NET
 EFREI.FR
 ESIGETEL.NET
 EFREITECH.NET   (assert dans user.php lastname)
+https://symfony.com/doc/3.4/validation.html
 
 boutton edit d'un article ne s'affiche que si on est modérateur ou créateur de l'article
 
@@ -73,4 +74,4 @@ faire une 404
 
 recherche RENDER pour JS retirer le message de succés
 
-vérification que la requète soit de l'ajax
+https://symfony.com/doc/3.4/controller/upload_file.html

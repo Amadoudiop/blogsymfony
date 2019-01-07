@@ -25,6 +25,7 @@ class ArticleController extends Controller
      * @Route("ArticleNotValide", name="ArticleNotValideIndex")
      * @Method("GET")
      */
+
     public function articleNotValideAction()
     {
         $em = $this->getDoctrine()->getManager();
@@ -134,6 +135,7 @@ class ArticleController extends Controller
      * @Route("UserValide", name="UserValideIndex", options={"expose"=true})
      * @Method({"GET" ,"POST"})
      */
+
     public function userValideAction(request $request)
     {
         $lastElementDate = $request->request->get("lastElementDate");
@@ -152,7 +154,6 @@ class ArticleController extends Controller
             ->getQuery();
 
         $users = $q->getResult();
-
 
         $data = "";
         if ($users) {
