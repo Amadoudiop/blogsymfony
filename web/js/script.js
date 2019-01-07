@@ -4,7 +4,7 @@ $(function () {
     lastElement = $('#element-container table:last')
     lastElementDate = lastElement.attr('data-date')
     spinner = '<div style="display:none;" id="spinner" class="spinner-border" role="status">\n' +
-                '  <span class="sr-only">Loading...</span>\n' +
+                '<span class="sr-only">Loading...</span>\n' +
                 '</div>'
     $(window).data('ajaxready', true);
 
@@ -13,7 +13,7 @@ $(function () {
     $("#listing-choice").change(function(){
         filterChoice = $(this).val()
         console.log(filterChoice)
-        $('#element-container').append(spinner)
+        $('#element-container').prepend(spinner)
         $('#spinner').fadeIn(400);
         $.ajax({
             url: Routing.generate(filterChoice),
