@@ -28,12 +28,12 @@ class AppFixtures extends Fixture
             $user->setLastName("cigar" . $i);
             $user->setUsername("cig" . $i);
             $user->setEmail($i . "@gmail.com");
-            if ($i < 3) {
+            if ($i  < 20) {
                 $user->setEnabled(1);
                 $user->setValidation(1);
             } else {
                 $user->setEnabled(1);
-                $user->setValidation(1 );
+                $user->setValidation(0 );
             }
             $user->setPlainPassword("aaa");
 

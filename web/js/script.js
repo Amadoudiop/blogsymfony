@@ -3,7 +3,6 @@ $(function () {
     $(window).data('ajaxready', true);
     filterChoice = $("#listing-choice").val()
     lastElement = $('#element-container table:last')
-    lastElementDate = lastElement.attr('data-date')
     spinner = '<div style="display:none;" id="spinner" class="spinner-border" role="status">\n' +
         '<span class="sr-only">Loading...</span>\n' +
         '</div>'
@@ -21,7 +20,7 @@ $(function () {
         $.ajax({
             url: Routing.generate(filterChoice),
             type: "POST",
-            data: 'lastElementDate=' + lastElementDate,
+            data: 'lastElementDate=' + lastElement.attr('data-date'),
             success: function (data) {
                 $("#element-container").html(data)
                 $('#spinner').fadeOut(400);

@@ -104,29 +104,54 @@ class ArticleController extends Controller
     /**
      * Lists all user entities not valide.
      *
-     * @Route("UserNotValide", name="UserNotValideIndex")
+     * @Route("UserNotValide", name="UserNotValideIndex", options={"expose"=true})
      * @Method("GET")
      */
-    public function userNotValideAction()
+    public function userNotValideAction(request $request)
     {
+//        $em = $this->getDoctrine()->getManager();
+//        $users = $em->getRepository('AppBundle:User')->findBy(array('validation' => 0,
+//            'enabled' => 1));
+//        $table = array_merge($users);
+//        $objectCollection = new ArrayCollection();
+//
+//        foreach ($table as $object) {
+//            $objectCollection->add($object);
+//        }
+//        $iterator = $objectCollection->getIterator();
+//        $iterator->uasort(function ($a, $b) {
+//
+//            return ($a->getDateCreate() < $b->getDateCreate()) ? -1 : 1;
+//        });
+//
+//        return $this->render('article\validation.html.twig', array(
+//            'tables' => $iterator,
+//        ));
+        $lastElementDate = $request->request->get("lastElementDate");
         $em = $this->getDoctrine()->getManager();
-        $users = $em->getRepository('AppBundle:User')->findBy(array('validation' => 0,
-            'enabled' => 1));
-        $table = array_merge($users);
-        $objectCollection = new ArrayCollection();
+        $qb = $em->createQueryBuilder();
+        $q = $qb->select('u')
+            ->from('AppBundle:user', 'u')
+            ->where('u.validation = 0')
+            ->andWhere('u.enabled = 1')
+            ->andWhere(
+                $qb->expr()->lt('u.dateCreate', ':dateCreate')
+            )
+            ->setParameter('dateCreate', $lastElementDate)
+            ->orderBy('u.dateCreate', 'DESC')
+            ->setMaxResults(10)
+            ->getQuery();
+        $users = $q->getResult();
 
-        foreach ($table as $object) {
-            $objectCollection->add($object);
+        $data = "";
+        if ($users) {
+            foreach ($users as $table) {
+                $data .= $this->render('article\user.html.twig', array(
+                    'table' => $table,
+                ));
+            }
         }
-        $iterator = $objectCollection->getIterator();
-        $iterator->uasort(function ($a, $b) {
-
-            return ($a->getDateCreate() < $b->getDateCreate()) ? -1 : 1;
-        });
-
-        return $this->render('article\validation.html.twig', array(
-            'tables' => $iterator,
-        ));
+        return new JsonResponse($data);
     }
 
     /**
@@ -152,7 +177,6 @@ class ArticleController extends Controller
             ->orderBy('u.dateCreate', 'DESC')
             ->setMaxResults(10)
             ->getQuery();
-
         $users = $q->getResult();
 
         $data = "";
@@ -163,7 +187,6 @@ class ArticleController extends Controller
                 ));
             }
         }
-
         return new JsonResponse($data);
     }
 
