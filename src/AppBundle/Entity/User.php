@@ -24,6 +24,14 @@ class User extends BaseUser
     protected $id;
 
     /**
+     * @Assert\Regex(
+     *   pattern="",
+     *   match=true,
+     *   message=""
+     * )
+     */
+    protected $email;
+    /**
      * @var int
      *
      * @ORM\Column(name="promotion", type="integer")

@@ -4,9 +4,9 @@
     <div id="filter">
         <label for="listing-choice">recherche par :</label>
         <select id="listing-choice">
-            <option value="validation_index">tout</option>
-            <option value="UserNotValideIndex">compte Non Validée</option>
-            <option value="ArticleNotValideIndex">article évènement non validé</option>
+            <option value="allValideIndex">à modérer</option>
+            <option value="UserNotValideIndex">compte à modérer</option>
+            <option value="ArticleNotValideIndex">article évènement à modérer</option>
             <option value="ArticleValideIndex">article évènement validé</option>
             <option value="UserValideIndex">compte validé</option>
         </select>
@@ -86,31 +86,29 @@
 
                         {% if element.validation == 0 %}
                             <td>
-                            <td>
-                                <a href="{{ path('user_accept',{ 'id': element.id }) }}"> accepter</a>
+                                <button class="accept-user" data-id="{{ element.id }}"> accepter</button>
                             </td>
                             <td>
-                                <a href="{{ path('user_refuse',{ 'id': element.id }) }}"> refusée</a>
-                            </td>
+                                <button class="refuse-user" data-id="{{ element.id }}"> refusée</button>
                             </td>
 
                         {% else %}
                             <td>
-                                <a href="{{ path('user_refuse',{ 'id': element.id }) }}">Suprimer</a>
+                                <button class="refuse-user" data-id="{{ element.id }}"> suprimer</button>
                             </td>
-                            {% if element.roles.0 == "ROLE_USER" %}
+                            {% if (element.roles.0 == "ROLE_USER") and (is_granted('ROLE_ADMIN') == true) %}
                                 <td>
-                                    <a href="{{ path('set_admin',{ 'id': element.id }) }}">ADMIN</a>
+                                    <button class="set-admin" data-id="{{ element.id }}"> ADMIN</button>
                                 </td>
-                            {% elseif element.roles.0 == "ROLE_ADMIN" %}
+                            {% elseif (element.roles.0 == "ROLE_ADMIN") and (is_granted('ROLE_ADMIN') == true) %}
                                 <td>
-                                    <a href="{{ path('unset_admin',{ 'id': element.id }) }}">UNSET ADMIN</a>
+                                    <button class="unset-admin" data-id="{{ element.id }}"> UNSET ADMIN</button>
                                 </td>
                             {% endif %}
                         {% endif %}
                     </tr>
                     </tbody>
-                </>
+                </table>
 
             {% endif %}
         {% endfor %}

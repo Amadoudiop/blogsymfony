@@ -23,25 +23,23 @@
         <td>{{ table.email }}</td>
         {% if table.validation == 0 %}
             <td>
-            <td>
-                <a href="{{ path('user_accept',{ 'id': table.id }) }}"> accepter</a>
+                <button class="accept-user" data-id="{{ table.id }}"> accepter</button>
             </td>
             <td>
-                <a href="{{ path('user_refuse',{ 'id': table.id }) }}"> refusée</a>
-            </td>
+                <button class="refuse-user" data-id="{{ table.id }}"> refusée</button>
             </td>
 
         {% else %}
             <td>
-                <a href="{{ path('user_refuse',{ 'id': table.id }) }}">Suprimer</a>
+                <button class="refuse-user" data-id="{{ table.id }}"> suprimer</button>
             </td>
-            {% if table.roles.0 == "ROLE_USER" %}
+            {% if (table.roles.0 == "ROLE_USER") and (is_granted('ROLE_ADMIN') == true) %}
                 <td>
-                    <a href="{{ path('set_admin',{ 'id': table.id }) }}">ADMIN</a>
+                    <button class="set-admin" data-id="{{ table.id }}"> ADMIN</button>
                 </td>
-            {% elseif table.roles.0 == "ROLE_ADMIN" %}
+            {% elseif (table.roles.0 == "ROLE_ADMIN") and (is_granted('ROLE_ADMIN') == true) %}
                 <td>
-                    <a href="{{ path('unset_admin',{ 'id': table.id }) }}">UNSET ADMIN</a>
+                    <button class="unset-admin" data-id="{{ table.id }}"> UNSET ADMIN</button>
                 </td>
             {% endif %}
         {% endif %}

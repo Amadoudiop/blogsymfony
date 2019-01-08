@@ -20,6 +20,7 @@ class AppKernel extends Kernel
             new BlogBundle\BlogBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
+            new JMS\SerializerBundle\JMSSerializerBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

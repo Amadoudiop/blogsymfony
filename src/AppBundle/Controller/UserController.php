@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Service\SendMail;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * User controller.
@@ -34,8 +35,8 @@ class UserController extends Controller
     /**
      * Accept one user
      *
-     * @Route("/{id}/accept", name="user_accept")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/accept", name="user_accept", options={"expose"=true})
+     * @Method({"GET", "POST"}, )
      */
     public function acceptAction(User $user)
     {
@@ -47,12 +48,12 @@ class UserController extends Controller
             $user->getEmail(),
             'CompteAccepte' );
 
-        return $this->redirectToRoute('validation_index');
+        return new JsonResponse(1);
     }
     /**
      * refuse one user
      *
-     * @Route("/{id}/refuse", name="user_refuse")
+     * @Route("/{id}/refuse", name="user_refuse", options={"expose"=true})
      * @Method({"GET", "POST"})
      */
     public function refuseAction(User $user)
@@ -66,13 +67,13 @@ class UserController extends Controller
             $user->getEmail(),
             'CompteRefuse' );
 
-        return $this->redirectToRoute('validation_index');
+        return new JsonResponse(1);
     }
 
     /**
      * make one user admin
      *
-     * @Route("/{id}/setAdmin", name="set_admin")
+     * @Route("/{id}/setAdmin", name="set_admin", options={"expose"=true})
      * @Method({"GET", "POST"})
      */
     public function setAdminAction(User $user)
@@ -85,13 +86,13 @@ class UserController extends Controller
             $user->getEmail(),
             'CompteAccepte' );
 
-        return $this->redirectToRoute('validation_index');
+        return new JsonResponse(1);
     }
 
     /**
      * unset one user admin
      *
-     * @Route("/{id}/unsetAdmin", name="unset_admin")
+     * @Route("/{id}/unsetAdmin", name="unset_admin", options={"expose"=true})
      * @Method({"GET", "POST"})
      */
     public function unsetAdminAction(User $user)
@@ -104,7 +105,7 @@ class UserController extends Controller
             $user->getEmail(),
             'CompteAccepte' );
 
-        return $this->redirectToRoute('validation_index');
+        return new JsonResponse(1);
     }
 
     /**

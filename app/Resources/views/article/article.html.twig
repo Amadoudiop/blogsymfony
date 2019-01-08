@@ -24,15 +24,15 @@ Articles list
         {% if table.enabled == 0 %}
             <td>
             <td>
-                <a href="{{ path('article_accept',{ 'id': table.id }) }}"> Accepter</a>
+                <button class="accept-article" data-id="{{ table.id }}"> accepté</button>
             </td>
             <td>
-                <a href="{{ path('article_refuse',{ 'id': table.id }) }}"> Refuser</a>
+                <button class="refuse-article" data-id="{{ table.id }}"> refusé</button>
             </td>
             </td>
         {% else %}
             <td>
-                <a href="{{ path('article_refuse',{ 'id': table.id }) }}">Suprimer</a>
+                <button class="refuse-article" data-id="{{ table.id }}"> suprimer</button>
             </td>
         {% endif %}
     </tr>

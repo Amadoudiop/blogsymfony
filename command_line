@@ -63,9 +63,22 @@ EFREI.NET
 EFREI.FR
 ESIGETEL.NET
 EFREITECH.NET   (assert dans user.php lastname)
+
+     * @Assert\Regex(
+     *     pattern="^/efrei.fr|efrei.net|esigetel.net|efreitech.net/",
+     *     match=true,
+     *     message="le nom doit être cigarillos"
+     * )
+
 https://symfony.com/doc/3.4/validation.html
 
+installer JMSSerializerBundle
+https://github.com/schmittjoh/JMSSerializerBundle/blob/master/Resources/doc/index.rst
+
+
+
 boutton edit d'un article ne s'affiche que si on est modérateur ou créateur de l'article
+https://symfony.com/doc/3.4/controller/upload_file.html
 
 créer un boutton pour le super modérateur pour promouvoir et supprimer les droits d'un compte en administrateur
 accès en temps que super_Admin
@@ -74,7 +87,4 @@ faire une 404
 
 recherche RENDER pour JS retirer le message de succés
 
-https://symfony.com/doc/3.4/controller/upload_file.html
 
-installer JMSSerializerBundle
-https://github.com/schmittjoh/JMSSerializerBundle/blob/master/Resources/doc/index.rst

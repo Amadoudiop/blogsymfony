@@ -20,12 +20,67 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class ArticleController extends Controller
 {
     /**
+     * Lists all article and user entities not valide.
+     *
+     * @Route("validation", name="validation_index")
+     * @Method("GET")
+     */
+    public function indexAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $articles = $em->getRepository('AppBundle:Article')->findByEnabled(0);
+        $users = $em->getRepository('AppBundle:User')->findBy(array('validation' => 0,
+            'enabled' => 1));
+        $table = array_merge($users, $articles);
+        $objectCollection = new ArrayCollection();
+
+        foreach ($table as $object) {
+            $objectCollection->add($object);
+        }
+        $iterator = $objectCollection->getIterator();
+        $iterator->uasort(function ($a, $b) {
+
+            return ($a->getDateCreate() < $b->getDateCreate()) ? -1 : 1;
+        });
+
+        return $this->render('article\validation.html.twig', array(
+            'tables' => $iterator,
+        ));
+    }
+
+    /**
+     * Lists all article entities not valide.
+     *
+     * @Route("allValide", name="allValideIndex", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function allAction(request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $articles = $em->getRepository('AppBundle:Article')->findByEnabled(0);
+        $users = $em->getRepository('AppBundle:User')->findBy(array('validation' => 0,
+            'enabled' => 1));
+        $table = array_merge($users, $articles);
+        $objectCollection = new ArrayCollection();
+
+        foreach ($table as $object) {
+            $objectCollection->add($object);
+        }
+        $iterator = $objectCollection->getIterator();
+        $iterator->uasort(function ($a, $b) {
+
+            return ($a->getDateCreate() < $b->getDateCreate()) ? -1 : 1;
+        });
+
+        return new JsonResponse($iterator);
+    }
+
+    /**
      * Lists all article entities not valide.
      *
      * @Route("ArticleNotValide", name="ArticleNotValideIndex", options={"expose"=true})
      * @Method("GET")
      */
-
     public function articleNotValideAction(request $request)
     {
         $lastElementDate = $request->request->get("lastElementDate");
@@ -211,38 +266,9 @@ class ArticleController extends Controller
     }
 
     /**
-     * Lists all article and user entities not valide.
-     *
-     * @Route("validation", name="validation_index")
-     * @Method("GET")
-     */
-    public function indexAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-        $articles = $em->getRepository('AppBundle:Article')->findByEnabled(0);
-        $users = $em->getRepository('AppBundle:User')->findBy(array('validation' => 0,
-            'enabled' => 1));
-        $table = array_merge($users, $articles);
-        $objectCollection = new ArrayCollection();
-
-        foreach ($table as $object) {
-            $objectCollection->add($object);
-        }
-        $iterator = $objectCollection->getIterator();
-        $iterator->uasort(function ($a, $b) {
-
-            return ($a->getDateCreate() < $b->getDateCreate()) ? -1 : 1;
-        });
-
-        return $this->render('article\validation.html.twig', array(
-            'tables' => $iterator,
-        ));
-    }
-
-    /**
      * accept one article
      *
-     * @Route("/{id}/accept", name="article_accept")
+     * @Route("/{id}/accept", name="article_accept", options={"expose"=true})
      * @Method({"GET", "POST"})
      */
     public function acceptAction(Article $article)
@@ -257,13 +283,13 @@ class ArticleController extends Controller
                 'ArticleAccept');
         }
 
-        return $this->redirectToRoute('validation_index');
+        return new JsonResponse(1);
     }
 
     /**
      * denied one article
      *
-     * @Route("/{id}/refuse", name="article_refuse")
+     * @Route("/{id}/refuse", name="article_refuse", options={"expose"=true})
      * @Method({"GET", "POST"})
      */
     public function refuseAction(Article $article)
@@ -279,7 +305,7 @@ class ArticleController extends Controller
                 'ArticleRefus');
         }
 
-        return $this->redirectToRoute('validation_index');
+        return new JsonResponse(1);
     }
 
     /**
