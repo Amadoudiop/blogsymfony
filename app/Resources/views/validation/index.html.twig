@@ -12,7 +12,11 @@
         </select>
     </div>
     <div id="element-container">
-        {% for element in tables %}
+
+    </div>
+{% endblock %}
+
+ {#     {% for element in tables %}
             {% if (element|class) == 'Article' %}
                 <table data-date="{{ element.datecreate|date('Y-m-d H:i:s') }}"  data-type="article" data-id="{{ element.id }}">
                     <thead>
@@ -111,6 +115,4 @@
                 </table>
 
             {% endif %}
-        {% endfor %}
-    </div>
-{% endblock %}
+        {% endfor %} #}
