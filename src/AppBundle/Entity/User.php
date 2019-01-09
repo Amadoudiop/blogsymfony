@@ -25,9 +25,9 @@ class User extends BaseUser
 
     /**
      * @Assert\Regex(
-     *   pattern="",
-     *   match=true,
-     *   message=""
+     *     pattern="/@efrei.net$|@efrei.fr$|@esigetel.net$|@efreitech.net$/i",
+     *     message="l'email n'est pas valide"
+     * )
      * )
      */
     protected $email;
