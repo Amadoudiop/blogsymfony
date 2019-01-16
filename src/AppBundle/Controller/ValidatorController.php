@@ -68,7 +68,7 @@ class ValidatorController extends Controller
         $elements = $q->getResult();
         $data = "";
 
-        if ($elements) {
+        if (!empty($elements)) {
             foreach ($elements as $element) {
                 if(($element->getUser()) != null ) {
                     $data .= $this->render('article\user.html.twig', array(
@@ -81,6 +81,8 @@ class ValidatorController extends Controller
                     ));
                 }
             }
+        }else{
+            $data="end";
         }
         return new JsonResponse($data);
     }
@@ -113,12 +115,14 @@ class ValidatorController extends Controller
             ->getQuery();
         $elements = $q->getResult();
         $data = "";
-        if ($elements) {
+        if (!empty($elements)) {
             foreach ($elements as $element) {
                 $data .= $this->render('article\article.html.twig', array(
                     'element' => $element,
                 ));
             }
+        }else{
+            $data="end";
         }
         return new JsonResponse($data);
     }
@@ -150,12 +154,14 @@ class ValidatorController extends Controller
             ->getQuery();
         $elements = $q->getResult();
         $data = "";
-        if ($elements) {
+        if (!empty($elements)) {
             foreach ($elements as $element) {
                 $data .= $this->render('article\article.html.twig', array(
                     'element' => $element,
                 ));
             }
+        }else{
+            $data="end";
         }
         return new JsonResponse($data);
     }
@@ -190,12 +196,14 @@ class ValidatorController extends Controller
         $elements = $q->getResult();
         $data = "";
 
-        if ($elements) {
+        if (!empty($elements)) {
             foreach ($elements as $element) {
                 $data .= $this->render('article\user.html.twig', array(
                     'element' => $element,
                 ));
             }
+        }else{
+            $data="end";
         }
 
         return new JsonResponse($data);
@@ -204,9 +212,9 @@ class ValidatorController extends Controller
     /**
      * Lists all user entities valide.
      *
+     *  faire en sorte que l'on arrive à récupérer l'ID 1 de la table user sans erreurs.
      * @Route("UserValid", name="list_user_valid_index", options={"expose"=true})
      * @Method({"GET" })
-     * @Todo faire en sorte que l'on arrive à récupérer l'ID 1 de la table user sans erreurs.
      */
     public function listUserValidAction(request $request)
     {
@@ -240,6 +248,8 @@ class ValidatorController extends Controller
                     ));
                 }
             }
+        }else{
+            $data="end";
         }
 
         return new JsonResponse($data);

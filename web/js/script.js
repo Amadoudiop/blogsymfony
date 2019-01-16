@@ -1,6 +1,7 @@
 $(function () {
 
     $(window).data('ajaxready', true);
+    scrollOk = true;
     filterChoice = $("#listing-choice").val()
     lastElement = $('#element-container table:last')
     spinner = '<div style="display:none;" id="spinner" class="spinner-border" role="status">\n' +
@@ -44,6 +45,7 @@ $(function () {
             type: "POST",
             data: 'lastElementDate=' + undefined,
             success: function (data) {
+                scrollOk = true
                 $("#element-container").html(data)
                 $('#spinner').fadeOut(400);
                 $(".btn-action").bind( "click", function() {
@@ -74,8 +76,10 @@ $(function () {
         var scrollPosition = $(window).height() + $(window).scrollTop();
         if (($(window).scrollTop() + $(window).height()) == ($(document).height())
             && ($(window).data('ajaxready')) == true
+            && scrollOk == true
             || ($(window).scrollTop() + $(window).height()) + 150 > $(document).height()
             && $(window).data('ajaxready') == true
+            && scrollOk == true
         ) {
             $(window).data('ajaxready', false);
             //lastElement.after(spinner)
@@ -86,7 +90,11 @@ $(function () {
                 type: "POST",
                 data: 'lastElementDate=' + lastElementDate,
                 success: function (data) {
-                    lastElement.after(data)
+                    if(data == "end"){
+                        console.log(data);
+                        scrollOk = false;
+                    }
+                    lastElement.after(data);
                     $('#spinner').fadeOut(400);
                     $(window).data('ajaxready', true);
                 },
