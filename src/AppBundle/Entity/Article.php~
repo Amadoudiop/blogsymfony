@@ -10,7 +10,6 @@ use \datetime;
  *
  * @ORM\Table(name="article")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ArticleRepository")
- * @ORM\HasLifecycleCallbacks()
  */
 class Article
 {
@@ -26,10 +25,24 @@ class Article
     /**
      * one user as one element
      *
-     * @ORM\OneToOne(targetEntity="Element", mappedBy ="article", cascade={"remove","persist"}, fetch="EAGER")
-     * @ORM\JoinColumn(name="id_element", referencedColumnName="id", nullable=true)
+     * @ORM\OneToOne(targetEntity="Element", inversedBy="article")
+     * @ORM\JoinColumn(name="id_element", referencedColumnName="id")
      */
     private $element;
+
+    /**
+     * @var \DateTime,
+     *
+     * @ORM\Column(name="date_create", type="datetime")
+     */
+    private $dateCreate;
+
+    /**
+     * @var \DateTime,
+     *
+     * @ORM\Column(name="date_update", type="datetime")
+     */
+    private $dateUpdate;
 
     /**
      * @var boolean
@@ -102,8 +115,12 @@ class Article
     private $user;
 
 
+
+
     public function __construct()
     {
+        $this->dateCreate = new datetime('now');
+        $this->dateUpdate = new datetime('now');
     }
 
     /**
@@ -114,6 +131,54 @@ class Article
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set dateCreate
+     *
+     * @param datetime $dateCreate
+     *
+     * @return Article
+     */
+    public function setDateCreate($dateCreate)
+    {
+        $this->dateCreate = $dateCreate;
+
+        return $this;
+    }
+
+    /**
+     * Get dateCreate
+     *
+     * @return datetime
+     */
+    public function getDateCreate()
+    {
+        return $this->dateCreate;
+    }
+
+    /**
+     * Set dateUpdate
+     *
+     * @param datetime $dateUpdate
+     *
+     * @return Article
+     */
+    public function setDateUpdate($dateUpdate)
+    {
+        $this->dateUpdate = $dateUpdate;
+
+        return $this;
+    }
+
+    /**
+     * Get dateUpdate
+     *
+     * @return datetime
+     */
+    public function getDateUpdate()
+    {
+        return $this->dateUpdate;
     }
 
     /**
@@ -354,39 +419,5 @@ class Article
     public function getUser()
     {
         return $this->user;
-    }
-
-    /**
-     * Set element
-     *
-     * @param \AppBundle\Entity\Element $element
-     *
-     * @return Article
-     */
-    public function setElement(\AppBundle\Entity\Element $element = null)
-    {
-        $this->element = $element;
-
-        return $this;
-    }
-
-    /**
-     * Get element
-     *
-     * @return \AppBundle\Entity\Element
-     */
-    public function getElement()
-    {
-        return $this->element;
-    }
-
-    /**
-     * set element for user
-     * @ORM\PrePersist
-     */
-    public function articlePersist()
-    {
-        $element = new Element($this);
-        $this->setElement($element);
     }
 }

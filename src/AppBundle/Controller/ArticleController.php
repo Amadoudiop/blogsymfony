@@ -20,65 +20,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class ArticleController extends Controller
 {
     /**
-     * Lists all article create by one user.
-     *
-     * @Route("ArticleUser", name="ArticleUser")
-     * @Method("GET")
-     */
-    public function articleUserAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-        $articles = $em->getRepository('AppBundle:Article')->findByUser($this->getUser()->getId());
-        $table = array_merge($articles);
-        $objectCollection = new ArrayCollection();
-
-        foreach ($table as $object) {
-            $objectCollection->add($object);
-        }
-        $iterator = $objectCollection->getIterator();
-        $iterator->uasort(function ($a, $b) {
-
-            return ($a->getDateCreate() < $b->getDateCreate()) ? -1 : 1;
-        });
-
-        return $this->render('article\articlePersoUser.html.twig', array(
-            'tables' => $iterator,
-        ));
-    }
-
-    /**
-     * Lists all user entities admin.
-     *
-     * @Route("userAdmin", name="userAdminIndex")
-     * @Method("GET")
-     */
-    public function userAdminAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-        $users = $em->getRepository('AppBundle:User')->findByRole("ROLE_ADMIN");
-        $objectCollection = new ArrayCollection();
-
-        foreach ($users as $user) {
-            $objectCollection->add($user);
-        }
-        $iterator = $objectCollection->getIterator();
-        $iterator->uasort(function ($a, $b) {
-
-            return ($a->getDateCreate() < $b->getDateCreate()) ? -1 : 1;
-        });
-
-        return $this->render('article\validation.html.twig', array(
-            'tables' => $iterator,
-        ));
-    }
-
-    /**
      * accept one article
      *
      * @Route("/{id}/accept", name="article_accept", options={"expose"=true})
      * @Method({"GET", "POST"})
      */
-    public function acceptAction(Article $article)
+    public function articleAcceptAction(Article $article)
     {
         $article->setEnabled(1);
         $this->getDoctrine()->getManager()->flush();
@@ -99,7 +46,7 @@ class ArticleController extends Controller
      * @Route("/{id}/refuse", name="article_refuse", options={"expose"=true})
      * @Method({"GET", "POST"})
      */
-    public function refuseAction(Article $article)
+    public function articleRefuseAction(Article $article)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($article);
@@ -116,6 +63,33 @@ class ArticleController extends Controller
     }
 
     /**
+     * Lists all article create by one user.
+     *
+     * @Route("ArticleUser", name="ArticleUser")
+     * @Method("GET")
+     */
+    public function articleUserAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $articles = $em->getRepository('AppBundle:Article')->findByUser($this->getUser()->getId());
+        $table = array_merge($articles);
+        $objectCollection = new ArrayCollection();
+
+        foreach ($table as $object) {
+            $objectCollection->add($object);
+        }
+        $iterator = $objectCollection->getIterator();
+        $iterator->uasort(function ($a, $b) {
+
+            return ( $a->getElement()->getDateCreate() < $b->getElement()->getDateCreate() ) ? -1 : 1;
+        });
+
+        return $this->render('article\articlePersoUser.html.twig', array(
+            'tables' => $iterator,
+        ));
+    }
+
+    /**
      * Creates a new article entity.
      *
      * @Route("article/new", name="article_new")
@@ -128,7 +102,7 @@ class ArticleController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $file = $article->getPicture();
+            $file = $article->getPictureUpload();
             $fileHandler = $this->get(FileHandler::class);
             $fileName = $fileHandler->upload($file, $this->getParameter('upload_directory'));
             if (!$fileName) {
@@ -138,6 +112,7 @@ class ArticleController extends Controller
                 );
             } else {
                 $article->setPicture($fileName["name"]);
+                $article->setPictureUpload(null);
                 $article->setUser($this->getUser());
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($article);
@@ -166,9 +141,11 @@ class ArticleController extends Controller
     public function showAction(Article $article)
     {
         $deleteForm = $this->createDeleteForm($article);
+        $element = $article->getElement();
 
         return $this->render('article/show.html.twig', array(
             'article' => $article,
+            'element' => $element,
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -186,9 +163,31 @@ class ArticleController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $file = $article->getPictureUpload();
+            if(!is_null($file)){
+                $fileHandler = $this->get(FileHandler::class);
+                $fileName = $fileHandler->upload($file, $this->getParameter('upload_directory'));
+                if (!$fileName) {
+                    $this->addFlash(
+                        'danger',
+                        'la photo est trop grosse taille max 3MB'
+                    );
+                } else {
+                    $article->setPicture($fileName["name"]);
+                    $article->setPictureUpload(null);
+                    $article->setUser($this->getUser());
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($article);
+                    $em->flush();
+                    $this->addFlash(
+                        'success',
+                        'votre article à été modifié'
+                    );
+                    $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('article_edit', array('id' => $article->getId()));
+                    return $this->redirectToRoute('article_edit', array('id' => $article->getId()));
+                }
+            }
         }
 
         return $this->render('article/edit.html.twig', array(

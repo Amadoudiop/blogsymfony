@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class User extends BaseUser
 {
@@ -24,10 +25,17 @@ class User extends BaseUser
     protected $id;
 
     /**
+     * one user as one element
+     *
+     * @ORM\OneToOne(targetEntity="Element", mappedBy ="user", cascade={"remove","persist"}, fetch="EAGER")
+     * @ORM\JoinColumn(name="id_element", referencedColumnName="id", nullable=true)
+     */
+    private $element;
+
+    /**
      * @Assert\Regex(
      *     pattern="/@efrei.net$|@efrei.fr$|@esigetel.net$|@efreitech.net$/i",
      *     message="l'email n'est pas valide"
-     * )
      * )
      */
     protected $email;
@@ -62,13 +70,6 @@ class User extends BaseUser
     private $lastName;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="date_create", type="datetime")
-     */
-    private $dateCreate;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="token", type="string", length=255, nullable=true)
@@ -94,7 +95,6 @@ class User extends BaseUser
     public function __construct()
     {
         parent::__construct();
-        $this->dateCreate = new \DateTime('now');
 
     }
 
@@ -206,30 +206,6 @@ class User extends BaseUser
     }
 
     /**
-     * Set dateCreate
-     *
-     * @param \DateTime $dateCreate
-     *
-     * @return user
-     */
-    public function setDateCreate($dateCreate)
-    {
-        $this->dateCreate = $dateCreate;
-
-        return $this;
-    }
-
-    /**
-     * Get dateCreate
-     *
-     * @return \DateTime
-     */
-    public function getDateCreate()
-    {
-        return $this->dateCreate;
-    }
-
-    /**
      * Set token
      *
      * @param string $token
@@ -286,4 +262,39 @@ class User extends BaseUser
     {
         return $this->articles;
     }
+
+    /**
+     * Set element
+     *
+     * @param \AppBundle\Entity\Element $element
+     *
+     * @return User
+     */
+    public function setElement(\AppBundle\Entity\Element $element = null)
+    {
+        $this->element = $element;
+
+        return $this;
+    }
+
+    /**
+     * Get element
+     *
+     * @return \AppBundle\Entity\Element
+     */
+    public function getElement()
+    {
+        return $this->element;
+    }
+
+    /**
+     * set element for user
+     * @ORM\PrePersist
+     */
+    public function userPersist()
+    {
+        $element = new Element($this);
+        $this->setElement($element);
+    }
+    // créer les méthode pour récupérer le date creat et update
 }

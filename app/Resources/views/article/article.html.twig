@@ -1,5 +1,5 @@
 Articles list
-<table data-date="{{ table.datecreate|date('Y-m-d H:i:s') }}"  data-type="article" data-id="{{ table.id }}">
+<table data-date="{{ element.datecreate|date('Y-m-d H:i:s') }}"  data-type="article" data-id="{{ element.article.id }}">
     <thead>
     <tr>
         <th>Id</th>
@@ -14,25 +14,25 @@ Articles list
     </thead>
     <tbody>
     <tr>
-        <td><a href="{{ path('article_show', { 'id': table.id }) }}">{{ table.id }}</a></td>
-        <td>{% if table.datecreate %}{{ table.datecreate|date('Y-m-d H:i:s') }}{% endif %}</td>
-        <td>{% if table.dateevent %}{{ table.dateevent|date('Y-m-d H:i:s') }}{% endif %}</td>
-        <td>{{ table.title }}</td>
-        <td>{{ table.catchsentence }}</td>
-        <td>{{ table.picture }}</td>
-        <td>{{ table.content }}</td>
-        {% if table.enabled == 0 %}
+        <td><a href="{{ path('article_show', { 'id': element.article.id }) }}">{{ element.article.id }}</a></td>
+        <td>{% if element.datecreate %}{{ element.datecreate|date('Y-m-d H:i:s') }}{% endif %}</td>
+        <td>{% if element.article.dateevent %}{{ element.article.dateevent|date('Y-m-d H:i:s') }}{% endif %}</td>
+        <td>{{ element.article.title }}</td>
+        <td>{{ element.article.catchsentence }}</td>
+        <td>{{ element.article.picture }}</td>
+        <td>{{ element.article.content }}</td>
+        {% if element.article.enabled == 0 %}
             <td>
             <td>
-                <button class="accept-article" data-id="{{ table.id }}"> accepté</button>
+                <button class="btn-action" data-id="{{ element.article.id }}" data-info="article_accept"> accepté</button>
             </td>
             <td>
-                <button class="refuse-article" data-id="{{ table.id }}"> refusé</button>
+                <button class="btn-action" data-id="{{ element.article.id }}" data-info="article_refuse"> refusé</button>
             </td>
             </td>
         {% else %}
             <td>
-                <button class="refuse-article" data-id="{{ table.id }}"> suprimer</button>
+                <button class="btn-action" data-id="{{ element.article.id }}" data-info="article_refuse"> suprimer</button>
             </td>
         {% endif %}
     </tr>

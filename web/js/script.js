@@ -4,124 +4,20 @@ $(function () {
     filterChoice = $("#listing-choice").val()
     lastElement = $('#element-container table:last')
     spinner = '<div style="display:none;" id="spinner" class="spinner-border" role="status">\n' +
-        '<span class="sr-only">Loading...</span>\n' +
-        '</div>'
+            '<span class="sr-only">Loading...</span>\n' +
+            '</div>'
 
     /**
-     * execute le controller qui accèpte l'utilisateur
+     * execute le controller associer à l'action demandé pour un user ou un article
      * @param id
+     * @param action
      * return boolean
      */
-    function acceptUser(id){
+    function userArticleAction(id,action){
         if($(window).data('ajaxready', true)){
             $(window).data('ajaxready', false)
             $.ajax({
-                url: Routing.generate("user_accept", {'id': id}),
-                success: function () {
-                    $(window).data('ajaxready', true);
-                    $('[data-id='+id+']').slideUp();
-                },
-                error: function () {
-                    $(window).data('ajaxready', true);
-                }
-            })
-        }
-    }
-
-    /**
-     * execute le controller qui refuse l'utilisateur
-     * @param id
-     * return boolean
-     */
-    function refuseUser(id){
-        if($(window).data('ajaxready', true)){
-            $(window).data('ajaxready', false)
-            $.ajax({
-                url: Routing.generate("user_refuse", {'id': id}),
-                success: function () {
-                    $(window).data('ajaxready', true);
-                    $('[data-id='+id+']').slideUp();
-                },
-                error: function () {
-                    $(window).data('ajaxready', true);
-                }
-            })
-        }
-    }
-
-    /**
-     * execute le controller qui passe un user en admin
-     * @param id
-     * return boolean
-     */
-    function setAdmin(id){
-        if($(window).data('ajaxready', true)){
-            $(window).data('ajaxready', false)
-            $.ajax({
-                url: Routing.generate("set_admin", {'id': id}),
-                success: function () {
-                    $(window).data('ajaxready', true);
-                    $('[data-id='+id+']').slideUp();
-                },
-                error: function () {
-                    $(window).data('ajaxready', true);
-                }
-            })
-        }
-    }
-
-    /**
-     * execute le controller qui enlève les privilège d'un admin
-     * @param id
-     * return boolean
-     */
-    function unsetAdmin(id){
-        if($(window).data('ajaxready', true)){
-            $(window).data('ajaxready', false)
-            $.ajax({
-                url: Routing.generate("unset_admin", {'id': id}),
-                success: function () {
-                    $(window).data('ajaxready', true);
-                    $('[data-id='+id+']').slideUp();
-                },
-                error: function () {
-                    $(window).data('ajaxready', true);
-                }
-            })
-        }
-    }
-
-    /**
-     * execute le controller qui accepte un article
-     * @param id
-     * return boolean
-     */
-    function acceptArticle(id){
-        if($(window).data('ajaxready', true)){
-            $(window).data('ajaxready', false)
-            $.ajax({
-                url: Routing.generate("article_accept", {'id': id}),
-                success: function () {
-                    $(window).data('ajaxready', true);
-                    $('[data-id='+id+']').slideUp();
-                },
-                error: function () {
-                    $(window).data('ajaxready', true);
-                }
-            })
-        }
-    }
-
-    /**
-     * execute le controller qui refuse un article
-     * @param id
-     * return boolean
-     */
-    function refuseArticle(id){
-        if($(window).data('ajaxready', true)){
-            $(window).data('ajaxready', false)
-            $.ajax({
-                url: Routing.generate("article_refuse", {'id': id}),
+                url: Routing.generate(action, {'id': id}),
                 success: function () {
                     $(window).data('ajaxready', true);
                     $('[data-id='+id+']').slideUp();
@@ -146,38 +42,14 @@ $(function () {
         $.ajax({
             url: Routing.generate(filterChoice),
             type: "POST",
-            data: 'lastElementDate=' + lastElement.attr('data-date'),
+            data: 'lastElementDate=' + undefined,
             success: function (data) {
                 $("#element-container").html(data)
                 $('#spinner').fadeOut(400);
-                $(".accept-user").bind( "click", function() {
-                    acceptUser(
-                        $(this).attr("data-id")
-                    );
-                });
-                $(".refuse-user").bind( "click", function() {
-                    refuseUser(
-                        $(this).attr("data-id")
-                    );
-                });
-                $(".set-admin").bind( "click", function() {
-                    setAdmin(
-                        $(this).attr("data-id")
-                    );
-                });
-                $(".unset-admin").bind( "click", function() {
-                    unsetAdmin(
-                        $(this).attr("data-id")
-                    );
-                });
-                $(".accept-article").bind( "click", function() {
-                    acceptArticle(
-                        $(this).attr("data-id")
-                    );
-                });
-                $(".refuse-article").bind( "click", function() {
-                    refuseArticle(
-                        $(this).attr("data-id")
+                $(".btn-action").bind( "click", function() {
+                    userArticleAction(
+                        $(this).attr("data-id"),
+                        $(this).attr("data-info")
                     );
                 });
             },

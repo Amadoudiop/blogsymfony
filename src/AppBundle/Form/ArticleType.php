@@ -30,7 +30,8 @@ class ArticleType extends AbstractType
             ->add('date_event', DateType::class, ['data' =>  new \DateTime('now')])
             ->add('title', TextType::class)
             ->add('catch_sentence', TextType::class)
-            //->add('picture', FileType::class, array('label' => 'picture (PDF file)'))
+            ->add('picture_upload', FileType::class, array('label' => 'picture (PDF file)',
+                                                                        'required' => false))
             ->add('content', TextareaType::class, array('empty_data' => '',
                                                                     'required' => false,))
             ->add('category', EntityType::class,

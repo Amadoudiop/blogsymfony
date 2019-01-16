@@ -19,6 +19,7 @@ class AppFixtures extends Fixture
         $category->setColor("#0000FF");
         $manager->persist($category);
 
+
 // create 20 User
         $users = [];
         for ($i = 0; $i < 40; $i++) {

@@ -1,4 +1,5 @@
-<table data-date="{{ table.datecreate|date('Y-m-d H:i:s') }}" data-type="user" data-id="{{ table.id }}">
+
+<table data-date="{{ element.datecreate|date('Y-m-d H:i:s') }}" data-type="user" data-id="{{ element.user.id }}">
     <thead>
     <tr>
         <th>Id</th>
@@ -14,32 +15,32 @@
     </thead>
     <tbody>
     <tr>
-        <td><a href="{{ path('user_show', { 'id': table.id }) }}">{{ table.id }}</a></td>
-        <td>{% if table.dateCreate %}{{ table.dateCreate|date('Y-m-d H:i:s') }}{% endif %}</td>
-        <td>{{ table.promotion }}</td>
-        <td>{{ table.firstName }}</td>
-        <td>{{ table.lastName }}</td>
-        <td>{{ table.username }}</td>
-        <td>{{ table.email }}</td>
-        {% if table.validation == 0 %}
+        <td><a href="{{ path('user_show', { 'id': element.user.id }) }}">{{ element.user.id }}</a></td>
+        <td>{% if element.datecreate %}{{ element.datecreate|date('Y-m-d H:i:s') }}{% endif %}</td>
+        <td>{{ element.user.promotion }}</td>
+        <td>{{ element.user.firstName }}</td>
+        <td>{{ element.user.lastName }}</td>
+        <td>{{ element.user.username }}</td>
+        <td>{{ element.user.email }}</td>
+        {% if element.user.validation == 0 %}
             <td>
-                <button class="accept-user" data-id="{{ table.id }}"> accepter</button>
+                <button class="btn-action" data-id="{{ element.user.id }}" data-info="user_accept"> accepter</button>
             </td>
             <td>
-                <button class="refuse-user" data-id="{{ table.id }}"> refusée</button>
+                <button class="btn-action" data-id="{{ element.user.id }}" data-info="user_refuse"> refusée</button>
             </td>
 
         {% else %}
             <td>
-                <button class="refuse-user" data-id="{{ table.id }}"> suprimer</button>
+                <button class="btn-action" data-id="{{ element.user.id }}" data-info="user_refuse"> suprimer</button>
             </td>
-            {% if (table.roles.0 == "ROLE_USER") and (is_granted('ROLE_ADMIN') == true) %}
+            {% if (element.user.roles.0 == "ROLE_USER") and (is_granted('ROLE_ADMIN') == true) %}
                 <td>
-                    <button class="set-admin" data-id="{{ table.id }}"> ADMIN</button>
+                    <button class="btn-action" data-id="{{ element.user.id }}" data-info="set_admin"> ADMIN</button>
                 </td>
-            {% elseif (table.roles.0 == "ROLE_ADMIN") and (is_granted('ROLE_ADMIN') == true) %}
+            {% elseif (element.user.roles.0 == "ROLE_ADMIN") and (is_granted('ROLE_ADMIN') == true) %}
                 <td>
-                    <button class="unset-admin" data-id="{{ table.id }}"> UNSET ADMIN</button>
+                    <button class="btn-action" data-id="{{ element.user.id }}" data-info="unset_admin"> UNSET ADMIN</button>
                 </td>
             {% endif %}
         {% endif %}

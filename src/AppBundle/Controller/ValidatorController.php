@@ -11,6 +11,8 @@ use AppBundle\Service\FileHandler;
 use AppBundle\Service\SendMail;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
+use Doctrine\ORM\Query\ResultSetMapping;
 
 //use DateTime;
 
@@ -33,42 +35,88 @@ class ValidatorController extends Controller
     /**
      * Lists all article and user entities not valide.
      *
-     * @Route("validation/moderate", name="moderate", options={"expose"=true})
+     * @Route("listAllNotValid", name="list_all_not_valid", options={"expose"=true})
      * @Method("GET")
      */
-    public function moderateAction()
-    {
-        return $this->render('validation\index.html.twig');
-    }
-
-
-    /**
-     * Lists all article entities not valide.
-     *
-     * @Route("ArticleNotValide", name="ArticleNotValideIndex", options={"expose"=true})
-     * @Method("GET")
-     */
-    public function articleNotValideAction(request $request)
+    public function moderateAction(request $request)
     {
         $lastElementDate = $request->request->get("lastElementDate");
         $em = $this->getDoctrine()->getManager();
         $qb = $em->createQueryBuilder();
-        $q = $qb->select('a')
-            ->from('AppBundle:article', 'a')
-            ->where('a.enabled = 0')
-            ->andWhere(
-                $qb->expr()->lt('a.dateCreate', ':dateCreate')
+        $q = $qb
+            ->select('e')
+            ->from('AppBundle:element','e')
+            ->leftJoin('AppBundle:article','a','WITH','e.article = a.id')
+            ->leftJoin('AppBundle:user','u','WITH','e.user = u.id')
+            ->where(
+                $qb->expr()->andX(
+                    $qb->expr()->eq('a.enabled',0),
+                    $qb->expr()->lt('e.dateCreate', ':dateCreate')
+                )
+            )
+           ->orWhere(
+                $qb->expr()->andX(
+                    $qb->expr()->eq('u.enabled',1),
+                    $qb->expr()->eq('u.validation',0),
+                    $qb->expr()->lt('e.dateCreate', ':dateCreate')
+                )
             )
             ->setParameter('dateCreate', $lastElementDate)
-            ->orderBy('a.dateCreate', 'DESC')
+            ->orderBy('e.dateCreate', 'DESC')
             ->setMaxResults(10)
             ->getQuery();
-        $users = $q->getResult();
+        $elements = $q->getResult();
         $data = "";
-        if ($users) {
-            foreach ($users as $table) {
+
+        if ($elements) {
+            foreach ($elements as $element) {
+                if(($element->getUser()) != null ) {
+                    $data .= $this->render('article\user.html.twig', array(
+                        'element' => $element,
+                    ));
+                }
+                else if(($element->getArticle()) != null ){
+                    $data .= $this->render('article\article.html.twig', array(
+                        'element' => $element,
+                    ));
+                }
+            }
+        }
+        return new JsonResponse($data);
+    }
+
+
+    /**
+     * Lists all article entities not valid.
+     *
+     * @Route("listArticleNotValid", name="list_article_not_valid_index", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function listArticleNotValidAction(request $request)
+    {
+        $lastElementDate = $request->request->get("lastElementDate");
+        $em = $this->getDoctrine()->getManager();
+        $qb = $em->createQueryBuilder();
+        $q = $qb
+            ->select('e')
+            ->from('AppBundle:element','e')
+            ->leftJoin('AppBundle:article','a','WITH','e.article = a.id')
+            ->where(
+                $qb->expr()->andX(
+                    $qb->expr()->eq('a.enabled',0),
+                    $qb->expr()->lt('e.dateCreate', ':dateCreate')
+                )
+            )
+            ->setParameter('dateCreate', $lastElementDate)
+            ->orderBy('e.dateCreate', 'DESC')
+            ->setMaxResults(10)
+            ->getQuery();
+        $elements = $q->getResult();
+        $data = "";
+        if ($elements) {
+            foreach ($elements as $element) {
                 $data .= $this->render('article\article.html.twig', array(
-                    'table' => $table,
+                    'element' => $element,
                 ));
             }
         }
@@ -76,32 +124,36 @@ class ValidatorController extends Controller
     }
 
     /**
-     * Lists all article entities valide.
+     * Lists all article entities valid.
      *
-     * @Route("ArticleValide", name="ArticleValideIndex", options={"expose"=true})
+     * @Route("listArticleValid", name="list_article_valid_index", options={"expose"=true})
      * @Method("GET")
      */
-    public function articleValideAction(request $request)
+    public function listArticleValidAction(request $request)
     {
         $lastElementDate = $request->request->get("lastElementDate");
         $em = $this->getDoctrine()->getManager();
         $qb = $em->createQueryBuilder();
-        $q = $qb->select('a')
-            ->from('AppBundle:article', 'a')
-            ->where('a.enabled = 1')
-            ->andWhere(
-                $qb->expr()->lt('a.dateCreate', ':dateCreate')
+        $q = $qb
+            ->select('e')
+            ->from('AppBundle:element','e')
+            ->leftJoin('AppBundle:article','a','WITH','e.article = a.id')
+            ->where(
+                $qb->expr()->andX(
+                    $qb->expr()->eq('a.enabled',1),
+                    $qb->expr()->lt('e.dateCreate', ':dateCreate')
+                )
             )
             ->setParameter('dateCreate', $lastElementDate)
-            ->orderBy('a.dateCreate', 'DESC')
+            ->orderBy('e.dateCreate', 'DESC')
             ->setMaxResults(10)
             ->getQuery();
-        $users = $q->getResult();
+        $elements = $q->getResult();
         $data = "";
-        if ($users) {
-            foreach ($users as $table) {
+        if ($elements) {
+            foreach ($elements as $element) {
                 $data .= $this->render('article\article.html.twig', array(
-                    'table' => $table,
+                    'element' => $element,
                 ));
             }
         }
@@ -112,71 +164,84 @@ class ValidatorController extends Controller
     /**
      * Lists all user entities not valide.
      *
-     * @Route("UserNotValide", name="UserNotValideIndex", options={"expose"=true})
+     * @Route("listUserNotValid", name="list_user_not_valid_index", options={"expose"=true})
      * @Method("GET")
      */
-    public function userNotValideAction(request $request)
+    public function listUserNotValidAction(request $request)
     {
         $lastElementDate = $request->request->get("lastElementDate");
         $em = $this->getDoctrine()->getManager();
         $qb = $em->createQueryBuilder();
-        $q = $qb->select('u')
-            ->from('AppBundle:user', 'u')
-            ->where('u.validation = 0')
-            ->andWhere('u.enabled = 1')
-            ->andWhere(
-                $qb->expr()->lt('u.dateCreate', ':dateCreate')
+        $q = $qb
+            ->select('e')
+            ->from('AppBundle:element','e')
+            ->leftJoin('AppBundle:user','u','WITH','e.user = u.id')
+            ->Where(
+                $qb->expr()->andX(
+                    $qb->expr()->eq('u.enabled',1),
+                    $qb->expr()->eq('u.validation',0),
+                    $qb->expr()->lt('e.dateCreate', ':dateCreate')
+                )
             )
             ->setParameter('dateCreate', $lastElementDate)
-            ->orderBy('u.dateCreate', 'DESC')
+            ->orderBy('e.dateCreate', 'DESC')
             ->setMaxResults(10)
             ->getQuery();
-        $users = $q->getResult();
-
+        $elements = $q->getResult();
         $data = "";
-        if ($users) {
-            foreach ($users as $table) {
+
+        if ($elements) {
+            foreach ($elements as $element) {
                 $data .= $this->render('article\user.html.twig', array(
-                    'table' => $table,
+                    'element' => $element,
                 ));
             }
         }
+
         return new JsonResponse($data);
     }
 
     /**
      * Lists all user entities valide.
      *
-     * @Route("UserValide", name="UserValideIndex", options={"expose"=true})
-     * @Method({"GET" ,"POST"})
+     * @Route("UserValid", name="list_user_valid_index", options={"expose"=true})
+     * @Method({"GET" })
+     * @Todo faire en sorte que l'on arrive à récupérer l'ID 1 de la table user sans erreurs.
      */
-
-    public function userValideAction(request $request)
+    public function listUserValidAction(request $request)
     {
         $lastElementDate = $request->request->get("lastElementDate");
         $em = $this->getDoctrine()->getManager();
+
         $qb = $em->createQueryBuilder();
-        $q = $qb->select('u')
-            ->from('AppBundle:user', 'u')
-            ->where('u.validation = 1')
-            ->andWhere('u.enabled = 1')
-            ->andWhere(
-                $qb->expr()->lt('u.dateCreate', ':dateCreate')
+        $q = $qb
+            ->select('e')
+            ->from('AppBundle:element','e')
+            ->leftJoin('AppBundle:user','u','WITH','e.user = u.id')
+            ->Where(
+                $qb->expr()->andX(
+                    $qb->expr()->neq('u.id',1),
+                    $qb->expr()->eq('u.enabled',1),
+                    $qb->expr()->eq('u.validation',1),
+                    $qb->expr()->lt('e.dateCreate', ':dateCreate')
+                )
             )
             ->setParameter('dateCreate', $lastElementDate)
-            ->orderBy('u.dateCreate', 'DESC')
+            ->orderBy('e.dateCreate', 'DESC')
             ->setMaxResults(10)
             ->getQuery();
-        $users = $q->getResult();
-
+        $elements = $q->getResult();
         $data = "";
-        if ($users) {
-            foreach ($users as $table) {
-                $data .= $this->render('article\user.html.twig', array(
-                    'table' => $table,
-                ));
+        if (!empty($elements)) {
+            foreach ($elements as $element) {
+                if(($element->getUser()) != null ) {
+                    $data .= $this->render('article\user.html.twig', array(
+                        'element' => $element,
+                    ));
+                }
             }
         }
+
         return new JsonResponse($data);
     }
 
@@ -198,7 +263,7 @@ class ValidatorController extends Controller
         $iterator = $objectCollection->getIterator();
         $iterator->uasort(function ($a, $b) {
 
-            return ($a->getDateCreate() < $b->getDateCreate()) ? -1 : 1;
+            return ($a->getElement()->getDateCreate() < $b->getElement()->getDateCreate()) ? -1 : 1;
         });
 
         return $this->render('article\validation.html.twig', array(
@@ -206,46 +271,5 @@ class ValidatorController extends Controller
         ));
     }
 
-    /**
-     * accept one article
-     *
-     * @Route("/{id}/accept", name="article_accept", options={"expose"=true})
-     * @Method({"GET", "POST"})
-     */
-    public function acceptAction(Article $article)
-    {
-        $article->setEnabled(1);
-        $this->getDoctrine()->getManager()->flush();
 
-        if ($article->getUser() != null) {
-            $SendMail = $this->get(SendMail::class);
-            $SendMail->SendMail('- MakeMeUp article refusé -',
-                $article->getUser()->getEmail(),
-                'ArticleAccept');
-        }
-
-        return new JsonResponse(1);
-    }
-
-    /**
-     * denied one article
-     *
-     * @Route("/{id}/refuse", name="article_refuse", options={"expose"=true})
-     * @Method({"GET", "POST"})
-     */
-    public function refuseAction(Article $article)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($article);
-        $em->flush();
-
-        if ($article->getUser() != null) {
-            $SendMail = $this->get(SendMail::class);
-            $SendMail->SendMail('- MakeMeUp article refusé -',
-                $article->getUser()->getEmail(),
-                'ArticleRefus');
-        }
-
-        return new JsonResponse(1);
-    }
 }

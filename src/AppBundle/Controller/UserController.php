@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
+use AppBundle\Entity\Element;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -18,27 +19,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class UserController extends Controller
 {
     /**
-     * Lists all user entities.
-     *
-     * @Route("/", name="user_index")
-     * @Method("GET")
-     */
-    public function indexAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-        $users = $em->getRepository('AppBundle:User')->findAll();
-
-        return $this->render('user/index.html.twig', array(
-            'users' => $users,
-        ));
-    }
-    /**
      * Accept one user
      *
-     * @Route("/{id}/accept", name="user_accept", options={"expose"=true})
-     * @Method({"GET", "POST"}, )
+     * @Route("user/{id}/accept", name="user_accept", options={"expose"=true})
+     * @Method({"GET", "POST"})
      */
-    public function acceptAction(User $user)
+    public function userAcceptAction(User $user)
     {
         $user->setValidation(1);
         $this->getDoctrine()->getManager()->flush();
@@ -53,10 +39,10 @@ class UserController extends Controller
     /**
      * refuse one user
      *
-     * @Route("/{id}/refuse", name="user_refuse", options={"expose"=true})
+     * @Route("user/{id}/refuse", name="user_refuse", options={"expose"=true})
      * @Method({"GET", "POST"})
      */
-    public function refuseAction(User $user)
+    public function userRefuseAction(User $user)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($user);
@@ -71,12 +57,38 @@ class UserController extends Controller
     }
 
     /**
+     * Lists all user entities admin.
+     *
+     * @Route("userAdmin", name="userAdminIndex")
+     * @Method("GET")
+     */
+    public function userAdminAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $users = $em->getRepository('AppBundle:User')->findByRole("ROLE_ADMIN");
+        $objectCollection = new ArrayCollection();
+
+        foreach ($users as $user) {
+            $objectCollection->add($user);
+        }
+        $iterator = $objectCollection->getIterator();
+        $iterator->uasort(function ($a, $b) {
+
+            return ( $a->getElement()->getDateCreate() < $b->getElement()->getDateCreate() ) ? -1 : 1;
+        });
+
+        return $this->render('article\validation.html.twig', array(
+            'tables' => $iterator,
+        ));
+    }
+
+    /**
      * make one user admin
      *
-     * @Route("/{id}/setAdmin", name="set_admin", options={"expose"=true})
+     * @Route("user/{id}/setAdmin", name="set_admin", options={"expose"=true})
      * @Method({"GET", "POST"})
      */
-    public function setAdminAction(User $user)
+    public function userSetAdminAction(User $user)
     {
         $user->addRole("ROLE_ADMIN");
         $this->getDoctrine()->getManager()->flush();
@@ -92,10 +104,10 @@ class UserController extends Controller
     /**
      * unset one user admin
      *
-     * @Route("/{id}/unsetAdmin", name="unset_admin", options={"expose"=true})
+     * @Route("user/{id}/unsetAdmin", name="unset_admin", options={"expose"=true})
      * @Method({"GET", "POST"})
      */
-    public function unsetAdminAction(User $user)
+    public function userUnsetAdminAction(User $user)
     {
         $user->removeRole("ROLE_ADMIN");
         $this->getDoctrine()->getManager()->flush();
@@ -106,6 +118,22 @@ class UserController extends Controller
             'CompteAccepte' );
 
         return new JsonResponse(1);
+    }
+    
+    /**
+     * Lists all user entities.
+     *
+     * @Route("/", name="user_index")
+     * @Method("GET")
+     */
+    public function indexAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $users = $em->getRepository('AppBundle:User')->findAll();
+
+        return $this->render('user/index.html.twig', array(
+            'users' => $users,
+        ));
     }
 
     /**
@@ -135,6 +163,13 @@ class UserController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
+            dump($user);
+            die;
+            $element = new Element();
+            $element->setUser($user);
+            $em->persist($element);
+            $em->flush();
+
 
             return $this->redirectToRoute('user_show', array('id' => $user->getId()));
         }

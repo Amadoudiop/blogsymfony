@@ -34,8 +34,6 @@ class FOSUserListener implements EventSubscriberInterface
 
     public function onRegistrationInitialize(UserEvent $event)
     {
-        dump($event);
-        die;
     }
 
 

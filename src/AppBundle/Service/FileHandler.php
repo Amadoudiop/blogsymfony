@@ -7,7 +7,6 @@ class FileHandler
     public function upload($file, $directory)
     {
         $fileName = md5(uniqid()).'.'.$file->guessExtension();
-
         if (filesize($file) > 375000){
 
             return false;
