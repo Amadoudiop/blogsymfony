@@ -63,7 +63,7 @@ class ValidatorController extends Controller
             )
             ->setParameter('dateCreate', $lastElementDate)
             ->orderBy('e.dateCreate', 'DESC')
-            ->setMaxResults(10)
+            ->setMaxResults(20)
             ->getQuery();
         $elements = $q->getResult();
         $data = "";
@@ -73,12 +73,16 @@ class ValidatorController extends Controller
                 if(($element->getUser()) != null ) {
                     $data .= $this->render('article\user.html.twig', array(
                         'element' => $element,
-                    ));
+                    ))->getContent();
                 }
                 else if(($element->getArticle()) != null ){
+                    $email = $element->getArticle();
+                    $email = $email->getUser();
+                    $email = $email->getEmail();
                     $data .= $this->render('article\article.html.twig', array(
                         'element' => $element,
-                    ));
+                        'email' => $email,
+                    ))->getContent();
                 }
             }
         }else{
@@ -111,15 +115,19 @@ class ValidatorController extends Controller
             )
             ->setParameter('dateCreate', $lastElementDate)
             ->orderBy('e.dateCreate', 'DESC')
-            ->setMaxResults(10)
+            ->setMaxResults(20)
             ->getQuery();
         $elements = $q->getResult();
         $data = "";
         if (!empty($elements)) {
             foreach ($elements as $element) {
+                $email = $element->getArticle();
+                $email = $email->getUser();
+                $email = $email->getEmail();
                 $data .= $this->render('article\article.html.twig', array(
                     'element' => $element,
-                ));
+                    'email' => $email,
+                ))->getContent();
             }
         }else{
             $data="end";
@@ -150,15 +158,19 @@ class ValidatorController extends Controller
             )
             ->setParameter('dateCreate', $lastElementDate)
             ->orderBy('e.dateCreate', 'DESC')
-            ->setMaxResults(10)
+            ->setMaxResults(20)
             ->getQuery();
         $elements = $q->getResult();
         $data = "";
         if (!empty($elements)) {
             foreach ($elements as $element) {
+                $email = $element->getArticle();
+                $email = $email->getUser();
+                $email = $email->getEmail();
                 $data .= $this->render('article\article.html.twig', array(
                     'element' => $element,
-                ));
+                    'email' => $email,
+                ))->getContent();
             }
         }else{
             $data="end";
@@ -191,7 +203,7 @@ class ValidatorController extends Controller
             )
             ->setParameter('dateCreate', $lastElementDate)
             ->orderBy('e.dateCreate', 'DESC')
-            ->setMaxResults(10)
+            ->setMaxResults(20)
             ->getQuery();
         $elements = $q->getResult();
         $data = "";
@@ -200,7 +212,7 @@ class ValidatorController extends Controller
             foreach ($elements as $element) {
                 $data .= $this->render('article\user.html.twig', array(
                     'element' => $element,
-                ));
+                ))->getContent();
             }
         }else{
             $data="end";
@@ -236,7 +248,7 @@ class ValidatorController extends Controller
             )
             ->setParameter('dateCreate', $lastElementDate)
             ->orderBy('e.dateCreate', 'DESC')
-            ->setMaxResults(10)
+            ->setMaxResults(20)
             ->getQuery();
         $elements = $q->getResult();
         $data = "";
@@ -245,7 +257,7 @@ class ValidatorController extends Controller
                 if(($element->getUser()) != null ) {
                     $data .= $this->render('article\user.html.twig', array(
                         'element' => $element,
-                    ));
+                    ))->getContent();
                 }
             }
         }else{

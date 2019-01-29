@@ -27,8 +27,7 @@ class User extends BaseUser
     /**
      * one user as one element
      *
-     * @ORM\OneToOne(targetEntity="Element", mappedBy ="user", cascade={"remove","persist"}, fetch="EAGER")
-     * @ORM\JoinColumn(name="id_element", referencedColumnName="id", nullable=true)
+     * @ORM\OneToOne(targetEntity="Element", mappedBy ="user", fetch="LAZY")
      */
     private $element;
 

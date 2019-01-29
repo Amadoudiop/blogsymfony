@@ -6,36 +6,32 @@
     <table>
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ article.id }}</td>
-            </tr>
-            <tr>
-                <th>Date_create</th>
+                <th>Date de création</th>
                 <td>{% if element.datecreate %}{{ element.datecreate|date('Y-m-d H:i:s') }}{% endif %}</td>
             </tr>
             <tr>
-                <th>Date_update</th>
-                <td>{% if element.dateupdate %}{{ element.dateupdate|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Date_event</th>
+                <th>Date de l'évènement</th>
                 <td>{% if article.dateevent %}{{ article.dateevent|date('Y-m-d H:i:s') }}{% endif %}</td>
             </tr>
             <tr>
-                <th>Title</th>
+                <th>Titre</th>
                 <td>{{ article.title }}</td>
             </tr>
             <tr>
-                <th>Catch_sentence</th>
+                <th>Phrase d'acroche</th>
                 <td>{{ article.catchsentence }}</td>
             </tr>
             <tr>
-                <th>Picture</th>
+                <th>Image</th>
                 <td>{{ article.picture }}</td>
             </tr>
             <tr>
-                <th>Content</th>
+                <th>Contenue</th>
                 <td>{{ article.content }}</td>
+            </tr>
+            <tr>
+                <th>email du créateur</th>
+                <td>{{ email }}</td>
             </tr>
             <tr>
                 <th>Status</th>

@@ -1,26 +1,20 @@
-Articles list
 <table data-date="{{ element.datecreate|date('Y-m-d H:i:s') }}"  data-type="article" data-id="{{ element.article.id }}">
     <thead>
     <tr>
-        <th>Id</th>
-        <th>Date_create</th>
-        <th>Date_event</th>
-        <th>Title</th>
-        <th>Catch_sentence</th>
-        <th>Picture</th>
-        <th>Content</th>
-        <th>Validation</th>
+        <th>Afficher</th>
+        <th>Date de création</th>
+        <th>Date de l'événement</th>
+        <th>Titre</th>
+        <th>Email du créateur</th>
     </tr>
     </thead>
     <tbody>
     <tr>
-        <td><a href="{{ path('article_show', { 'id': element.article.id }) }}">{{ element.article.id }}</a></td>
-        <td>{% if element.datecreate %}{{ element.datecreate|date('Y-m-d H:i:s') }}{% endif %}</td>
-        <td>{% if element.article.dateevent %}{{ element.article.dateevent|date('Y-m-d H:i:s') }}{% endif %}</td>
-        <td>{{ element.article.title }}</td>
-        <td>{{ element.article.catchsentence }}</td>
-        <td>{{ element.article.picture }}</td>
-        <td>{{ element.article.content }}</td>
+        <td><a href="{{ path('article_show', { 'id': element.article.id }) }}" target="_blank">Afficher</a> |</td>
+        <td>{% if element.datecreate %}{{ element.datecreate|date('Y-m-d H:i:s') }}{% endif %} |</td>
+        <td>{% if element.article.dateevent %}{{ element.article.dateevent|date('Y-m-d H:i:s') }}{% endif %} |</td>
+        <td>{{ element.article.title }} |</td>
+        <td>{{ email }} |</td>
         {% if element.article.enabled == 0 %}
             <td>
             <td>

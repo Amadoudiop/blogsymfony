@@ -91,7 +91,6 @@ $(function () {
                 data: 'lastElementDate=' + lastElementDate,
                 success: function (data) {
                     if(data == "end"){
-                        console.log(data);
                         scrollOk = false;
                     }
                     lastElement.after(data);

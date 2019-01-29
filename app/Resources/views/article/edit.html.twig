@@ -1,5 +1,10 @@
 {% extends 'base.html.twig' %}
 
+{% block javascriptsHead %}
+    <script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
+    <script>tinymce.init({ selector:'textarea' });</script>
+{% endblock %}
+
 {% block body %}
     <h1>Article edit</h1>
 

@@ -49,7 +49,8 @@ class ArticleController extends Controller
     public function articleRefuseAction(Article $article)
     {
         $em = $this->getDoctrine()->getManager();
-        $em->remove($article);
+        $element = $article->getElement();
+        $em->remove($element);
         $em->flush();
 
         if ($article->getUser() != null) {
@@ -142,10 +143,14 @@ class ArticleController extends Controller
     {
         $deleteForm = $this->createDeleteForm($article);
         $element = $article->getElement();
+        $email = $element->getArticle();
+        $email = $email->getUser();
+        $email = $email->getEmail();
 
         return $this->render('article/show.html.twig', array(
             'article' => $article,
             'element' => $element,
+            'email' => $email,
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -175,19 +180,17 @@ class ArticleController extends Controller
                 } else {
                     $article->setPicture($fileName["name"]);
                     $article->setPictureUpload(null);
-                    $article->setUser($this->getUser());
-                    $em = $this->getDoctrine()->getManager();
-                    $em->persist($article);
-                    $em->flush();
-                    $this->addFlash(
-                        'success',
-                        'votre article à été modifié'
-                    );
-                    $this->getDoctrine()->getManager()->flush();
-
-                    return $this->redirectToRoute('article_edit', array('id' => $article->getId()));
                 }
             }
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+            $this->addFlash(
+                'success',
+                'votre article à été modifié'
+            );
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('article_edit', array('id' => $article->getId()));
         }
 
         return $this->render('article/edit.html.twig', array(

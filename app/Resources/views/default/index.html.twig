@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
+{% block javascriptsHead %}
 
+{% endblock %}
 {% block body %}
     <div class="container-fluid size-slider">
         <div id="carouselExampleIndicators" class="carousel slide shadow-box" data-ride="carousel">
@@ -35,11 +37,11 @@
         </div>
     </div>
     {% include 'icon.html.twig' %}
-    {% for article in articles %}
-        {% if article.enabled == 1 %}
-            {% include 'event.html.twig' %}
-        {% endif %}
-    {% endfor %}
+    <div id="element-container">
 
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('js/homePageScroll.js') }}"></script>
 {% endblock %}
 

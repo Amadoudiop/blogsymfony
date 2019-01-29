@@ -45,7 +45,8 @@ class UserController extends Controller
     public function userRefuseAction(User $user)
     {
         $em = $this->getDoctrine()->getManager();
-        $em->remove($user);
+        $element = $user->getElement();
+        $em->remove($element);
         $em->flush();
 
         $SendMail = $this->get(SendMail::class);
@@ -163,8 +164,6 @@ class UserController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
-            dump($user);
-            die;
             $element = new Element();
             $element->setUser($user);
             $em->persist($element);
@@ -189,9 +188,11 @@ class UserController extends Controller
     public function showAction(User $user)
     {
         $deleteForm = $this->createDeleteForm($user);
+        $element = $user->getElement();
 
         return $this->render('user/show.html.twig', array(
             'user' => $user,
+            'element' => $element,
             'delete_form' => $deleteForm->createView(),
         ));
     }

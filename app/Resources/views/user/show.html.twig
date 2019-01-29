@@ -14,16 +14,16 @@
                 <td>{{ user.promotion }}</td>
             </tr>
             <tr>
-                <th>Firstname</th>
+                <th>Prenom</th>
                 <td>{{ user.firstName }}</td>
             </tr>
             <tr>
-                <th>Lastname</th>
+                <th>Nom</th>
                 <td>{{ user.lastName }}</td>
             </tr>
             <tr>
-                <th>Alias</th>
-                <td>{{ user.alias }}</td>
+                <th>Pseudo</th>
+                <td>{{ user.username }}</td>
             </tr>
             <tr>
                 <th>Password</th>
@@ -31,11 +31,11 @@
             </tr>
             <tr>
                 <th>Mail</th>
-                <td>{{ user.mail }}</td>
+                <td>{{ user.email }}</td>
             </tr>
             <tr>
-                <th>Datecreate</th>
-                <td>{% if user.dateCreate %}{{ user.dateCreate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <th>Date de création</th>
+                <td>{% if user.element.dateCreate %}{{ user.element.dateCreate|date('Y-m-d H:i:s') }}{% endif %}</td>
             </tr>
             <tr>
                 <th>Status</th>

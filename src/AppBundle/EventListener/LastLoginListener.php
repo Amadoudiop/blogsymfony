@@ -16,12 +16,18 @@ use FOS\UserBundle\EventListener\LastLoginListener as FOSLastLoginListener;
 use FOS\UserBundle\FOSUserEvents;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Model\UserManagerInterface;
-//use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class LastLoginListener extends FOSLastLoginListener //implements EventSubscriberInterface
 {
+    /**
+     * @var TokenStorageInterface
+     */
+    protected $tokenStorage;
+
     protected $userManager;
 
     /**
@@ -29,9 +35,10 @@ class LastLoginListener extends FOSLastLoginListener //implements EventSubscribe
      *
      * @param UserManagerInterface $userManager
      */
-    public function __construct(UserManagerInterface $userManager)
+    public function __construct(UserManagerInterface $userManager, TokenStorageInterface $tokenStorage)
     {
         $this->userManager = $userManager;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -41,7 +48,8 @@ class LastLoginListener extends FOSLastLoginListener //implements EventSubscribe
     {
         return array(
             FOSUserEvents::SECURITY_IMPLICIT_LOGIN => 'onImplicitLogin',
-            SecurityEvents::INTERACTIVE_LOGIN => 'onSecurityInteractiveLogin',
+            //SecurityEvents::INTERACTIVE_LOGIN => 'onSecurityInteractiveLogin',
+            SecurityEvents::INTERACTIVE_LOGIN => 'checkLogin',
         );
     }
 
@@ -54,10 +62,11 @@ class LastLoginListener extends FOSLastLoginListener //implements EventSubscribe
         $user->setLastLogin(new \DateTime());
         $this->userManager->updateUser($user);
     }
-
+/*
     /**
      * @param InteractiveLoginEvent $event
      */
+/*
     public function onSecurityInteractiveLogin(InteractiveLoginEvent $event)
     {
         $user = $event->getAuthenticationToken()->getUser();
@@ -71,7 +80,29 @@ class LastLoginListener extends FOSLastLoginListener //implements EventSubscribe
         }else{
 
         }
+    } */
 
-
+    /**
+     * @param InteractiveLoginEvent $event
+     */
+    public function checkLogin(InteractiveLoginEvent $event)
+    {
+        $user = $event->getAuthenticationToken()->getUser();
+        if ($user->getValidation() == 1){
+            if ($user instanceof UserInterface) {
+                $user->setLastLogin(new \DateTime());
+                $this->userManager->updateUser($user);
+            }
+        }else{
+            $authenticated = $event->getAuthenticationToken()->isAuthenticated();
+            if( $authenticated== true){
+                $event->getAuthenticationToken();
+                $this->tokenStorage->setToken(null);
+                $this->addFlash(
+                    'error',
+                    "Le compte n'est pas encore validé par la modération."
+                );
+            }
+        }
     }
 }

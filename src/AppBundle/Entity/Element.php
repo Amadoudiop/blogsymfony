@@ -25,7 +25,7 @@ class Element
     /**
      * One Element has One or Zero User
      *
-     * @ORM\OneToOne(targetEntity="User", inversedBy="element", fetch="EAGER")
+     * @ORM\OneToOne(targetEntity="User", inversedBy="element", cascade={"remove"}, fetch="EAGER")
      * @ORM\JoinColumn(name="id_user", referencedColumnName="id", nullable=true)
      */
     private $user;
@@ -33,7 +33,7 @@ class Element
     /**
      * One Element has One or Zero Article
      *
-     * @ORM\OneToOne(targetEntity="Article", inversedBy="element", fetch="EAGER")
+     * @ORM\OneToOne(targetEntity="Article", inversedBy="element", cascade={"remove"}, fetch="EAGER")
      * @ORM\JoinColumn(name="id_article", referencedColumnName="id", nullable=true)
      */
     private $article;
