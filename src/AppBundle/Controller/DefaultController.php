@@ -44,7 +44,7 @@ class DefaultController extends Controller
         $qb = $em->createQueryBuilder();
         $q = $qb
             ->select('e')
-            ->from('AppBundle:element','e')
+            ->from('AppBundle:Element','e')
             ->leftJoin('AppBundle:article','a','WITH','e.article = a.id')
             ->where(
                 $qb->expr()->andX(
