@@ -93,6 +93,26 @@ class SlideController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $file = $slide->getPictureUpload();
+            if(!is_null($file)){
+                $fileHandler = $this->get(FileHandler::class);
+                $fileName = $fileHandler->upload($file, $this->getParameter('upload_directory_slide'));
+                if (!$fileName) {
+                    $this->addFlash(
+                        'danger',
+                        'la photo est trop grosse taille max 3MB'
+                    );
+                } else {
+                    $slide->setPicture($fileName["name"]);
+                    $slide->setPictureUpload(null);
+                }
+            }
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+            $this->addFlash(
+                'success',
+                'votre article à été modifié'
+            );
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('slide_edit', array('id' => $slide->getId()));

@@ -37,6 +37,11 @@ class Slide
 
     /**
      * @var string
+     */
+    private $picture_upload;
+
+    /**
+     * @var string
      *
      * @ORM\Column(name="title", type="string", length=50, nullable=true)
      */
@@ -113,6 +118,30 @@ class Slide
     public function getPicture()
     {
         return $this->picture;
+    }
+
+    /**
+     * Set picture_upload
+     *
+     * @param string $picture
+     *
+     * @return slide
+     */
+    public function setPictureUpload($picture_upload)
+    {
+        $this->picture_upload = $picture_upload;
+
+        return $this;
+    }
+
+    /**
+     * Get picture_upload
+     *
+     * @return string
+     */
+    public function getPictureUpload()
+    {
+        return $this->picture_upload;
     }
 
     /**

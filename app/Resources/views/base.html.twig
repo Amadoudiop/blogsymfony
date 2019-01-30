@@ -29,6 +29,7 @@
                     {% endif %}
                     {% if is_granted('ROLE_ADMIN') == true %}
                         <li class="li-lien-navbar"><a class="lien-navbar" href="{{ path('validation_index') }}">VALIDATION</a></li>
+                        <li class="li-lien-navbar"><a class="lien-navbar" href="{{ path('slide_index') }}">SLIDE</a></li>
                     {% endif %}
                     <li class="li-lien-navbar"><a class="lien-navbar" href="{{ path('contact_cool') }}">CONTACT</a></li>
                 </ul>

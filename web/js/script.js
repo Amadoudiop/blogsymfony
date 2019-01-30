@@ -4,9 +4,18 @@ $(function () {
     scrollOk = true;
     filterChoice = $("#listing-choice").val()
     lastElement = $('#element-container table:last')
-    spinner = '<div style="display:none;" id="spinner" class="spinner-border" role="status">\n' +
+    spinnerTop = '<div style="display:none;" id="spinner-top" class="spinner-border" role="status">\n' +
             '<span class="sr-only">Loading...</span>\n' +
             '</div>'
+    spinnerBot = '<div style="display:none;" id="spinner-bot" class="spinner-border" role="status">\n' +
+            '<span class="sr-only">Loading...</span>\n' +
+            '</div>'
+
+
+    choice();
+    $("#listing-choice").change(function() {
+        choice();
+    });
 
     /**
      * execute le controller associer à l'action demandé pour un user ou un article
@@ -17,11 +26,11 @@ $(function () {
     function userArticleAction(id,action){
         if($(window).data('ajaxready', true)){
             $(window).data('ajaxready', false)
+            $('[data-id='+id+']').slideUp();
             $.ajax({
                 url: Routing.generate(action, {'id': id}),
                 success: function () {
                     $(window).data('ajaxready', true);
-                    $('[data-id='+id+']').slideUp();
                 },
                 error: function () {
                     $(window).data('ajaxready', true);
@@ -29,37 +38,6 @@ $(function () {
             })
         }
     }
-
-    /**
-     * récupère le choix selectionné par l'utilisateur
-     *
-     * param string
-     * return Json data
-     */
-    $("#listing-choice").change(function () {
-        filterChoice = $(this).val()
-        $('#element-container').prepend(spinner)
-        $('#spinner').fadeIn(400);
-        $.ajax({
-            url: Routing.generate(filterChoice),
-            type: "POST",
-            data: 'lastElementDate=' + undefined,
-            success: function (data) {
-                scrollOk = true
-                $("#element-container").html(data)
-                $('#spinner').fadeOut(400);
-                $(".btn-action").bind( "click", function() {
-                    userArticleAction(
-                        $(this).attr("data-id"),
-                        $(this).attr("data-info")
-                    );
-                });
-            },
-            error: function (data) {
-                console.log(data)
-            }
-        })
-    })
 
     /**
      * vérifie que le scroll est en bas de page
@@ -82,9 +60,10 @@ $(function () {
             && scrollOk == true
         ) {
             $(window).data('ajaxready', false);
-            //lastElement.after(spinner)
-            $('#element-container').append(spinner)
-            $('#spinner').fadeIn(400);
+            if ($('#spinner-bot').length < 1){
+                $('#element-container').append(spinnerBot)
+                $('#spinner-bot').fadeIn(400);
+            }
             $.ajax({
                 url: Routing.generate(filterChoice),
                 type: "POST",
@@ -92,9 +71,10 @@ $(function () {
                 success: function (data) {
                     if(data == "end"){
                         scrollOk = false;
+                    }else{
+                        lastElement.after(data);
                     }
-                    lastElement.after(data);
-                    $('#spinner').fadeOut(400);
+                    $('#spinner-bot').fadeOut(400);
                     $(window).data('ajaxready', true);
                 },
                 error: function (data) {
@@ -103,4 +83,38 @@ $(function () {
             })
         }
     })
+
+    /**
+     * récupère le choix selectionné par l'utilisateur
+     *
+     * param string
+     * return Json data
+     */
+    function choice(){
+        console.log("choice")
+        filterChoice = $('#listing-choice').val()
+        if ($('#spinner-top').length < 1){
+            $('#element-container').prepend(spinnerTop)
+            $('#spinner-top').fadeIn(400);
+        }
+        $.ajax({
+            url: Routing.generate(filterChoice),
+            type: "POST",
+            data: 'lastElementDate=' + undefined,
+            success: function (data) {
+                scrollOk = true
+                $("#element-container").html(data)
+                $('#spinner-top').fadeOut(400);
+                $(".btn-action").bind( "click", function() {
+                    userArticleAction(
+                        $(this).attr("data-id"),
+                        $(this).attr("data-info")
+                    );
+                });
+            },
+            error: function (data) {
+                console.log(data)
+            }
+        })
+    }
 });

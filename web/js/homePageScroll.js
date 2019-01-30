@@ -14,8 +14,11 @@ $(function () {
             console.log(data);
             if (data == "end") {
                 scrollOk = false;
+            }else{
+                lastElement.after(data);
+                elementContainer.append(data);
             }
-            elementContainer.append(data);
+
             $('#spinner').fadeOut(400);
             $(window).data('ajaxready', true);
         },

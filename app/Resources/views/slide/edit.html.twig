@@ -16,6 +16,9 @@
             {{ form_start(delete_form) }}
                 <input type="submit" value="Delete">
             {{ form_end(delete_form) }}
+            {% if (slide.picture is not null) %}
+                <img src="{{ asset(upload_directory_slide ~ slide.picture) }}">
+            {% endif %}
         </li>
     </ul>
 {% endblock %}

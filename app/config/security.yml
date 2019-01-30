@@ -28,7 +28,7 @@ security:
             anonymous:    true
 
     access_control:
-    - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/login, role: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/validation, role: ROLE_ADMIN }
@@ -40,3 +40,4 @@ security:
     - { path: ^/userAdmin, role: ROLE_SUPER_ADMIN }
     - { path: ^/setAdmin, role: ROLE_SUPER_ADMIN }
     - { path: ^/unsetAdmin, role: ROLE_SUPER_ADMIN }
+    - { path: ^/slide, role: ROLE_ADMIN }

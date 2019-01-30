@@ -63,13 +63,13 @@ class DefaultController extends Controller
                 $email = $element->getArticle();
                 $email = $email->getUser();
                 $email = $email->getEmail();
-                $data .= $this->render('article\article.html.twig', array(
+                $data .= $this->render('article\home.html.twig', array(
                     'element' => $element,
                     'email' => $email,
                 ))->getContent();
             }
         }else{
-            $data="end";
+            $data="";
         }
         return new JsonResponse($data);
     }

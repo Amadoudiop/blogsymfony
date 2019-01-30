@@ -1,0 +1,16 @@
+<table data-date="{{ element.datecreate|date('Y-m-d H:i:s') }}"  data-type="article" data-id="{{ element.article.id }}">
+    <thead>
+    <tr>
+        <th>Afficher</th>
+        <th>{% if element.article.dateevent %}date de l'évenenment{% endif %} |</th>
+        <th>Titre</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td><a href="{{ path('article_show', { 'id': element.article.id }) }}" target="_blank">Afficher</a> |</td>
+        <td>{% if element.article.dateevent %}{{ element.article.dateevent|date('Y-m-d H:i:s') }}{% endif %} |</td>
+        <td>{{ element.article.title }} |</td>
+    </tr>
+    </tbody>
+</table>

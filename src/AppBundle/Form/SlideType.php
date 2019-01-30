@@ -21,7 +21,8 @@ class SlideType extends AbstractType
             ->add('active',CheckboxType::class, array(
                 'label'    => 'slide activé ?',
                 'required' => false,))
-            ->add('picture', FileType::class, array('label' => 'picture (PDF file)'))
+            ->add('picture_upload', FileType::class, array('label' => 'picture (PDF file)',
+                'required' => false))
             ->add('title', TextType::class, [
                 'attr' => [
                     'class' => 'form-control'
