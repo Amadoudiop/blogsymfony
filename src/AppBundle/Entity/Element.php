@@ -33,7 +33,7 @@ class Element
     /**
      * One Element has One or Zero Article
      *
-     * @ORM\OneToOne(targetEntity="Article", inversedBy="element", cascade={"remove"}, fetch="EAGER")
+     * @ORM\OneToOne(targetEntity="Article", inversedBy="element", cascade={"remove","persist"}, fetch="EAGER")
      * @ORM\JoinColumn(name="id_article", referencedColumnName="id", nullable=true)
      */
     private $article;

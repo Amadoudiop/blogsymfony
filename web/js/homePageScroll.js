@@ -2,27 +2,32 @@ $(function () {
     $(window).data('ajaxready', true);
     scrollOk = true;
     elementContainer = $('#element-container')
-    spinner = '<div style="display:none;" id="spinner" class="spinner-border" role="status">\n' +
+    spinnerTop = '<div style="display:none;" id="spinner-top" class="spinner-border" role="status">\n' +
+        '<span class="sr-only">Loading...</span>\n' +
+        '</div>'
+    spinnerBot = '<div style="display:none;" id="spinner-bot" class="spinner-border" role="status">\n' +
         '<span class="sr-only">Loading...</span>\n' +
         '</div>'
 
+    $('#element-container').prepend(spinnerTop);
+    $('#spinner-top').fadeIn(400);
     $.ajax({
+
         url: Routing.generate("list_article_home"),
         type: "POST",
         data: 'lastElementDate=list_article_home',
         success: function (data) {
-            console.log(data);
             if (data == "end") {
                 scrollOk = false;
             }else{
-                lastElement.after(data);
                 elementContainer.append(data);
             }
-
-            $('#spinner').fadeOut(400);
+            $('#spinner-top').fadeOut(400);
             $(window).data('ajaxready', true);
         },
         error: function (data) {
+            lastElement.after('error');
+            $('#spinner-top').fadeOut(400);
             $(window).data('ajaxready', true);
         }
     })
@@ -49,22 +54,23 @@ $(function () {
         ) {
             $(window).data('ajaxready', false);
             //lastElement.after(spinner)
-            $('#element-container').append(spinner)
-            $('#spinner').fadeIn(400);
+            $('#element-container').append(spinnerBot)
+            $('#spinner-bot').fadeIn(400);
             $.ajax({
                 url: Routing.generate("list_article_home"),
                 type: "POST",
                 data: 'lastElementDate=' + lastElementDate,
                 success: function (data) {
                     if (data == "end") {
-                        console.log(data);
                         scrollOk = false;
                     }
                     lastElement.after(data);
-                    $('#spinner').fadeOut(400);
+                    $('#spinner-bot').fadeOut(400);
                     $(window).data('ajaxready', true);
                 },
                 error: function (data) {
+                    lastElement.after('error');
+                    $('#spinner-bot').fadeOut(400);
                     $(window).data('ajaxready', true);
                 }
             })

@@ -10,8 +10,6 @@ $(function () {
     spinnerBot = '<div style="display:none;" id="spinner-bot" class="spinner-border" role="status">\n' +
             '<span class="sr-only">Loading...</span>\n' +
             '</div>'
-
-
     choice();
     $("#listing-choice").change(function() {
         choice();
@@ -33,6 +31,7 @@ $(function () {
                     $(window).data('ajaxready', true);
                 },
                 error: function () {
+                    lastElement.after('error');
                     $(window).data('ajaxready', true);
                 }
             })
@@ -78,6 +77,8 @@ $(function () {
                     $(window).data('ajaxready', true);
                 },
                 error: function (data) {
+                    lastElement.after('error');
+                    $('#spinner-bot').fadeOut(400);
                     $(window).data('ajaxready', true);
                 }
             })
@@ -91,7 +92,6 @@ $(function () {
      * return Json data
      */
     function choice(){
-        console.log("choice")
         filterChoice = $('#listing-choice').val()
         if ($('#spinner-top').length < 1){
             $('#element-container').prepend(spinnerTop)
@@ -113,7 +113,6 @@ $(function () {
                 });
             },
             error: function (data) {
-                console.log(data)
             }
         })
     }

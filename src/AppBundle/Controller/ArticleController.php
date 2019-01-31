@@ -11,6 +11,7 @@ use AppBundle\Service\FileHandler;
 use AppBundle\Service\SendMail;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Twig\Token;
 
 //use DateTime;
 
@@ -25,8 +26,11 @@ class ArticleController extends Controller
      * @Route("/{id}/accept", name="article_accept", options={"expose"=true})
      * @Method({"GET", "POST"})
      */
-    public function articleAcceptAction(Article $article)
+    public function articleAcceptAction(Article $article, Request $request)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new JsonResponse(0);
+        }
         $article->setEnabled(1);
         $this->getDoctrine()->getManager()->flush();
 
@@ -46,8 +50,11 @@ class ArticleController extends Controller
      * @Route("/{id}/refuse", name="article_refuse", options={"expose"=true})
      * @Method({"GET", "POST"})
      */
-    public function articleRefuseAction(Article $article)
+    public function articleRefuseAction(Article $article, Request $request)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new JsonResponse(0);
+        }
         $em = $this->getDoctrine()->getManager();
         $element = $article->getElement();
         $em->remove($element);
@@ -163,6 +170,18 @@ class ArticleController extends Controller
      */
     public function editAction(Request $request, Article $article)
     {
+        $user=$this->get('security.token_storage')->getToken()->getUser();
+        if($article->getEnabled() != 1){
+            if( (( $article->getUser()->getId() != $user->getId() )
+                && (!in_array("ROLE_ADMIN", $user->getRoles())))){
+                return $this->render('404.html.twig');
+            }
+        }else{
+            if(!in_array("ROLE_ADMIN", $user->getRoles())){
+                return $this->render('404.html.twig');;
+            }
+        }
+
         $deleteForm = $this->createDeleteForm($article);
         $editForm = $this->createForm('AppBundle\Form\ArticleType', $article);
         $editForm->handleRequest($request);

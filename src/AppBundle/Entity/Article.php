@@ -26,7 +26,7 @@ class Article
     /**
      * one user as one element
      *
-     * @ORM\OneToOne(targetEntity="Element", mappedBy ="article", fetch="LAZY")
+     * @ORM\OneToOne(targetEntity="Element", mappedBy ="article", cascade={"persist"}, fetch="LAZY")
      */
     private $element;
 

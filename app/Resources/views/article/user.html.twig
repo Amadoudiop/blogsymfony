@@ -35,7 +35,7 @@
                 <td>
                     <button class="btn-action" data-id="{{ element.user.id }}" data-info="set_admin"> ADMIN</button>
                 </td>
-            {% elseif (element.user.roles.0 == "ROLE_ADMIN") and (is_granted('ROLE_ADMIN') == true) %}
+            {% elseif (element.user.roles.0 == "ROLE_ADMIN") and (is_granted('ROLE_SUPER_ADMIN') == true) %}
                 <td>
                     <button class="btn-action" data-id="{{ element.user.id }}" data-info="unset_admin"> UNSET ADMIN</button>
                 </td>

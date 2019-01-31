@@ -81,7 +81,7 @@ class DefaultController extends Controller
      */
     public function AccessDeniedAction()
     {
-        return $this->render('403.html.twig');
+        return $this->render('404.html.twig');
     }
 
 }

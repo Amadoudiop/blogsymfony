@@ -24,26 +24,32 @@ class UserController extends Controller
      * @Route("user/{id}/accept", name="user_accept", options={"expose"=true})
      * @Method({"GET", "POST"})
      */
-    public function userAcceptAction(User $user)
+    public function userAcceptAction(User $user, Request $request)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new JsonResponse(0);
+        }
         $user->setValidation(1);
         $this->getDoctrine()->getManager()->flush();
-
         $SendMail = $this->get(SendMail::class);
         $SendMail->SendMail('- MakeMeUp Contact compte accepte -',
             $user->getEmail(),
-            'CompteAccepte' );
+            'CompteAccepte');
 
         return new JsonResponse(1);
     }
+
     /**
      * refuse one user
      *
      * @Route("user/{id}/refuse", name="user_refuse", options={"expose"=true})
      * @Method({"GET", "POST"})
      */
-    public function userRefuseAction(User $user)
+    public function userRefuseAction(User $user, Request $request)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new JsonResponse(0);
+        }
         $em = $this->getDoctrine()->getManager();
         $element = $user->getElement();
         $em->remove($element);
@@ -52,7 +58,7 @@ class UserController extends Controller
         $SendMail = $this->get(SendMail::class);
         $SendMail->SendMail('- MakeMeUp Contact compte refusé -',
             $user->getEmail(),
-            'CompteRefuse' );
+            'CompteRefuse');
 
         return new JsonResponse(1);
     }
@@ -75,7 +81,7 @@ class UserController extends Controller
         $iterator = $objectCollection->getIterator();
         $iterator->uasort(function ($a, $b) {
 
-            return ( $a->getElement()->getDateCreate() < $b->getElement()->getDateCreate() ) ? -1 : 1;
+            return ($a->getElement()->getDateCreate() < $b->getElement()->getDateCreate()) ? -1 : 1;
         });
 
         return $this->render('article\validation.html.twig', array(
@@ -89,15 +95,18 @@ class UserController extends Controller
      * @Route("user/{id}/setAdmin", name="set_admin", options={"expose"=true})
      * @Method({"GET", "POST"})
      */
-    public function userSetAdminAction(User $user)
+    public function userSetAdminAction(User $user, Request $request)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new JsonResponse(0);
+        }
         $user->addRole("ROLE_ADMIN");
         $this->getDoctrine()->getManager()->flush();
 
         $SendMail = $this->get(SendMail::class);
         $SendMail->SendMail('- MakeMeUp Contact compte accepte -',
             $user->getEmail(),
-            'CompteAccepte' );
+            'CompteAccepte');
 
         return new JsonResponse(1);
     }
@@ -108,19 +117,22 @@ class UserController extends Controller
      * @Route("user/{id}/unsetAdmin", name="unset_admin", options={"expose"=true})
      * @Method({"GET", "POST"})
      */
-    public function userUnsetAdminAction(User $user)
+    public function userUnsetAdminAction(User $user, Request $request)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new JsonResponse(0);
+        }
         $user->removeRole("ROLE_ADMIN");
         $this->getDoctrine()->getManager()->flush();
 
         $SendMail = $this->get(SendMail::class);
         $SendMail->SendMail('- MakeMeUp Contact compte accepte -',
             $user->getEmail(),
-            'CompteAccepte' );
+            'CompteAccepte');
 
         return new JsonResponse(1);
     }
-    
+
     /**
      * Lists all user entities.
      *
@@ -254,7 +266,6 @@ class UserController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('user_delete', array('id' => $user->getId())))
             ->setMethod('DELETE')
-            ->getForm()
-        ;
+            ->getForm();
     }
 }
