@@ -1,14 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {% for element in tables %}
+    {% for element in elements %}
         Articles list
         <table>
             <thead>
             <tr>
                 <th>Id</th>
-                <th>Date_create</th>
-                <th>Date_event</th>
                 <th>Title</th>
                 <th>Catch_sentence</th>
                 <th>Picture</th>
@@ -19,16 +17,11 @@
             <tbody>
             <tr>
                 <td><a href="{{ path('article_show', { 'id': element.id }) }}">{{ element.id }}</a></td>
-                <td>{% if element.datecreate %}{{ element.datecreate|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if element.dateupdate %}{{ element.dateupdate|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>{% if element.dateevent %}{{ element.dateevent|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>{{ element.title }}</td>
                 <td>{{ element.catchsentence }}</td>
                 <td>{{ element.picture }}</td>
                 <td>{{ element.content }}</td>
-                <td>
-                    <a href="{{ path('article_refuse',{ 'id': element.id }) }}">Suprimer</a>
-                </td>
             </tr>
             </tbody>
         </table>

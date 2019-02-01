@@ -93,7 +93,7 @@ class ArticleController extends Controller
         });
 
         return $this->render('article\articlePersoUser.html.twig', array(
-            'tables' => $iterator,
+            'elements' => $iterator,
         ));
     }
 
@@ -116,7 +116,7 @@ class ArticleController extends Controller
             if (!$fileName) {
                 $this->addFlash(
                     'danger',
-                    'la photo est trop grosse taille max 3MB'
+                    "'la photo n'est pas au bon format"
                 );
             } else {
                 $article->setPicture($fileName["name"]);
@@ -150,14 +150,24 @@ class ArticleController extends Controller
     {
         $deleteForm = $this->createDeleteForm($article);
         $element = $article->getElement();
-        $email = $element->getArticle();
-        $email = $email->getUser();
+        $article = $element->getArticle();
+        $email = $article->getUser();
+        $id = $email->getId();
         $email = $email->getEmail();
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $userId= $user ->getId();
+        $admin = 0;
+        if(in_array("ROLE_ADMIN", $user->getRoles())){
+            $admin = 1;
+        }
 
         return $this->render('article/show.html.twig', array(
             'article' => $article,
             'element' => $element,
             'email' => $email,
+            'id_user_article' => $id,
+            'id_user' => $userId,
+            'admin' => $admin,
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -199,15 +209,15 @@ class ArticleController extends Controller
                 } else {
                     $article->setPicture($fileName["name"]);
                     $article->setPictureUpload(null);
+                    $em = $this->getDoctrine()->getManager();
+                    $em->flush();
+                    $this->addFlash(
+                        'success',
+                        'votre article à été modifié'
+                    );
+                    $this->getDoctrine()->getManager()->flush();
                 }
             }
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
-            $this->addFlash(
-                'success',
-                'votre article à été modifié'
-            );
-            $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('article_edit', array('id' => $article->getId()));
         }
@@ -222,14 +232,15 @@ class ArticleController extends Controller
     /**
      * Deletes a article entity.
      *
-     * @Route("article/{id}", name="article_delete")
+     * @Route("article/{id}/delete", name="article_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, Article $article)
     {
+        dump($request->headers);
+        die;
         $form = $this->createDeleteForm($article);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($article);
@@ -238,6 +249,7 @@ class ArticleController extends Controller
 
         return $this->redirectToRoute('validation_index');
     }
+
 
     /**
      * Creates a form to delete a article entity.

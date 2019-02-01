@@ -46,23 +46,34 @@ class SlideController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $file = $slide->getPicture();
+            $file = $slide->getPictureUpload();
             $fileHandler = $this->get(FileHandler::class);
-            $fileName = $fileHandler->upload($file, $this->getParameter('upload_directory_slide'));
-            $slide->setPicture($fileName["name"]);
+            $fileName = $fileHandler->upload($file, $this->getParameter('upload_directory_slide'), "slide");
+            if (!$fileName) {
+                $this->addFlash(
+                    'danger',
+                    "'la photo n'est pas au bon format"
+                );
+            } else {
+                $slide->setPicture($fileName["name"]);
+                $slide->setPictureUpload(null);
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($slide);
+                $em->flush();
+                $this->addFlash(
+                    'success',
+                    'votre slide a été enregistré'
+                );
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($slide);
-            $em->flush();
-
-            return $this->redirectToRoute('slide_show', array('id' => $slide->getId()));
+                return $this->redirectToRoute('slide_show', array('id' => $slide->getId()));
+            }
         }
-
         return $this->render('slide/new.html.twig', array(
             'slide' => $slide,
             'form' => $form->createView(),
         ));
     }
+
 
     /**
      * Finds and displays a slide entity.
@@ -96,25 +107,24 @@ class SlideController extends Controller
             $file = $slide->getPictureUpload();
             if(!is_null($file)){
                 $fileHandler = $this->get(FileHandler::class);
-                $fileName = $fileHandler->upload($file, $this->getParameter('upload_directory_slide'));
+                $fileName = $fileHandler->upload($file, $this->getParameter('upload_directory_slide'),"slide");
                 if (!$fileName) {
                     $this->addFlash(
                         'danger',
-                        'la photo est trop grosse taille max 3MB'
+                        "la photo n'est pas au bon format"
                     );
                 } else {
                     $slide->setPicture($fileName["name"]);
                     $slide->setPictureUpload(null);
+                    $em = $this->getDoctrine()->getManager();
+                    $em->flush();
+                    $this->addFlash(
+                        'success',
+                        'votre article à été modifié'
+                    );
+                    $this->getDoctrine()->getManager()->flush();
                 }
             }
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
-            $this->addFlash(
-                'success',
-                'votre article à été modifié'
-            );
-            $this->getDoctrine()->getManager()->flush();
-
             return $this->redirectToRoute('slide_edit', array('id' => $slide->getId()));
         }
 
@@ -128,22 +138,32 @@ class SlideController extends Controller
     /**
      * Deletes a slide entity.
      *
-     * @Route("/{id}", name="slide_delete")
+     * @Route("/{id}/delete", name="slide_delete")
      * @Method("DELETE")
      */
-    public function deleteAction(Request $request, Slide $slide)
+    public function deleteAction( Slide $slide)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($slide);
+        $em->flush();
+
+        return $this->redirectToRoute('slide_index');
+    }
+
+    /*public function deleteAction(Request $request, Slide $slide)
     {
         $form = $this->createDeleteForm($slide);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            die;
             $em = $this->getDoctrine()->getManager();
             $em->remove($slide);
             $em->flush();
         }
 
         return $this->redirectToRoute('slide_index');
-    }
+    }*/
 
     /**
      * Creates a form to delete a slide entity.

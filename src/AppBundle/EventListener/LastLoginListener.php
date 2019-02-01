@@ -98,10 +98,6 @@ class LastLoginListener extends FOSLastLoginListener //implements EventSubscribe
             if( $authenticated== true){
                 $event->getAuthenticationToken();
                 $this->tokenStorage->setToken(null);
-                $this->addFlash(
-                    'error',
-                    "Le compte n'est pas encore validé par la modération."
-                );
             }
         }
     }

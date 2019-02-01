@@ -41,12 +41,12 @@
     </table>
 
     <ul>
-        <li>
-            <a href="{{ path('validation_index') }}">Back to the list</a>
-        </li>
+        {% if ((id_user == id_user_article ) and (article.enabled == 0)) or (admin) %}
         <li>
             <a href="{{ path('article_edit', { 'id': article.id }) }}">Edit</a>
         </li>
+
+        {% endif %}
         <li>
             {{ form_start(delete_form) }}
                 <input type="submit" value="Delete">
