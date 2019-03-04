@@ -68,7 +68,8 @@ https://symfony.com/doc/3.4/validation.html
 boutton edit d'un article ne s'affiche que si on est modérateur ou créateur de l'article
 
 créer un boutton pour le super modérateur pour promouvoir et supprimer les droits d'un compte en administrateur
-accès en temps que super_Admin
+accès en temps
+ que super_Admin
 
 faire une 404
 
