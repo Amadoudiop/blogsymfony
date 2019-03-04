@@ -1,0 +1,26 @@
+.form{
+
+  &-insctiption{
+
+    margin-left: 8vh;
+    margin-top: 3vh;
+    text-align: center;
+
+    @include media-breakpoint-down(sm){
+
+      margin-left: 2vh;
+    }
+  }
+
+  &-connexion{
+
+    margin-right: 8vh;
+    margin-top: 3vh;
+    text-align: center;
+
+    @include media-breakpoint-down(sm){
+
+      margin-right: 2vh;
+    }
+  }
+}

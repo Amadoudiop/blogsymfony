@@ -1,0 +1,71 @@
+.sidebar {
+
+  background-color: #231F20;
+  height: 100%;
+  font-family: "Bubbleboddy", sans-serif;
+  font-weight: 100;
+  position: fixed;
+
+  //@include media-breakpoint-down(lg) {
+  //  left: -50%;
+  //  z-index: 999999;
+  //}
+
+  @include media-breakpoint-down(md){
+
+    left: -50%;
+    z-index: 999999;
+  }@include media-breakpoint-down(sm){
+
+    left: -100%;
+    z-index: 999999;
+  }
+  &.active {
+
+    @include media-breakpoint-down(lg) {
+
+      left: 0;
+    }
+
+    @include media-breakpoint-down(md) {
+
+      left: 0;
+    }
+
+    @include media-breakpoint-down(sm){
+
+      left: -20%;
+    }
+  }
+
+  &-toggle {
+    color: #fff;
+    position: absolute;
+    top: 0;
+    right: -40px;
+    height: 40px;
+    width: 40px;
+    background: #EF3E34;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+    @include media-breakpoint-up(lg) {
+
+      display: none;
+    }
+  }
+
+  li {
+
+    color: white;
+    margin-top: 6%;
+    list-style: none;
+  }
+}
+
+.color-selected {
+
+  color: #EF3E34;
+}

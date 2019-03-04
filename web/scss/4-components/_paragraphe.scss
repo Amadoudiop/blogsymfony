@@ -1,0 +1,48 @@
+.category{
+
+  &-article-event {
+    color: white;
+    background-color: #0c5460;
+    width: 150px;
+    display: flex;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    font-family: "Bubbleboddy", sans-serif;
+    padding-left: 10px;
+  }
+}
+
+.date{
+
+  &-color{
+
+    color: #EF3E34;
+  }
+
+  &-pos{
+
+    margin-right: 10%;
+
+    @include media-breakpoint-down(lg){
+
+      font-size: 50px;
+    }
+    @include media-breakpoint-down(md){
+
+      font-size: 45px;
+    }
+    @include media-breakpoint-down(sm){
+
+      font-size: 20px;
+    }
+  }
+}
+
+.lien{
+
+  &-para{
+
+    color: #231F20;
+  }
+}

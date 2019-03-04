@@ -1,0 +1,59 @@
+.select-input{
+
+  top: 0;
+  margin-right: 10%;
+  text-align: right;
+  font-family: "Bubbleboddy", sans-serif;
+}
+
+.input{
+
+
+  &-small{
+
+    width: 90%;
+    margin: 1vh 5%;
+    background-color: #C4C4C4;
+  }
+
+  &-long{
+
+    width: 95%;
+    margin: 1vh 2.5%;
+    background-color: #C4C4C4;
+  }
+
+  &-soumettre{
+
+    width: 80%;
+    background-color: #C4C4C4;
+    float: right;
+
+    @include media-breakpoint-down(sm){
+
+      width: 40%;
+      float: none;
+      margin: 2vh;
+    }
+  }
+  &-soumettre-contact{
+
+    width: 20%;
+    background-color: #C4C4C4;
+    margin: 0;
+  }
+
+  &-textarea{
+
+    width: 95%;
+    background-color: #C4C4C4;
+    margin: 4vh 4vh 4vh 25px;
+  }
+}
+
+.block-input{
+
+  flex-wrap: initial;
+  flex-direction: row;
+  display: flex;
+}

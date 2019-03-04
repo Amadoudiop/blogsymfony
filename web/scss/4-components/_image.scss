@@ -1,0 +1,30 @@
+.img{
+  &-sidebar{
+
+    width: 100%;
+    opacity: 0;
+
+    @include media-breakpoint-down(sm){
+
+      width: 70%;
+      margin-left: 6rem;
+    }
+  }
+
+  &-middle{
+
+    width: auto;
+    height: auto;
+    max-height: 25vh;
+    max-width: 80%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  &-carousel{
+
+    width: 100%;
+  }
+}
+
